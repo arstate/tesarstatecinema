@@ -16,31 +16,22 @@
             font-family: 'Poppins', sans-serif;
             background-color: #0a192f; /* Biru Navy Gelap */
             color: #e6f1ff; /* Teks Putih Kebiruan */
+            overflow-x: hidden; /* Mencegah scroll horizontal selama animasi */
         }
 
-        /* Custom Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 12px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--navy-blue);
-        }
-
+        /* Scrollbar Halaman dibuat transparan */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
             background-color: var(--accent-yellow);
             border-radius: 20px;
-            border: 3px solid var(--navy-blue);
+            border: 3px solid #0a192f;
         }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: #fde047;
-        }
+        ::-webkit-scrollbar-thumb:hover { background-color: #fde047; }
 
         :root {
             --navy-blue: #0a192f;
-            --light-blue: #1e3a8a; /* Biru lebih terang */
-            --accent-yellow: #facc15; /* Kuning */
+            --accent-yellow: #facc15;
             --text-light: #e6f1ff;
             --text-slate: #8892b0;
         }
@@ -48,202 +39,130 @@
         /* Efek Gradasi pada Teks */
         .text-gradient {
             background: linear-gradient(90deg, var(--accent-yellow), #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-        }
-        
-        /* html {
-            scroll-behavior: smooth;
-        }
-        */
-
-        /* Penyesuaian Transisi Navbar */
-        #navbar {
-            transition: background-color 2s ease-in-out, backdrop-filter 2s ease-in-out, box-shadow 2s ease-in-out;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
         }
 
-        /* Animasi Fade-in saat elemen muncul di layar */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px); /* Jarak sedikit lebih jauh untuk efek lebih dramatis */
-            transition: opacity 2s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Styling untuk Tombol Utama */
+        /* Styling Tombol */
         .btn-primary {
-            background-color: var(--accent-yellow);
-            color: var(--navy-blue);
-            transition: all 0.4s ease; /* Durasi diubah menjadi 0.4 detik */
-            box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
+            background-color: var(--accent-yellow); color: var(--navy-blue);
+            transition: all 0.4s ease; box-shadow: 0 4px 15px rgba(250, 204, 21, 0.2);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 7px 20px rgba(250, 204, 21, 0.4);
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 7px 20px rgba(250, 204, 21, 0.4); }
+        .btn-secondary {
+            border: 1px solid var(--accent-yellow); color: var(--accent-yellow);
+            transition: all 0.4s ease;
         }
-
-        /* Styling untuk Tombol Sekunder */
-         .btn-secondary {
-            border: 1px solid var(--accent-yellow);
-            color: var(--accent-yellow);
-            transition: all 0.4s ease; /* Durasi diubah menjadi 0.4 detik */
-        }
-
-        .btn-secondary:hover {
-            background-color: rgba(250, 204, 21, 0.1);
-            transform: translateY(-3px);
-        }
+        .btn-secondary:hover { background-color: rgba(250, 204, 21, 0.1); transform: translateY(-3px); }
 
         /* Styling Kartu Portofolio */
         .portfolio-card {
-            position: relative;
-            overflow: hidden;
-            border-radius: 0.75rem;
+            position: relative; overflow: hidden; border-radius: 0.75rem;
             box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
-            transition: transform 0.4s ease; /* Durasi diubah menjadi 0.4 detik */
+            transition: transform 0.4s ease; cursor: pointer;
         }
-        
-        .portfolio-card:hover {
-            transform: translateY(-8px);
-        }
-
+        .portfolio-card:hover { transform: translateY(-8px); }
         .portfolio-card .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to top, rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.1));
-            opacity: 1;
-            transition: opacity 0.3s ease;
         }
-
         .portfolio-card .card-content {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%; /* Memastikan padding diterapkan dengan benar */
-            padding: 1.5rem;
-            transform: translateY(100%); /* Teks dimulai dari luar kartu (di bawah) */
-            opacity: 0;
-            transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1); /* Durasi animasi diubah menjadi 1.2 detik */
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 1.5rem;
+            transform: translateY(100%); opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1), opacity 1.2s cubic-bezier(0.23, 1, 0.32, 1);
         }
-
-        .portfolio-card:hover .card-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        /* BARU: Tampilkan judul otomatis pada slide yang aktif */
+        .portfolio-card:hover .card-content,
         #featured-portfolio .swiper-slide-active .portfolio-card .card-content {
-            transform: translateY(0);
-            opacity: 1;
+            transform: translateY(0); opacity: 1;
         }
-
-        /* Animasi untuk item di halaman galeri portofolio */
-        #portfolio-page .portfolio-card {
-            opacity: 0;
-            transform: translateY(60px);
-            /* Transisi diatur oleh JavaScript, tetapi ini sebagai fallback */
-            transition: opacity 2s ease, transform 2s ease; 
-        }
-
-        #portfolio-page .portfolio-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Transisi Halaman (Dibuat lebih keren) */
+        
+        /* Transisi Halaman */
         .page {
-            /* Transisi filter dihapus agar fokus pada pergerakan */
             transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-            position: relative;
-            z-index: 1;
+            position: relative; z-index: 1;
         }
-
         .page.hidden {
-            opacity: 0;
-            /* Jarak pergerakan diperbesar dan scale/blur dihilangkan untuk gerakan yang lebih jelas */
-            transform: translateY(80px); 
-            pointer-events: none;
-            position: absolute;
-            width: 100%;
+            opacity: 0; transform: translateY(80px);
+            pointer-events: none; position: absolute; width: 100%;
         }
 
-        /* Custom Swiper Slider Styles */
-        #featured-portfolio .swiper-wrapper {
-            /* Vertically align slides to prevent jumpiness during scaling */
-            align-items: center;
-        }
-
+        /* Swiper Slider Styles */
+        #featured-portfolio .swiper-wrapper { align-items: center; }
         #featured-portfolio .swiper-slide {
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Animasi diperhalus dan diperlambat */
-            transform: scale(0.65); /* Slide tidak aktif dibuat lebih kecil lagi */
-            opacity: 0.5; /* Opacity dikurangi agar lebih fokus ke slide aktif */
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(0.65); opacity: 0.5;
         }
+        #featured-portfolio .swiper-slide-active { transform: scale(1.05); opacity: 1; }
+        .swiper-pagination-bullet { background-color: #4a5568; opacity: 0.7; transition: all 0.3s ease; }
+        .swiper-pagination-bullet-active { background-color: var(--accent-yellow); transform: scale(1.2); opacity: 1; }
+        .slider-controls { display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-top: 2.5rem; }
+        .slider-controls .swiper-button-next, .slider-controls .swiper-button-prev {
+            position: static; margin: 0; width: 44px; height: 44px; color: var(--accent-yellow);
+            background-color: rgba(10, 25, 47, 0.5); border-radius: 50%; backdrop-filter: blur(5px); transition: all 0.3s ease;
+        }
+        .slider-controls .swiper-button-next:hover, .slider-controls .swiper-button-prev:hover {
+            background-color: rgba(10, 25, 47, 0.8); transform: scale(1.1);
+        }
+        .slider-controls .swiper-pagination { position: static; width: auto; }
+        .slider-controls .swiper-button-next::after, .slider-controls .swiper-button-prev::after { font-size: 20px; }
 
-        #featured-portfolio .swiper-slide-active {
-            transform: scale(1.05); /* Slide aktif diperkecil ukurannya */
-            opacity: 1;
+        /* Animasi Perpindahan Halaman */
+        .animatable { transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); }
+        #main-page.is-animating-out .hero-anim, #main-page.is-animating-out .portfolio-title-anim { transform: translateY(-100px); opacity: 0; }
+        #main-page.is-animating-out .services-anim, #main-page.is-animating-out .contact-anim, #main-page.is-animating-out .portfolio-controls-anim { transform: translateY(100px); opacity: 0; }
+        #main-page.is-animating-out .footer-anim { transform: translateY(100%); opacity: 0; }
+        #main-page.is-animating-out .swiper-slide .portfolio-card { transform: translateX(-110vw) !important; opacity: 1 !important; transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045) !important; }
+        #main-page.is-animating-out .swiper-slide-active .portfolio-card { transform: translateY(110vh) !important; }
+        #main-page.is-animating-out .swiper-slide-active ~ .swiper-slide .portfolio-card { transform: translateX(110vw) !important; }
+        #main-page.is-animating-in .animatable { opacity: 0; }
+        #main-page.is-animating-in .hero-anim, #main-page.is-animating-in .portfolio-title-anim { transform: translateY(-100px); }
+        #main-page.is-animating-in .services-anim, #main-page.is-animating-in .contact-anim, #main-page.is-animating-in .portfolio-controls-anim { transform: translateY(100px); }
+        #main-page.is-animating-in .footer-anim { transform: translateY(100%); }
+        #main-page.is-animating-in .portfolio-card { transform: translateY(150%); }
+        #portfolio-detail-page .detail-anim { opacity: 0; transform: translateY(50px); transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1), transform 1s cubic-bezier(0.23, 1, 0.32, 1); }
+        #portfolio-detail-page.visible .detail-anim { opacity: 1; transform: translateY(0); }
+        #portfolio-detail-page.visible .detail-text-anim { transition-delay: 0.6s; }
+        #portfolio-detail-page.visible .detail-gallery-anim { transition-delay: 0.7s; }
+        #portfolio-detail-page.is-animating-out .detail-anim { transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease-out; }
+        #portfolio-detail-page.is-animating-out .detail-text-anim { transform: translateY(-100%); opacity: 0 !important; }
+        #portfolio-detail-page.is-animating-out .detail-gallery-anim { transform: translateY(100%); opacity: 0 !important; }
+
+        /* --- STYLING GALERI GRID DETAIL --- */
+        #detail-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-auto-rows: 250px;
+            gap: 1rem;
         }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+        }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.4s ease; cursor: pointer;
+        }
+        .gallery-item:hover img { transform: scale(1.1); }
         
-        .swiper-pagination-bullet {
-            background-color: #4a5568;
-            opacity: 0.7;
-            transition: all 0.3s ease;
+        /* Tata Letak Mosaik */
+        @media (min-width: 768px) {
+            #detail-gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .gallery-item:nth-child(11n+1) { grid-column: span 2; grid-row: span 2; }
+            .gallery-item:nth-child(11n+4) { grid-row: span 2; }
+            .gallery-item:nth-child(11n+8) { grid-column: span 2; }
         }
 
-        .swiper-pagination-bullet-active {
-            background-color: var(--accent-yellow);
-            transform: scale(1.2);
-            opacity: 1;
+        /* Styling untuk canvas bubble */
+        #bubble-canvas-container canvas {
+            background-color: transparent !important;
+            cursor: grab;
         }
-
-        /* NEW STYLES FOR SLIDER CONTROLS */
-        .slider-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1.5rem; /* Jarak antar tombol dan dot */
-            margin-top: 2.5rem; /* Jarak dari slider */
+         #bubble-canvas-container canvas:active {
+            cursor: grabbing;
         }
-
-        .slider-controls .swiper-button-next,
-        .slider-controls .swiper-button-prev {
-            position: static; /* Menghapus posisi absolut dari Swiper */
-            margin: 0; /* Reset margin */
-            width: 44px; /* Membuat tombol sedikit lebih kecil */
-            height: 44px;
-            color: var(--accent-yellow);
-            background-color: rgba(10, 25, 47, 0.5);
-            border-radius: 50%;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-        
-        .slider-controls .swiper-button-next:hover,
-        .slider-controls .swiper-button-prev:hover {
-             background-color: rgba(10, 25, 47, 0.8);
-             transform: scale(1.1);
-        }
-
-        .slider-controls .swiper-pagination {
-            position: static; /* Menghapus posisi absolut dari Swiper */
-            width: auto; /* Membuat container dot menyesuaikan isinya */
-        }
-        
-        .slider-controls .swiper-button-next::after,
-        .slider-controls .swiper-button-prev::after {
-            font-size: 20px; /* Mengecilkan ikon panah */
-        }
-
     </style>
 </head>
 <body class="antialiased">
@@ -251,454 +170,450 @@
     <!-- Container Utama -->
     <div id="app-container">
         
-        <!-- Header Dipindahkan ke luar agar tetap ada di semua halaman -->
-        <header class="fixed top-0 left-0 right-0 z-50" id="navbar">
+        <div id="page-transition-overlay" class="fixed top-0 left-0 w-full h-full bg-[#0a192f] opacity-0 pointer-events-none z-40" style="transition: opacity 0.5s ease-in-out;"></div>
+        
+        <header class="fixed top-0 left-0 right-0 z-50 bg-[#0a192f]/90 backdrop-blur-sm" id="navbar">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <a href="#" id="brand-logo" class="text-2xl font-bold text-white">Arstate <span class="text-yellow-400">Cinema</span></a>
+                <a href="#hero" id="brand-logo" class="text-2xl font-bold text-white">Arstate <span class="text-yellow-400">Cinema</span></a>
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#hero" class="text-slate-300 hover:text-yellow-400 transition">Beranda</a>
                     <a href="#services" class="text-slate-300 hover:text-yellow-400 transition">Layanan</a>
                     <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition">Portofolio</a>
                     <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg">Hubungi Kami</a>
                 </nav>
-                 <button class="md:hidden text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
-                </button>
+                 <button class="md:hidden text-white"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
             </div>
         </header>
 
-        <!-- ======================= -->
-        <!--     HALAMAN UTAMA       -->
-        <!-- ======================= -->
+        <!-- HALAMAN UTAMA -->
         <div id="main-page" class="page">
-            <!-- Header (telah dipindahkan) -->
-
             <main>
-                <!-- Hero Section -->
-                <section id="hero" class="min-h-screen flex items-center bg-cover bg-center" style="background-image: linear-gradient(rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.8)), url('https://placehold.co/1920x1080/0a192f/e6f1ff?text=Wedding+Scene');">
-                    <div class="container mx-auto px-6 text-center">
-                        <div class="max-w-3xl mx-auto">
-                            <p class="text-yellow-400 font-semibold text-lg reveal">Selamat Datang di Arstate Cinema</p>
-                            <h2 class="text-4xl md:text-6xl font-bold text-white mt-4 leading-tight reveal" style="transition-delay: 150ms;">Mengabadikan Momen, <br>Menciptakan Kenangan Abadi.</h2>
-                            <p class="text-slate-300 mt-6 max-w-xl mx-auto text-lg reveal" style="transition-delay: 300ms;">Kami adalah partner kreatif Anda dalam fotografi dan videografi, mengubah setiap detik berharga menjadi sebuah karya sinematik yang tak terlupakan.</p>
-                            <div class="mt-10 reveal" style="transition-delay: 450ms;">
-                                <a href="#featured-portfolio" class="btn-primary font-bold py-3 px-8 rounded-lg text-lg">Lihat Karya Kami</a>
-                            </div>
-                        </div>
+                <section id="hero" class="min-h-screen flex items-center bg-cover bg-center">
+                    <div class="container mx-auto px-6 text-center animatable hero-anim">
+                        <div class="max-w-3xl mx-auto"><p class="text-yellow-400 font-semibold text-lg">Selamat Datang di Arstate Cinema</p><h2 class="text-4xl md:text-6xl font-bold text-white mt-4 leading-tight">Mengabadikan Momen, <br>Menciptakan Kenangan Abadi.</h2><p class="text-slate-300 mt-6 max-w-xl mx-auto text-lg">Kami adalah partner kreatif Anda dalam fotografi dan videografi, mengubah setiap detik berharga menjadi sebuah karya sinematik yang tak terlupakan.</p><div class="mt-10"><a href="#featured-portfolio" class="btn-primary font-bold py-3 px-8 rounded-lg text-lg">Lihat Karya Kami</a></div></div>
                     </div>
                 </section>
 
-                <!-- Layanan Section -->
                 <section id="services" class="py-20 md:py-32">
-                    <div class="container mx-auto px-6">
-                        <div class="text-center max-w-2xl mx-auto mb-16">
-                             <h2 class="text-3xl md:text-4xl font-bold reveal">Layanan Profesional Kami</h2>
-                             <p class="text-slate-400 mt-4 reveal" style="transition-delay: 150ms;">Dari pernikahan yang sakral hingga acara perusahaan yang meriah, kami siap menangkap esensi dari setiap momen Anda.</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            <!-- Service Card 1 -->
-                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 reveal">
-                                <div class="text-yellow-400 mb-4 inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Wedding & Prewedding</h3>
-                                <p class="text-slate-400">Paket lengkap untuk hari istimewa Anda, dari sesi pra-pernikahan yang romantis hingga liputan hari-H yang sinematik.</p>
-                            </div>
-                            <!-- Service Card 2 -->
-                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 reveal" style="transition-delay: 150ms;">
-                                <div class="text-yellow-400 mb-4 inline-block">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 001.553.832l3-2a1 1 0 000-1.664l-3-2z" /></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Dokumentasi Event</h3>
-                                <p class="text-slate-400">Liputan acara ulang tahun, seminar, gathering, atau konser dengan kualitas video dan foto yang profesional.</p>
-                            </div>
-                            <!-- Service Card 3 -->
-                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 reveal" style="transition-delay: 300ms;">
-                               <div class="text-yellow-400 mb-4 inline-block">
-                                   <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v1a1 1 0 001 1h12a1 1 0 001-1v-1a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-white mb-2">Konten Komersial</h3>
-                                <p class="text-slate-400">Produksi video profil perusahaan, iklan produk, atau konten media sosial untuk meningkatkan brand Anda.</p>
-                            </div>
-                        </div>
+                    <div class="container mx-auto px-6 animatable services-anim">
+                        <div class="text-center max-w-2xl mx-auto mb-16"><h2 class="text-3xl md:text-4xl font-bold">Layanan Profesional Kami</h2><p class="text-slate-400 mt-4">Dari pernikahan yang sakral hingga acara perusahaan yang meriah, kami siap menangkap esensi dari setiap momen Anda.</p></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Wedding & Prewedding</h3><p class="text-slate-400">Paket lengkap untuk hari istimewa Anda, dari sesi pra-pernikahan yang romantis hingga liputan hari-H yang sinematik.</p></div><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 001.553.832l3-2a1 1 0 000-1.664l-3-2z" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Dokumentasi Event</h3><p class="text-slate-400">Liputan acara ulang tahun, seminar, gathering, atau konser dengan kualitas video dan foto yang profesional.</p></div><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v1a1 1 0 001 1h12a1 1 0 001-1v-1a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Konten Komersial</h3><p class="text-slate-400">Produksi video profil perusahaan, iklan produk, atau konten media sosial untuk meningkatkan brand Anda.</p></div></div>
                     </div>
                 </section>
 
-                <!-- Featured Portfolio -->
                 <section id="featured-portfolio" class="py-20 md:py-32 bg-blue-900/20 overflow-hidden">
                     <div class="container mx-auto px-6">
-                        <div class="text-center max-w-2xl mx-auto mb-16">
-                            <h2 class="text-3xl md:text-4xl font-bold reveal">Karya Pilihan Kami</h2>
-                            <p class="text-slate-400 mt-4 reveal" style="transition-delay: 150ms;">Beberapa momen favorit yang telah kami abadikan. Setiap frame menceritakan sebuah kisah unik.</p>
-                        </div>
-                        
-                        <!-- Slider Swiper.js -->
-                        <div class="swiper-container reveal">
+                        <div class="text-center max-w-2xl mx-auto mb-16 animatable portfolio-title-anim"><h2 class="text-3xl md:text-4xl font-bold">Karya Pilihan Kami</h2><p class="text-slate-400 mt-4">Beberapa momen favorit yang telah kami abadikan. Setiap frame menceritakan sebuah kisah unik.</p></div>
+                        <div class="swiper-container">
                             <div class="swiper-wrapper">
-                                <!-- Slide 1 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Andi+%26+Rina" alt="Wedding Andi & Rina" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Wedding</span><h3 class="text-white text-2xl font-bold mt-1">Andi & Rina</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 2 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Bali+Escape" alt="Prewedding di Bali" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Prewedding</span><h3 class="text-white text-2xl font-bold mt-1">Bali Escape</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 3 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Tech+Conf+2025" alt="Tech Conference 2025" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Tech Conf 2025</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 4 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Java+Journey" alt="Java Journey" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Commercial</span><h3 class="text-white text-2xl font-bold mt-1">Java Journey</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 5 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Sunset+Vows" alt="Sunset Vows" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Wedding</span><h3 class="text-white text-2xl font-bold mt-1">Sunset Vows</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 6 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Corporate+Gala" alt="Corporate Gala" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Corporate Gala</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 7 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=City+Lights" alt="City Lights Prewedding" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Prewedding</span><h3 class="text-white text-2xl font-bold mt-1">City Lights</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 8 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Product+Launch" alt="Product Launch" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Commercial</span><h3 class="text-white text-2xl font-bold mt-1">InnovateX Launch</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 9 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Bday+Bash" alt="Birthday Bash" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Clara's Bday Bash</h3></div>
-                                    </div>
-                                </div>
-                                <!-- Slide 10 -->
-                                <div class="swiper-slide">
-                                    <div class="portfolio-card">
-                                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Eternal+Love" alt="Eternal Love" class="w-full h-full object-cover">
-                                        <div class="overlay"></div>
-                                        <div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Wedding</span><h3 class="text-white text-2xl font-bold mt-1">Eternal Love</h3></div>
-                                    </div>
-                                </div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="andi-rina"><img src="https://placehold.co/600x800/1e3a8a/facc15?text=Andi+%26+Rina" alt="Wedding Andi & Rina" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Wedding</span><h3 class="text-white text-2xl font-bold mt-1">Andi & Rina</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="bali-escape"><img src="https://placehold.co/600x800/4a044e/fde047?text=Bali+Escape" alt="Prewedding di Bali" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Prewedding</span><h3 class="text-white text-2xl font-bold mt-1">Bali Escape</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="tech-conf"><img src="https://placehold.co/600x800/064e3b/facc15?text=Tech+Conf+2025" alt="Tech Conference 2025" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Tech Conf 2025</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="java-journey"><img src="https://placehold.co/600x800/7f1d1d/fde047?text=Java+Journey" alt="Java Journey" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Commercial</span><h3 class="text-white text-2xl font-bold mt-1">Java Journey</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="sunset-vows"><img src="https://placehold.co/600x800/831843/facc15?text=Sunset+Vows" alt="Sunset Vows" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Wedding</span><h3 class="text-white text-2xl font-bold mt-1">Sunset Vows</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="corporate-profile"><img src="https://placehold.co/600x800/0c4a6e/fde047?text=Stellar+Corp" alt="Corporate Profile" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Commercial</span><h3 class="text-white text-2xl font-bold mt-1">Stellar Corp Profile</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="birthday-bash"><img src="https://placehold.co/600x800/701a75/facc15?text=Birthday+Bash" alt="Birthday Party" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Elara's 18th Birthday</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="mountain-prewed"><img src="https://placehold.co/600x800/365314/fde047?text=Bromo+Serenade" alt="Mountain Prewedding" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Prewedding</span><h3 class="text-white text-2xl font-bold mt-1">Bromo Serenade</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="culinary-story"><img src="https://placehold.co/600x800/854d0e/facc15?text=Culinary+Story" alt="Culinary Commercial" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Commercial</span><h3 class="text-white text-2xl font-bold mt-1">Savoria Eatery</h3></div></div></div>
+                                <div class="swiper-slide"><div class="portfolio-card animatable" data-id="graduation-day"><img src="https://placehold.co/600x800/1e1b4b/fde047?text=Graduation+Gala" alt="Graduation Day" class="w-full h-full object-cover"><div class="overlay"></div><div class="card-content"><span class="text-yellow-400 text-sm font-semibold">Event</span><h3 class="text-white text-2xl font-bold mt-1">Graduation Gala 2025</h3></div></div></div>
                             </div>
-                            <!-- Pagination will be moved outside -->
                         </div>
-                        
-                        <!-- NEW Controls Wrapper -->
-                        <div class="slider-controls">
-                            <div class="swiper-button-prev"></div>
-                            <div class="swiper-pagination"></div>
-                            <div class="swiper-button-next"></div>
-                        </div>
-
-                        <div class="text-center mt-8 reveal">
-                            <button id="view-more-portfolio" class="btn-primary font-bold py-3 px-8 rounded-lg text-lg">Lihat Portofolio Lainnya</button>
-                        </div>
+                        <div class="slider-controls animatable portfolio-controls-anim"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
                     </div>
                 </section>
                 
-                <!-- Contact Section -->
-                <section id="contact" class="py-20 md:py-32 text-center">
-                    <div class="container mx-auto px-6">
-                        <div class="max-w-2xl mx-auto">
-                            <h2 class="text-3xl md:text-4xl font-bold text-gradient reveal">Siap Mewujudkan Visi Anda?</h2>
-                            <p class="text-slate-300 mt-6 text-lg reveal" style="transition-delay: 150ms;">Jangan ragu untuk berdiskusi dengan kami. Mari kita rencanakan bagaimana cara terbaik untuk mengabadikan momen spesial Anda. Klik tombol di bawah untuk terhubung dengan kami melalui WhatsApp.</p>
-                            <div class="mt-10 reveal" style="transition-delay: 300ms;">
-                                <a href="https://wa.me/6281234567890" target="_blank" class="btn-primary font-bold py-4 px-10 rounded-lg text-xl inline-flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>
-                                    Hubungi Kami Sekarang
-                                </a>
-                            </div>
+                <!-- Section Bubble Interaktif dipindahkan ke sini -->
+                <section id="qualities" class="py-20 md:py-32">
+                    <div class="w-full text-center">
+                        <!-- Judul statis dihapus dari sini -->
+                        <div id="bubble-canvas-container" class="relative w-full h-[450px] animatable">
+                            <!-- Canvas untuk Matter.js akan dimasukkan di sini oleh script -->
                         </div>
                     </div>
                 </section>
-            </main>
 
-            <!-- Footer -->
-            <footer class="bg-blue-900/20 py-8">
-                <div class="container mx-auto px-6 text-center text-slate-400">
-                    <p>&copy; 2025 Arstate Cinema. All Rights Reserved.</p>
-                    <p class="text-sm mt-2">Dibuat dengan ❤️ untuk menangkap momen berharga.</p>
-                </div>
-            </footer>
+                <section id="contact" class="py-20 md:py-32 text-center">
+                    <div class="container mx-auto px-6 animatable contact-anim">
+                        <div class="max-w-2xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-gradient">Siap Mewujudkan Visi Anda?</h2><p class="text-slate-300 mt-6 text-lg">Jangan ragu untuk berdiskusi dengan kami. Mari kita rencanakan bagaimana cara terbaik untuk mengabadikan momen spesial Anda. Klik tombol di bawah untuk terhubung dengan kami melalui WhatsApp.</p><div class="mt-10"><a href="https://wa.me/6281234567890" target="_blank" class="btn-primary font-bold py-4 px-10 rounded-lg text-xl inline-flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>Hubungi Kami Sekarang</a></div></div>
+                    </div>
+                </section>
+
+            </main>
+            <footer class="bg-blue-900/20 py-8 animatable footer-anim"><div class="container mx-auto px-6 text-center text-slate-400"><p>&copy; 2025 Arstate Cinema. All Rights Reserved.</p><p class="text-sm mt-2">Dibuat dengan ❤️ untuk menangkap momen berharga.</p></div></footer>
         </div>
 
-        <!-- ========================== -->
-        <!--     HALAMAN PORTFOLIO      -->
-        <!-- ========================== -->
-        <div id="portfolio-page" class="page hidden pt-32 pb-20 md:pt-40 md:pb-32"> <!-- Padding dipindahkan ke sini -->
-            <div class="container mx-auto px-6"> <!-- Padding atas dihapus dari sini -->
-                 <div class="flex justify-between items-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold">Galeri Portofolio</h2>
-                    <button id="back-to-main" class="btn-secondary font-semibold py-2 px-6 rounded-lg inline-flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
-                        Kembali
-                    </button>
+        <!-- HALAMAN DETAIL PORTFOLIO (STRUKTUR BARU) -->
+        <div id="portfolio-detail-page" class="page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                <!-- Header Deskripsi -->
+                <div class="max-w-4xl mx-auto text-center mb-16 detail-anim detail-text-anim">
+                    <p id="detail-category" class="text-yellow-400 font-semibold text-lg"></p>
+                    <h2 id="detail-title" class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight"></h2>
+                    <p id="detail-description" class="text-slate-300 mt-6 text-lg max-w-3xl mx-auto"></p>
+                    <button id="back-from-detail" class="btn-secondary font-semibold py-3 px-8 rounded-lg mt-10 inline-flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>Kembali ke Beranda</button>
                 </div>
-                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Portfolio items will be duplicated for example -->
-                    <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Andi+%26+Rina" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Andi & Rina</h3></div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Bali+Escape" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Bali Escape</h3></div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Tech+Conf+2025" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Tech Conf 2025</h3></div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Bday+Bash" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Clara's Bday Bash</h3></div>
-                    </div>
-                    <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Java+Journey" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Java Journey</h3></div>
-                    </div>
-                     <div class="portfolio-card">
-                        <img src="https://placehold.co/600x800/1e3a8a/facc15?text=Product+Launch" alt="Portfolio" class="w-full h-full object-cover">
-                        <div class="overlay"></div>
-                        <div class="card-content"><h3 class="text-white text-2xl font-bold">Product Launch</h3></div>
-                    </div>
-                 </div>
+                <!-- Galeri Grid -->
+                <div id="detail-gallery-grid" class="max-w-7xl mx-auto detail-anim detail-gallery-anim">
+                    <!-- Gambar galeri akan di-generate oleh JS di sini -->
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Swiper.js JS -->
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed top-0 left-0 w-full h-full bg-black/90 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 z-50" style="backdrop-filter: blur(5px);">
+        <span id="close-lightbox" class="absolute top-6 right-8 text-white text-5xl cursor-pointer font-light">&times;</span>
+        <img id="lightbox-image" src="" class="max-w-[90vw] max-h-[85vh] rounded-lg shadow-2xl">
+    </div>
+    
+    <!-- Matter.js untuk simulasi fisika -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // --- Elemen-elemen Penting ---
+            // --- DATABASE PORTFOLIO ---
+            const portfolioData = {
+                'andi-rina': { category: 'Wedding', title: 'Andi & Rina', description: "Sebuah perayaan cinta yang elegan di tengah keindahan alam, menangkap setiap tawa dan air mata bahagia dari pasangan Andi dan Rina.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/1e3a8a/fde047?text=AR+Foto+${i+1}`) },
+                'bali-escape': { category: 'Prewedding', title: 'Bali Escape', description: "Menjelajahi keindahan eksotis Pulau Dewata. Sesi prewedding ini adalah tentang petualangan, keintiman, dan pemandangan matahari terbenam yang tak terlupakan.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/4a044e/fde047?text=Bali+Foto+${i+1}`) },
+                'tech-conf': { category: 'Event', title: 'Tech Conf 2025', description: "Dokumentasi lengkap dari konferensi teknologi terbesar tahun ini. Menangkap energi, inovasi, dan networking para pemimpin industri masa depan.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/064e3b/fde047?text=Tech+Foto+${i+1}`) },
+                'java-journey': { category: 'Commercial', title: 'Java Journey', description: "Video komersial yang menampilkan kekayaan kopi asli Indonesia. Sebuah perjalanan visual dari biji kopi hingga ke cangkir Anda.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/7f1d1d/fde047?text=Java+Foto+${i+1}`) },
+                'sunset-vows': { category: 'Wedding', title: 'Sunset Vows', description: "Janji suci yang diucapkan di tepi pantai saat senja tiba. Momen magis yang kami abadikan dengan sentuhan sinematik yang dramatis dan romantis.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/831843/fde047?text=Vows+Foto+${i+1}`) },
+                'corporate-profile': { category: 'Commercial', title: 'Stellar Corp Profile', description: "Video profil perusahaan yang modern dan dinamis, menunjukkan visi dan misi Stellar Corp kepada dunia.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/0c4a6e/fde047?text=Stellar+Foto+${i+1}`) },
+                'birthday-bash': { category: 'Event', title: "Elara's 18th Birthday", description: "Merekam kemeriahan pesta ulang tahun ke-18 Elara yang tak terlupakan, penuh tawa, tari, dan momen haru.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/701a75/facc15?text=Elara+Foto+${i+1}`) },
+                'mountain-prewed': { category: 'Prewedding', title: 'Bromo Serenade', description: "Sesi prewedding dengan latar belakang megah Gunung Bromo, menangkap cinta yang kuat di tengah alam yang agung.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/365314/fde047?text=Bromo+Foto+${i+1}`) },
+                'culinary-story': { category: 'Commercial', title: 'Savoria Eatery', description: "Menggugah selera melalui visual yang lezat, menampilkan setiap hidangan andalan dari Savoria Eatery.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/854d0e/facc15?text=Savoria+Foto+${i+1}`) },
+                'graduation-day': { category: 'Event', title: 'Graduation Gala 2025', description: "Mengabadikan momen kelulusan yang penuh kebanggaan dan harapan, dari prosesi hingga perayaan.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/1e1b4b/fde047?text=Gala+Foto+${i+1}`) }
+            };
+
+            // --- Variabel & Elemen Halaman ---
+            let lastScrollPosition = 0;
             const mainPage = document.getElementById('main-page');
-            const portfolioPage = document.getElementById('portfolio-page');
-            const viewMoreBtn = document.getElementById('view-more-portfolio');
-            const backToMainBtn = document.getElementById('back-to-main');
-            const brandLogo = document.getElementById('brand-logo');
-            const navbar = document.getElementById('navbar');
+            const portfolioDetailPage = document.getElementById('portfolio-detail-page');
+            const overlay = document.getElementById('page-transition-overlay');
+            const swiperWrapper = document.querySelector('#featured-portfolio .swiper-wrapper');
+            const backFromDetailBtn = document.getElementById('back-from-detail');
             const scrollLinks = document.querySelectorAll('a[href^="#"]');
+            
+            const detailGalleryGrid = document.getElementById('detail-gallery-grid');
+            const detailCategory = document.getElementById('detail-category');
+            const detailTitle = document.getElementById('detail-title');
+            const detailDescription = document.getElementById('detail-description');
 
-            // --- Inisialisasi Swiper Slider ---
-            const swiper = new Swiper('#featured-portfolio .swiper-container', {
-                loop: true,
-                spaceBetween: 2, /* Jarak diperkecil lagi */
-                slidesPerView: 1.5,
-                centeredSlides: true,
-                slideToClickedSlide: true,
-                grabCursor: true,
-                speed: 800, // Kecepatan transisi slider diperlambat
-                breakpoints: {
-                    // when window width is >= 768px
-                    768: {
-                        slidesPerView: 2.5,
-                        spaceBetween: 5, /* Jarak diperkecil lagi */
-                    },
-                    // when window width is >= 1024px
-                    1024: {
-                        slidesPerView: 3.5,
-                        spaceBetween: 10, /* Jarak diperkecil lagi */
-                    }
-                },
-                // If we need pagination
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                // Navigation arrows
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const closeLightboxBtn = document.getElementById('close-lightbox');
+
+            // --- Inisialisasi Swiper ---
+            const swiper = new Swiper('#featured-portfolio .swiper-container', { 
+                loop: true, 
+                spaceBetween: 10, // DIUBAH: Jarak antar kartu dibuat lebih rapat
+                slidesPerView: 1.5, 
+                centeredSlides: true, 
+                grabCursor: true, 
+                slideToClickedSlide: true, 
+                speed: 800, 
+                pagination: { el: '.swiper-pagination', clickable: true }, 
+                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, 
+                breakpoints: { 
+                    768: { slidesPerView: 2.5, spaceBetween: 15 }, // DIUBAH
+                    1024: { slidesPerView: 3.5, spaceBetween: 15 } // DIUBAH
+                } 
             });
-
-            // --- Fungsi Transisi Halaman ---
-            const showPortfolioPage = () => {
-                window.scrollTo(0, 0);
-                mainPage.classList.add('hidden');
-                portfolioPage.classList.remove('hidden');
-
-                const portfolioItems = portfolioPage.querySelectorAll('.portfolio-card');
-                portfolioItems.forEach((item, index) => {
-                    item.style.transitionDelay = `${index * 200}ms`; // Animasi masuk lebih cepat
-                    item.classList.add('visible');
-                });
-            };
-
-            const showMainPage = () => {
-                portfolioPage.classList.add('hidden');
-                mainPage.classList.remove('hidden');
-
-                const portfolioItems = portfolioPage.querySelectorAll('.portfolio-card');
-                portfolioItems.forEach(item => {
-                    item.classList.remove('visible');
-                    item.style.transitionDelay = '0ms';
-                });
-            };
-
-            // --- Fungsi Animasi Scroll ---
-            const smoothScrollTo = (targetId) => {
-                const targetElement = document.querySelector(targetId);
+            
+            // --- Fungsi Smooth Scroll ---
+            const smoothScrollTo = (targetSelector, duration = 1300) => {
+                const targetElement = document.querySelector(targetSelector);
                 if (!targetElement) return;
-                
-                const navbarHeight = navbar.offsetHeight;
+                const navbarHeight = document.getElementById('navbar')?.offsetHeight || 0;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight + 100;
                 const startPosition = window.pageYOffset;
-                let targetPosition = targetElement.getBoundingClientRect().top + startPosition - navbarHeight;
-                
-                // Penyesuaian khusus untuk bagian portofolio agar tombol tidak terpotong
-                if (targetId === '#featured-portfolio') {
-                    targetPosition -= -50; // Nilai offset diubah sesuai permintaan menjadi +50
-
-                    // BARU: Langsung tampilkan tombol "Lihat Portofolio Lainnya"
-                    const viewMoreButtonContainer = document.getElementById('view-more-portfolio').parentElement;
-                    if (viewMoreButtonContainer) {
-                        viewMoreButtonContainer.classList.add('visible');
-                    }
-                }
-
                 const distance = targetPosition - startPosition;
-                const customScrollDuration = 1300;
                 let startTime = null;
-
-                function scrollAnimation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    
-                    const easeInOutCubic = (t, b, c, d) => {
-                        t /= d / 2;
-                        if (t < 1) return c / 2 * t * t * t + b;
-                        t -= 2;
-                        return c / 2 * (t * t * t + 2) + b;
-                    };
-
-                    const run = easeInOutCubic(timeElapsed, startPosition, distance, customScrollDuration);
-                    window.scrollTo(0, run);
-                    
-                    if (timeElapsed < customScrollDuration) {
-                        requestAnimationFrame(scrollAnimation);
-                    }
-                }
-                
-                requestAnimationFrame(scrollAnimation);
+                const easeInOutQuad = (t, b, c, d) => { t /= d / 2; if (t < 1) return c / 2 * t * t + b; t--; return -c / 2 * (t * (t - 2) - 1) + b; };
+                const animation = (currentTime) => { if (startTime === null) startTime = currentTime; const timeElapsed = currentTime - startTime; const run = easeInOutQuad(timeElapsed, startPosition, distance, duration); window.scrollTo(0, run); if (timeElapsed < duration) requestAnimationFrame(animation); };
+                requestAnimationFrame(animation);
             };
 
+            // --- LOGIKA TRANSISI HALAMAN & POPULASI DATA ---
+            const showDetailPage = (portfolioId) => {
+                const data = portfolioData[portfolioId];
+                if (!data) return;
+
+                lastScrollPosition = window.scrollY;
+                
+                detailCategory.textContent = data.category;
+                detailTitle.textContent = data.title;
+                detailDescription.textContent = data.description;
+                
+                detailGalleryGrid.innerHTML = ''; // Kosongkan galeri sebelumnya
+                data.images.forEach((imgSrc, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = `${data.title} - Gambar ${index + 1}`;
+                    img.loading = 'lazy';
+                    img.addEventListener('click', () => openLightbox(imgSrc));
+                    item.appendChild(img);
+                    detailGalleryGrid.appendChild(item);
+                });
+
+                mainPage.classList.add('is-animating-out');
+                setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    setTimeout(() => {
+                        mainPage.classList.add('hidden');
+                        portfolioDetailPage.classList.remove('hidden');
+                        window.scrollTo(0, 0);
+                        overlay.style.opacity = '0';
+                        requestAnimationFrame(() => portfolioDetailPage.classList.add('visible'));
+                        mainPage.classList.remove('is-animating-out');
+                    }, 500);
+                }, 1100);
+            };
+
+            const hideDetailPage = () => {
+                overlay.style.opacity = '1';
+                portfolioDetailPage.classList.add('is-animating-out');
+                portfolioDetailPage.classList.remove('visible');
+                setTimeout(() => {
+                    portfolioDetailPage.classList.add('hidden');
+                    portfolioDetailPage.classList.remove('is-animating-out');
+                    mainPage.classList.add('is-animating-in');
+                    mainPage.classList.remove('hidden');
+                    window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    overlay.style.opacity = '0';
+                    requestAnimationFrame(() => mainPage.classList.remove('is-animating-in'));
+                }, 1000);
+            };
+
+            // --- Fungsi Lightbox ---
+            const openLightbox = (src) => {
+                lightboxImage.src = src;
+                lightbox.classList.remove('opacity-0', 'pointer-events-none');
+            };
+
+            const closeLightbox = () => {
+                lightbox.classList.add('opacity-0', 'pointer-events-none');
+            };
+            
             // --- Event Listeners ---
-            viewMoreBtn.addEventListener('click', showPortfolioPage);
-            backToMainBtn.addEventListener('click', () => {
-                 window.scrollTo(0, 0); // Pastikan kembali ke atas saat tombol 'kembali' diklik
-                 showMainPage();
+            swiperWrapper.addEventListener('click', (e) => {
+                const clickedSlide = e.target.closest('.swiper-slide');
+                if (clickedSlide && clickedSlide.classList.contains('swiper-slide-active')) {
+                    const clickedCard = clickedSlide.querySelector('.portfolio-card');
+                    if (clickedCard?.dataset.id) {
+                        showDetailPage(clickedCard.dataset.id);
+                    }
+                }
             });
 
-            brandLogo.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (mainPage.classList.contains('hidden')) {
-                    window.scrollTo(0, 0);
-                    showMainPage();
-                } else {
-                    smoothScrollTo('#hero');
-                }
+            backFromDetailBtn.addEventListener('click', hideDetailPage);
+            closeLightboxBtn.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) closeLightbox();
             });
 
             scrollLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    const targetId = this.getAttribute('href');
-                    if (!targetId || targetId.length <= 1) return;
-
                     e.preventDefault();
-                    
-                    // Jika di halaman portofolio, mulai transisi halaman DAN scroll bersamaan
-                    if (mainPage.classList.contains('hidden')) {
-                        showMainPage(); // Memulai transisi halaman (durasi 0.8s)
+                    const targetId = this.getAttribute('href');
+                    if (!mainPage.classList.contains('hidden')) {
+                        smoothScrollTo(targetId);
+                    } else {
+                        hideDetailPage();
+                        setTimeout(() => smoothScrollTo(targetId), 1100); 
                     }
-                    
-                    // Langsung jalankan scroll (durasi 1.3s)
-                    // Ini akan membuat halaman terlihat berganti sambil bergerak ke tujuan
-                    smoothScrollTo(targetId);
                 });
             });
 
-            // --- Animasi Tambahan (Navbar & Reveal on Scroll) ---
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.style.backgroundColor = 'rgba(10, 25, 47, 0.85)';
-                    navbar.style.backdropFilter = 'blur(10px)';
-                    navbar.classList.add('shadow-lg');
-                } else {
-                    navbar.style.backgroundColor = 'transparent';
-                    navbar.style.backdropFilter = 'none';
-                    navbar.classList.remove('shadow-lg');
-                }
-            });
+            // --- SIMULASI BUBBLE MATTER.JS (VERSI PALING STABIL) ---
+            const initBubbleSimulation = (container) => {
+                if (!container || container.dataset.initialized) return;
 
-            const revealElements = document.querySelectorAll('.reveal');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+                container.dataset.initialized = 'true';
+
+                const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Constraint } = Matter;
+
+                const words = ['Profesional', 'Kreatif', 'Cepat', 'Terpercaya', 'Memukau', 'Sinematik', 'Berpengalaman', 'Inovatif', 'Responsif', 'Bercerita'];
+                const engine = Engine.create();
+                const world = engine.world;
+                engine.world.gravity.y = 0.1;
+
+                const containerWidth = container.clientWidth;
+                const containerHeight = container.clientHeight;
+
+                const render = Render.create({
+                    element: container,
+                    engine: engine,
+                    options: {
+                        width: containerWidth,
+                        height: containerHeight,
+                        wireframes: false,
+                        background: 'transparent'
                     }
                 });
-            }, { threshold: 0.1 });
 
-            revealElements.forEach(el => observer.observe(el));
+                Render.run(render);
+                const runner = Runner.create();
+                Runner.run(runner, engine);
+
+                const wallOptions = { isStatic: true, render: { visible: false } };
+                World.add(world, [
+                    Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions),
+                    Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions),
+                    Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions),
+                    Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions)
+                ]);
+
+                const allItemsToRender = [];
+                const titleBodies = [];
+                const titleProperties = [];
+
+                // 1. Buat Body Judul Terlebih Dahulu
+                const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
+                titleParts.forEach((part, index) => {
+                    const titleWidth = part.length * 20 + 80;
+                    const titleHeight = 80;
+                    let xPos = (containerWidth / (titleParts.length + 1)) * (index + 1);
+                    let yPos = 80;
+
+                    if (index === 1) { // Posisikan "Dalam" sedikit lebih rendah
+                        yPos = 150;
+                    }
+
+                    const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, {
+                        chamfer: { radius: 20 }, isStatic: false, density: 0.005,
+                        render: { fillStyle: 'transparent' },
+                        customText: part,
+                        customFontSize: `bold ${Math.min(containerWidth / 20, 48)}px Poppins`,
+                        customFillStyle: '#e6f1ff'
+                    });
+                    
+                    titleBodies.push(titleBody);
+                    titleProperties.push({width: titleWidth, height: titleHeight, x: xPos, y: yPos});
+                    allItemsToRender.push(titleBody);
+                });
+                World.add(world, titleBodies);
+
+                // 2. Buat Constraint (Tali)
+                const anchorOffset1 = titleProperties[0].width / 2 - 20;
+                const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: titleProperties[0].x - anchorOffset1, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: titleProperties[0].x + anchorOffset1, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                World.add(world, [constraint1A, constraint1B]);
+                
+                const anchorOffset3 = titleProperties[2].width / 2 - 20;
+                const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: titleProperties[2].x + anchorOffset3, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                World.add(world, [constraint3B]);
+
+                const constraint2A = Constraint.create({ 
+                    bodyA: titleBodies[1], 
+                    pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, 
+                    bodyB: titleBodies[0], 
+                    pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, 
+                    stiffness: 0.02, 
+                    length: 80,
+                    render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } 
+                });
+                const constraint2B = Constraint.create({ 
+                    bodyA: titleBodies[1], 
+                    pointA: { x: titleProperties[1].width / 2 - 20, y: 0 },
+                    bodyB: titleBodies[2], 
+                    pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 },
+                    stiffness: 0.02, 
+                    length: 80,
+                    render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } 
+                });
+                World.add(world, [constraint2A, constraint2B]);
+
+
+                // 3. Buat Gelembung
+                words.forEach((word) => {
+                    const textWidth = word.length * 10 + 40;
+                    const rectHeight = 50;
+                    const bubble = Bodies.rectangle(
+                        Math.random() * (containerWidth - textWidth) + textWidth / 2,
+                        Math.random() * (containerHeight - rectHeight - 250) + rectHeight / 2 + 200, // Spawn lebih bawah
+                        textWidth, rectHeight, {
+                            chamfer: { radius: 25 }, restitution: 0.5, friction: 0.3, density: 0.001,
+                            render: { fillStyle: '#facc15' },
+                            customText: word,
+                            customFontSize: 'bold 16px Poppins',
+                            customFillStyle: '#0a192f'
+                        }
+                    );
+                    World.add(world, bubble);
+                    allItemsToRender.push(bubble);
+                });
+
+                const mouse = Mouse.create(render.canvas);
+                const mouseConstraint = MouseConstraint.create(engine, {
+                    mouse: mouse,
+                    constraint: { stiffness: 0.005, render: { visible: false } } 
+                });
+                
+                mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+                mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+
+                World.add(world, mouseConstraint);
+                render.mouse = mouse;
+
+                Events.on(render, 'afterRender', () => {
+                    const context = render.context;
+                    context.textAlign = 'center';
+                    context.textBaseline = 'middle';
+                    allItemsToRender.forEach(item => {
+                        if (item && item.customText) {
+                            context.font = item.customFontSize;
+                            context.fillStyle = item.customFillStyle;
+                            context.save();
+                            context.translate(item.position.x, item.position.y);
+                            context.rotate(item.angle);
+                            context.fillText(item.customText, 0, 0);
+                            context.restore();
+                        }
+                    });
+                });
+                
+                let resizeTimeout;
+                window.addEventListener('resize', () => {
+                    clearTimeout(resizeTimeout);
+                    resizeTimeout = setTimeout(() => {
+                        if(render.canvas) render.canvas.remove();
+                        Runner.stop(runner);
+                        Render.stop(render);
+                        World.clear(engine.world);
+                        Engine.clear(engine);
+                        container.innerHTML = '';
+                        container.removeAttribute('data-initialized');
+                        initBubbleSimulation(container);
+                    }, 250);
+                });
+            };
+
+            const waitForElement = (selector) => {
+                return new Promise(resolve => {
+                    const element = document.querySelector(selector);
+                    if (element && element.clientWidth > 0) {
+                        return resolve(element);
+                    }
+                    const observer = new ResizeObserver(entries => {
+                        if (entries[0].target.clientWidth > 0) {
+                            observer.disconnect();
+                            resolve(entries[0].target);
+                        }
+                    });
+                    if (element) {
+                       observer.observe(element);
+                    }
+                });
+            };
+            
+            waitForElement('#bubble-canvas-container').then(container => {
+                initBubbleSimulation(container);
+            });
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
