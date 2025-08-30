@@ -176,9 +176,53 @@
         .slider-interactions-disabled {
             pointer-events: none;
         }
+
+        /* Styling Efek Kucing Kursor */
+        #cat-cursor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 70px; /* Lebar gambar PNG */
+            height: 70px; /* Tinggi gambar PNG */
+            transform-origin: center center;
+            will-change: transform;
+            pointer-events: none;
+            z-index: 9999;
+            /* Offset untuk menengahkan gambar pada titik fisika */
+            margin-left: -35px; /* -(lebar/2) */
+            margin-top: -35px; /* -(tinggi/2) */
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #cat-cursor-container img {
+            width: 100%;
+            height: 100%;
+        }
+
+        #rope-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9998; /* Di bawah kucing */
+        }
+
+        /* Sembunyikan di perangkat mobile */
+        @media (pointer: coarse) {
+            #cat-cursor-container, #rope-canvas {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- Efek Kucing Pengikut Kursor -->
+    <canvas id="rope-canvas"></canvas>
+    <div id="cat-cursor-container">
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczOw2yGG_YRzTSFsFz6-iKfT6RDnJzYoEUL58qHd9aqpeF2WEzHcMwpSLh6DhgNCdQpIqupjBcoN2NAOo6MXF3chc6x6hrsrdDJnnClbiuj8S2CIag=w2400" alt="Kucing Pengikut Kursor">
+    </div>
 
     <!-- Container Utama -->
     <div id="app-container">
@@ -217,6 +261,7 @@
                 <section id="hero" class="min-h-screen flex items-end pb-24 relative">
                     <!-- Background Elements for better mobile compatibility -->
                     <div class="absolute top-0 left-0 w-full h-full">
+                        <!-- Mengembalikan ke metode background-image untuk memperbaiki desktop -->
                         <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/pw/AP1GczPf6bcsAU5yLMqmFrnHoSeSs3es7YhklSJFAW9Gkk2jo59pS8gAKYA7KGx-JXjwFC-BAnr4XU-8BVgJOWgzP4ut6jEOuXRitULSxtCJYtYBFIaUJg=w2400');"></div>
                         <div class="absolute top-0 left-0 w-full h-full bg-[#0a192f] opacity-60"></div>
                     </div>
@@ -263,7 +308,7 @@
                 <section id="qualities" class="py-20 md:py-32">
                     <div class="w-full text-center">
                         <!-- Judul statis dihapus dari sini -->
-                        <div id="bubble-canvas-container" class="relative w-full h-[500px] md:h-[450px] animatable">
+                        <div id="bubble-canvas-container" class="relative w-full h-[480px] md:h-[450px] animatable">
                             <!-- Canvas untuk Matter.js akan dimasukkan di sini oleh script -->
                         </div>
                     </div>
@@ -308,6 +353,106 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // --- KUCING PENGIKUT KURSOR DENGAN FISIKA ---
+            if (window.matchMedia("(pointer: fine)").matches) {
+                const catContainer = document.getElementById('cat-cursor-container');
+                const ropeCanvas = document.getElementById('rope-canvas');
+                const ropeCtx = ropeCanvas.getContext('2d');
+                const { Engine, Runner, World, Bodies, Body, Constraint, Events, Vector } = Matter;
+
+                // 1. Setup Engine Fisika
+                const catEngine = Engine.create();
+                catEngine.world.gravity.y = 1.2; // Ditingkatkan dari 0.8
+
+                // 2. Buat Objek Fisika
+                const mouseAnchor = Bodies.circle(-100, -100, 20, { isStatic: true });
+                
+                // BUG FIX: Membuat badan kucing menjadi "compound body" agar tidak terbalik.
+                // Bagian utama yang terlihat, disesuaikan dengan ukuran gambar (70x70)
+                const catMainBody = Bodies.rectangle(0, 0, 70, 70);
+                // Pemberat tak terlihat di bagian bawah untuk menstabilkan
+                const catStabilizer = Bodies.circle(0, 30, 10, { 
+                    density: 0.5, // Dibuat sangat padat
+                    isSensor: true, // Tidak akan bertabrakan
+                    render: { visible: false } 
+                });
+
+                // Gabungkan kedua bagian menjadi satu badan fisika
+                const catBody = Body.create({
+                    parts: [catMainBody, catStabilizer],
+                    frictionAir: 0.05,
+                    restitution: 0.3,
+                    density: 0.01 // Ditingkatkan dari 0.005
+                });
+                Body.setPosition(catBody, { x: window.innerWidth / 2, y: window.innerHeight / 2 });
+
+
+                const rope = Constraint.create({
+                    bodyA: mouseAnchor,
+                    bodyB: catBody,
+                    pointA: { x: 0, y: 0 },
+                    pointB: { x: 0, y: -30 }, /* Posisi diturunkan */
+                    stiffness: 0.012, // Dikurangi dari 0.015 agar lebih lentur
+                    damping: 0.12, // Disesuaikan dari 0.15
+                    length: 10 
+                });
+                World.add(catEngine.world, [mouseAnchor, catBody, rope]);
+
+                // 3. Jalankan Simulasi
+                const catRunner = Runner.create();
+                Runner.run(catRunner, catEngine);
+
+                // 4. Update Posisi Jangkar & Logika Inisialisasi
+                let isCatVisible = false; // Flag untuk melacak status kucing
+
+                document.addEventListener('mousemove', (e) => {
+                    // BUG FIX: Inisialisasi posisi kucing saat mouse pertama kali bergerak di dalam window.
+                    if (!isCatVisible) {
+                        // "Teleport" jangkar dan badan kucing ke posisi kursor agar langsung terlihat.
+                        Body.setPosition(mouseAnchor, { x: e.clientX, y: e.clientY });
+                        Body.setPosition(catBody, { x: e.clientX, y: e.clientY });
+                        // Tampilkan kucing.
+                        catContainer.style.opacity = '1';
+                        isCatVisible = true; // Set flag agar blok ini tidak berjalan lagi.
+                    }
+                    
+                    // Selalu perbarui posisi jangkar agar fisika terus berjalan.
+                    Body.setPosition(mouseAnchor, { x: e.clientX, y: e.clientY });
+                });
+
+                // 5. Sinkronkan Visual dengan Fisika
+                Events.on(catEngine, 'afterUpdate', () => {
+                    requestAnimationFrame(() => {
+                        // Perbarui posisi & rotasi gambar kucing
+                        const { x, y } = catBody.position;
+                        const angle = catBody.angle * (180 / Math.PI);
+                        catContainer.style.transform = `translate(${x}px, ${y}px) rotate(${angle}deg)`;
+
+                        // Gambar tali pada canvas
+                        ropeCanvas.width = window.innerWidth;
+                        ropeCanvas.height = window.innerHeight;
+                        ropeCtx.clearRect(0, 0, ropeCanvas.width, ropeCanvas.height);
+                        
+                        const startPoint = mouseAnchor.position;
+                        const endPointAttachment = Vector.rotate(rope.pointB, catBody.angle);
+                        const endPoint = Vector.add(catBody.position, endPointAttachment);
+
+                        ropeCtx.beginPath();
+                        ropeCtx.moveTo(startPoint.x, startPoint.y);
+                        ropeCtx.lineTo(endPoint.x, endPoint.y);
+                        ropeCtx.strokeStyle = 'rgba(250, 204, 21, 0.7)';
+                        ropeCtx.lineWidth = 2;
+                        ropeCtx.stroke();
+                    });
+                });
+
+                // Sembunyikan kucing saat kursor keluar dari window
+                document.body.addEventListener('mouseleave', () => {
+                    catContainer.style.opacity = '0';
+                    isCatVisible = false; // Reset flag agar bisa muncul kembali saat mouse masuk lagi.
+                });
+            }
+
             // --- DATABASE PORTFOLIO ---
             const portfolioData = {
                 'andi-rina': { category: 'Wedding', title: 'Andi & Rina', description: "Sebuah perayaan cinta yang elegan di tengah keindahan alam, menangkap setiap tawa dan air mata bahagia dari pasangan Andi dan Rina.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/1e3a8a/fde047?text=AR+Foto+${i+1}`) },
@@ -554,21 +699,45 @@
             });
 
 
-            // --- SIMULASI BUBBLE MATTER.JS ---
+            // --- SIMULASI BUBBLE MATTER.JS (REFACTORED FOR STABILITY) ---
+            const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Constraint } = Matter;
+            let matterEngine, matterRunner, matterRender, lastCanvasWidth;
+
+            const destroyBubbleSimulation = () => {
+                const container = document.getElementById('bubble-canvas-container');
+                if (matterRender && matterRender.canvas) matterRender.canvas.remove();
+                if (matterRunner) Runner.stop(matterRunner);
+                if (matterRender) Render.stop(matterRender);
+                if (matterEngine) {
+                    World.clear(matterEngine.world);
+                    Engine.clear(matterEngine);
+                }
+                if (container) {
+                    container.innerHTML = '';
+                    container.removeAttribute('data-initialized');
+                }
+            };
+
             const initBubbleSimulation = (container) => {
                 if (!container || container.dataset.initialized) return;
                 container.dataset.initialized = 'true';
-                const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Constraint } = Matter;
+                
                 const words = ['Profesional', 'Kreatif', 'Cepat', 'Terpercaya', 'Memukau', 'Sinematik', 'Berpengalaman', 'Inovatif', 'Responsif', 'Bercerita'];
-                const engine = Engine.create();
-                const world = engine.world;
-                engine.world.gravity.y = 0.1;
+                
+                matterEngine = Engine.create();
+                const world = matterEngine.world;
+                matterEngine.world.gravity.y = 0.1;
+
                 const containerWidth = container.clientWidth;
                 const containerHeight = container.clientHeight;
-                const render = Render.create({ element: container, engine: engine, options: { width: containerWidth, height: containerHeight, wireframes: false, background: 'transparent' } });
-                Render.run(render);
-                const runner = Runner.create();
-                Runner.run(runner, engine);
+                lastCanvasWidth = containerWidth; // Store width for intelligent resize
+
+                matterRender = Render.create({ element: container, engine: matterEngine, options: { width: containerWidth, height: containerHeight, wireframes: false, background: 'transparent' } });
+                Render.run(matterRender);
+                
+                matterRunner = Runner.create();
+                Runner.run(matterRunner, matterEngine);
+
                 const wallOptions = { isStatic: true, render: { visible: false } };
                 World.add(world, [ Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions), Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions) ]);
                 const allItemsToRender = [];
@@ -591,34 +760,18 @@
                 if (containerWidth < 768) {
                     const anchorTopX = containerWidth / 2;
                     const anchorTopY = 0;
-                    // MODIFICATION: Adjust rope attachment points to be closer to the center and shorten them.
                     const constraintTop = Constraint.create({
                         bodyA: titleBodies[0],
-                        pointA: { x: 0, y: -titleProperties[0].height / 4 }, // Closer to center
+                        pointA: { x: 0, y: -titleProperties[0].height / 4 },
                         pointB: { x: anchorTopX, y: anchorTopY },
                         stiffness: 0.1,
-                        length: 60, // Shortened from 80
+                        length: 60,
                         render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 }
                     });
                     World.add(world, [constraintTop]);
-
-                    const constraintMid = Constraint.create({ 
-                        bodyA: titleBodies[1], 
-                        pointA: { x: 0, y: -titleProperties[1].height / 4 }, // Closer to center
-                        bodyB: titleBodies[0], 
-                        pointB: { x: 0, y: titleProperties[0].height / 4 }, // Closer to center
-                        stiffness: 0.1, 
-                        length: 50, // Shortened from 60
-                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraintMid = Constraint.create({ bodyA: titleBodies[1], pointA: { x: 0, y: -titleProperties[1].height / 4 }, bodyB: titleBodies[0], pointB: { x: 0, y: titleProperties[0].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, constraintMid);
-                    const constraintBottom = Constraint.create({ 
-                        bodyA: titleBodies[2], 
-                        pointA: { x: 0, y: -titleProperties[2].height / 4 }, // Closer to center
-                        bodyB: titleBodies[1], 
-                        pointB: { x: 0, y: titleProperties[1].height / 4 }, // Closer to center
-                        stiffness: 0.1, 
-                        length: 50, // Shortened from 60
-                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraintBottom = Constraint.create({ bodyA: titleBodies[2], pointA: { x: 0, y: -titleProperties[2].height / 4 }, bodyB: titleBodies[1], pointB: { x: 0, y: titleProperties[1].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, constraintBottom);
                 } else {
                     const halfWidth = containerWidth / 2;
@@ -643,38 +796,36 @@
                     World.add(world, bubble);
                     allItemsToRender.push(bubble);
                 });
-                const mouse = Mouse.create(render.canvas);
-                const mouseConstraint = MouseConstraint.create(engine, { mouse: mouse, constraint: { stiffness: 0.005, render: { visible: false } } });
+                const mouse = Mouse.create(matterRender.canvas);
+                const mouseConstraint = MouseConstraint.create(matterEngine, { mouse: mouse, constraint: { stiffness: 0.005, render: { visible: false } } });
                 mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
                 mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
                 World.add(world, mouseConstraint);
-                render.mouse = mouse;
-                Events.on(render, 'afterRender', () => {
-                    const context = render.context;
+                matterRender.mouse = mouse;
+                Events.on(matterRender, 'afterRender', () => {
+                    const context = matterRender.context;
                     context.textAlign = 'center';
                     context.textBaseline = 'middle';
                     allItemsToRender.forEach(item => { if (item && item.customText) { context.font = item.customFontSize; context.fillStyle = item.customFillStyle; context.save(); context.translate(item.position.x, item.position.y); context.rotate(item.angle); context.fillText(item.customText, 0, 0); context.restore(); } });
                 });
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => { 
-                        // BUG FIX: Only re-initialize if the container width has actually changed.
-                        // This prevents re-initialization on mobile scroll which can trigger resize.
-                        const newContainerWidth = container.clientWidth;
-                        if (Math.abs(newContainerWidth - containerWidth) > 10) {
-                            if(render.canvas) render.canvas.remove(); 
-                            Runner.stop(runner); 
-                            Render.stop(render); 
-                            World.clear(engine.world); 
-                            Engine.clear(engine); 
-                            container.innerHTML = ''; 
-                            container.removeAttribute('data-initialized'); 
-                            initBubbleSimulation(container); 
-                        }
-                    }, 250);
-                });
             };
+
+            // Global resize handler to prevent re-initialization on mobile scroll
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    const container = document.getElementById('bubble-canvas-container');
+                    if (!container) return;
+                    
+                    const newContainerWidth = container.clientWidth;
+                    if (lastCanvasWidth && Math.abs(newContainerWidth - lastCanvasWidth) > 10) {
+                        destroyBubbleSimulation();
+                        initBubbleSimulation(container);
+                    }
+                }, 250);
+            });
+
             const waitForElement = (selector) => {
                 return new Promise(resolve => {
                     const element = document.querySelector(selector);
@@ -683,9 +834,14 @@
                     if (element) observer.observe(element);
                 });
             };
-            waitForElement('#bubble-canvas-container').then(container => { initBubbleSimulation(container); });
+            
+            waitForElement('#bubble-canvas-container').then(container => {
+                initBubbleSimulation(container);
+            });
         });
     </script>
 </body>
 </html>
+
+
 
