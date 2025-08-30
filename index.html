@@ -428,7 +428,7 @@
                             <div class="swiper-button-next"></div>
                         </div>
 
-                        <div class="text-center mt-16 reveal">
+                        <div class="text-center mt-8 reveal">
                             <button id="view-more-portfolio" class="btn-primary font-bold py-3 px-8 rounded-lg text-lg">Lihat Portofolio Lainnya</button>
                         </div>
                     </div>
@@ -591,7 +591,13 @@
                 
                 // Penyesuaian khusus untuk bagian portofolio agar tombol tidak terpotong
                 if (targetId === '#featured-portfolio') {
-                    targetPosition -= -100; // Nilai offset diubah agar scroll lebih jauh ke bawah
+                    targetPosition -= -50; // Nilai offset diubah sesuai permintaan menjadi +50
+
+                    // BARU: Langsung tampilkan tombol "Lihat Portofolio Lainnya"
+                    const viewMoreButtonContainer = document.getElementById('view-more-portfolio').parentElement;
+                    if (viewMoreButtonContainer) {
+                        viewMoreButtonContainer.classList.add('visible');
+                    }
                 }
 
                 const distance = targetPosition - startPosition;
@@ -682,6 +688,7 @@
     </script>
 </body>
 </html>
+
 
 
 
