@@ -263,7 +263,7 @@
                 <section id="qualities" class="py-20 md:py-32">
                     <div class="w-full text-center">
                         <!-- Judul statis dihapus dari sini -->
-                        <div id="bubble-canvas-container" class="relative w-full h-[550px] md:h-[450px] animatable">
+                        <div id="bubble-canvas-container" class="relative w-full h-[500px] md:h-[450px] animatable">
                             <!-- Canvas untuk Matter.js akan dimasukkan di sini oleh script -->
                         </div>
                     </div>
@@ -658,7 +658,21 @@
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => { if(render.canvas) render.canvas.remove(); Runner.stop(runner); Render.stop(render); World.clear(engine.world); Engine.clear(engine); container.innerHTML = ''; container.removeAttribute('data-initialized'); initBubbleSimulation(container); }, 250);
+                    resizeTimeout = setTimeout(() => { 
+                        // BUG FIX: Only re-initialize if the container width has actually changed.
+                        // This prevents re-initialization on mobile scroll which can trigger resize.
+                        const newContainerWidth = container.clientWidth;
+                        if (Math.abs(newContainerWidth - containerWidth) > 10) {
+                            if(render.canvas) render.canvas.remove(); 
+                            Runner.stop(runner); 
+                            Render.stop(render); 
+                            World.clear(engine.world); 
+                            Engine.clear(engine); 
+                            container.innerHTML = ''; 
+                            container.removeAttribute('data-initialized'); 
+                            initBubbleSimulation(container); 
+                        }
+                    }, 250);
                 });
             };
             const waitForElement = (selector) => {
@@ -674,18 +688,4 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
