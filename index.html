@@ -163,6 +163,14 @@
          #bubble-canvas-container canvas:active {
             cursor: grabbing;
         }
+
+        /* Styling Navbar Hide/Show on Scroll */
+        #navbar {
+            transition: transform 0.4s ease-in-out;
+        }
+        #navbar.navbar-hidden {
+            transform: translateY(-100%);
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -320,6 +328,21 @@
                 } 
             });
             
+            // --- Navbar Hide/Show on Scroll ---
+            const navbar = document.getElementById('navbar');
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight) {
+                    // Scroll Down
+                    navbar.classList.add('navbar-hidden');
+                } else {
+                    // Scroll Up
+                    navbar.classList.remove('navbar-hidden');
+                }
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Untuk Mobile atau scroll negatif
+            }, false);
+
             // --- Fungsi Smooth Scroll ---
             const smoothScrollTo = (targetSelector, duration = 1300) => {
                 const targetElement = document.querySelector(targetSelector);
@@ -470,23 +493,32 @@
                 const titleBodies = [];
                 const titleProperties = [];
 
-                // 1. Buat Body Judul Terlebih Dahulu
+                // 1. Buat Body Judul Terlebih Dahulu (Responsif Mobile & Desktop)
                 const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
                 titleParts.forEach((part, index) => {
-                    const titleWidth = part.length * 20 + 80;
-                    const titleHeight = 80;
-                    let xPos = (containerWidth / (titleParts.length + 1)) * (index + 1);
-                    let yPos = 80;
+                    const isMobile = containerWidth < 768;
+                    const fontSize = isMobile ? `bold ${Math.min(containerWidth / 15, 36)}px Poppins` : `bold ${Math.min(containerWidth / 20, 48)}px Poppins`;
+                    const titleWidth = part.length * (isMobile ? 15 : 20) + (isMobile ? 60 : 80);
+                    const titleHeight = isMobile ? 60 : 80;
 
-                    if (index === 1) { // Posisikan "Dalam" sedikit lebih rendah
-                        yPos = 150;
+                    let xPos, yPos;
+                    if (isMobile) {
+                        xPos = containerWidth / 2;
+                        yPos = 80 + index * 90; // Susun ke bawah
+                    } else {
+                        xPos = (containerWidth / (titleParts.length + 1)) * (index + 1);
+                        yPos = 80;
+                        if (index === 1) { // Posisikan "Dalam" sedikit lebih rendah di desktop
+                            yPos = 150;
+                        }
                     }
 
                     const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, {
-                        chamfer: { radius: 20 }, isStatic: false, density: 0.005,
+                        chamfer: { radius: isMobile ? 15 : 20 },
+                        isStatic: false, density: 0.005,
                         render: { fillStyle: 'transparent' },
                         customText: part,
-                        customFontSize: `bold ${Math.min(containerWidth / 20, 48)}px Poppins`,
+                        customFontSize: fontSize,
                         customFillStyle: '#e6f1ff'
                     });
                     
@@ -496,35 +528,43 @@
                 });
                 World.add(world, titleBodies);
 
-                // 2. Buat Constraint (Tali)
-                const anchorOffset1 = titleProperties[0].width / 2 - 20;
-                const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: titleProperties[0].x - anchorOffset1, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: titleProperties[0].x + anchorOffset1, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                World.add(world, [constraint1A, constraint1B]);
-                
-                const anchorOffset3 = titleProperties[2].width / 2 - 20;
-                const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: titleProperties[2].x + anchorOffset3, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                World.add(world, [constraint3B]);
+                // 2. Buat Constraint (Tali) - Responsif Mobile & Desktop
+                if (containerWidth < 768) { // Versi Mobile (Vertikal)
+                    const anchorTopX = containerWidth / 2;
+                    const anchorTopY = 0;
+                    
+                    // "Kualitas Kami" menggantung ke kanvas atas
+                    const constraintTopA = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -titleProperties[0].width / 2 + 30, y: 0 }, pointB: { x: anchorTopX - 60, y: anchorTopY }, stiffness: 0.05, length: 100, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraintTopB = Constraint.create({ bodyA: titleBodies[0], pointA: { x: titleProperties[0].width / 2 - 30, y: 0 }, pointB: { x: anchorTopX + 60, y: anchorTopY }, stiffness: 0.05, length: 100, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, [constraintTopA, constraintTopB]);
 
-                const constraint2A = Constraint.create({ 
-                    bodyA: titleBodies[1], 
-                    pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, 
-                    bodyB: titleBodies[0], 
-                    pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, 
-                    stiffness: 0.02, 
-                    length: 80,
-                    render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } 
-                });
-                const constraint2B = Constraint.create({ 
-                    bodyA: titleBodies[1], 
-                    pointA: { x: titleProperties[1].width / 2 - 20, y: 0 },
-                    bodyB: titleBodies[2], 
-                    pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 },
-                    stiffness: 0.02, 
-                    length: 80,
-                    render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } 
-                });
-                World.add(world, [constraint2A, constraint2B]);
+                    // "Dalam" menggantung di "Kualitas Kami"
+                    const constraintMid = Constraint.create({ bodyA: titleBodies[1], pointA: { x: 0, y: -titleProperties[1].height / 2 }, bodyB: titleBodies[0], pointB: { x: 0, y: titleProperties[0].height / 2 }, stiffness: 0.1, length: 60, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, constraintMid);
+
+                    // "Setiap Proyek" menggantung di "Dalam"
+                    const constraintBottom = Constraint.create({ bodyA: titleBodies[2], pointA: { x: 0, y: -titleProperties[2].height / 2 }, bodyB: titleBodies[1], pointB: { x: 0, y: titleProperties[1].height / 2 }, stiffness: 0.1, length: 60, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, constraintBottom);
+
+                } else { // Versi Desktop (Horizontal)
+                    const halfWidth = containerWidth / 2;
+                    const point1_x = halfWidth - Math.min(halfWidth * 0.7, 350);
+                    const point2_x = halfWidth - Math.min(halfWidth * 0.2, 80);
+                    const point3_x = halfWidth + Math.min(halfWidth * 0.7, 350);
+
+                    const anchorOffset1 = titleProperties[0].width / 2 - 20;
+                    const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: point1_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: point2_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, [constraint1A, constraint1B]);
+                    
+                    const anchorOffset3 = titleProperties[2].width / 2 - 20;
+                    const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: point3_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, [constraint3B]);
+
+                    const constraint2A = Constraint.create({ bodyA: titleBodies[1], pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, bodyB: titleBodies[0], pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraint2B = Constraint.create({ bodyA: titleBodies[1], pointA: { x: titleProperties[1].width / 2 - 20, y: 0 }, bodyB: titleBodies[2], pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    World.add(world, [constraint2A, constraint2B]);
+                }
 
 
                 // 3. Buat Gelembung
@@ -618,4 +658,7 @@
 </html>
 ", in the "Arstate Cinema Portfolio" document.
 buat navbar ketika di scroll akan hilang dan muncul lagi ketika scroll keatas
+
+
+
 
