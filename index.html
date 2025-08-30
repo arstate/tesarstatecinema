@@ -185,12 +185,12 @@
 
         #featured-portfolio .swiper-slide {
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* Animasi diperhalus dan diperlambat */
-            transform: scale(0.7); /* Slide tidak aktif dibuat lebih kecil lagi */
+            transform: scale(0.65); /* Slide tidak aktif dibuat lebih kecil lagi */
             opacity: 0.5; /* Opacity dikurangi agar lebih fokus ke slide aktif */
         }
 
         #featured-portfolio .swiper-slide-active {
-            transform: scale(1.1); /* Slide aktif diperbesar ukurannya */
+            transform: scale(1.05); /* Slide aktif diperkecil ukurannya */
             opacity: 1;
         }
         
@@ -526,7 +526,7 @@
             // --- Inisialisasi Swiper Slider ---
             const swiper = new Swiper('#featured-portfolio .swiper-container', {
                 loop: true,
-                spaceBetween: 10,
+                spaceBetween: 2, /* Jarak diperkecil lagi */
                 slidesPerView: 1.5,
                 centeredSlides: true,
                 slideToClickedSlide: true,
@@ -536,12 +536,12 @@
                     // when window width is >= 768px
                     768: {
                         slidesPerView: 2.5,
-                        spaceBetween: 15,
+                        spaceBetween: 5, /* Jarak diperkecil lagi */
                     },
                     // when window width is >= 1024px
                     1024: {
                         slidesPerView: 3.5,
-                        spaceBetween: 20,
+                        spaceBetween: 10, /* Jarak diperkecil lagi */
                     }
                 },
                 // If we need pagination
@@ -587,7 +587,13 @@
                 
                 const navbarHeight = navbar.offsetHeight;
                 const startPosition = window.pageYOffset;
-                const targetPosition = targetElement.getBoundingClientRect().top + startPosition - navbarHeight;
+                let targetPosition = targetElement.getBoundingClientRect().top + startPosition - navbarHeight;
+                
+                // Penyesuaian khusus untuk bagian portofolio agar tombol tidak terpotong
+                if (targetId === '#featured-portfolio') {
+                    targetPosition -= -100; // Nilai offset diubah agar scroll lebih jauh ke bawah
+                }
+
                 const distance = targetPosition - startPosition;
                 const customScrollDuration = 1300;
                 let startTime = null;
@@ -676,6 +682,16 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
 
 
 
