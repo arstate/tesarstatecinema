@@ -171,6 +171,11 @@
         #navbar.navbar-hidden {
             transform: translateY(-100%);
         }
+
+        /* BUG FIX: Class untuk mematikan interaksi mouse sementara */
+        .slider-interactions-disabled {
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -189,15 +194,33 @@
                     <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition">Portofolio</a>
                     <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg">Hubungi Kami</a>
                 </nav>
-                 <button class="md:hidden text-white"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+                 <button id="mobile-menu-button" class="md:hidden text-white z-50">
+                    <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+                    <svg id="menu-close-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
             </div>
         </header>
+
+        <!-- Mobile Menu (Dropdown) -->
+        <div id="mobile-menu" class="md:hidden fixed top-16 left-0 right-0 bg-[#0a192f]/90 backdrop-blur-sm z-40 hidden">
+            <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
+                <a href="#hero" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Beranda</a>
+                <a href="#services" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Layanan</a>
+                <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Portofolio</a>
+                <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg mobile-menu-link text-center">Hubungi Kami</a>
+            </div>
+        </div>
 
         <!-- HALAMAN UTAMA -->
         <div id="main-page" class="page">
             <main>
-                <section id="hero" class="min-h-screen flex items-end pb-24 bg-cover bg-center relative" style="background-image: url('https://lh3.googleusercontent.com/pw/AP1GczPf6bcsAU5yLMqmFrnHoSeSs3es7YhklSJFAW9Gkk2jo59pS8gAKYA7KGx-JXjwFC-BAnr4XU-8BVgJOWgzP4ut6jEOuXRitULSxtCJYtYBFIaUJg=w2400');">
-                    <div class="absolute top-0 left-0 w-full h-full bg-[#0a192f] opacity-60"></div>
+                <section id="hero" class="min-h-screen flex items-end pb-24 relative">
+                    <!-- Background Elements for better mobile compatibility -->
+                    <div class="absolute top-0 left-0 w-full h-full">
+                        <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/pw/AP1GczPf6bcsAU5yLMqmFrnHoSeSs3es7YhklSJFAW9Gkk2jo59pS8gAKYA7KGx-JXjwFC-BAnr4XU-8BVgJOWgzP4ut6jEOuXRitULSxtCJYtYBFIaUJg=w2400');"></div>
+                        <div class="absolute top-0 left-0 w-full h-full bg-[#0a192f] opacity-60"></div>
+                    </div>
+                    
                     <div class="container mx-auto px-6 text-center animatable hero-anim relative z-10">
                         <div class="max-w-3xl mx-auto">
                             <h2 class="text-4xl md:text-6xl font-bold text-white mt-4 leading-tight invisible">Mengabadikan Momen, <br>Menciptakan Kenangan Abadi.</h2>
@@ -240,7 +263,7 @@
                 <section id="qualities" class="py-20 md:py-32">
                     <div class="w-full text-center">
                         <!-- Judul statis dihapus dari sini -->
-                        <div id="bubble-canvas-container" class="relative w-full h-[450px] animatable">
+                        <div id="bubble-canvas-container" class="relative w-full h-[550px] md:h-[450px] animatable">
                             <!-- Canvas untuk Matter.js akan dimasukkan di sini oleh script -->
                         </div>
                     </div>
@@ -307,6 +330,7 @@
             const swiperWrapper = document.querySelector('#featured-portfolio .swiper-wrapper');
             const backFromDetailBtn = document.getElementById('back-from-detail');
             const scrollLinks = document.querySelectorAll('a[href^="#"]');
+            const portfolioSection = document.getElementById('featured-portfolio');
             
             const detailGalleryGrid = document.getElementById('detail-gallery-grid');
             const detailCategory = document.getElementById('detail-category');
@@ -317,22 +341,64 @@
             const lightboxImage = document.getElementById('lightbox-image');
             const closeLightboxBtn = document.getElementById('close-lightbox');
 
-            // --- Inisialisasi Swiper ---
-            const swiper = new Swiper('#featured-portfolio .swiper-container', { 
+            // --- LOGIKA RE-INISIALISASI SWIPER (PERBAIKAN BUG) ---
+            let swiper; // Deklarasikan variabel swiper di scope yang lebih tinggi
+
+            // Simpan konfigurasi Swiper dalam sebuah objek agar bisa digunakan kembali
+            const swiperConfig = { 
                 loop: true, 
-                spaceBetween: 10, // DIUBAH: Jarak antar kartu dibuat lebih rapat
+                spaceBetween: 10,
                 slidesPerView: 1.5, 
                 centeredSlides: true, 
                 grabCursor: true, 
                 slideToClickedSlide: true, 
-                speed: 800, 
+                speed: 800,
+                observer: true,
+                observeParents: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: true,
+                },
                 pagination: { el: '.swiper-pagination', clickable: true }, 
                 navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, 
                 breakpoints: { 
-                    768: { slidesPerView: 2.5, spaceBetween: 15 }, // DIUBAH
-                    1024: { slidesPerView: 3.5, spaceBetween: 15 } // DIUBAH
+                    768: { slidesPerView: 2.5, spaceBetween: 15 },
+                    1024: { slidesPerView: 3.5, spaceBetween: 15 }
                 } 
-            });
+            };
+
+            // Logika untuk memulai ulang autoplay
+            let autoplayRestartTimeout;
+            const scheduleAutoplayRestart = () => {
+                clearTimeout(autoplayRestartTimeout);
+                autoplayRestartTimeout = setTimeout(() => {
+                    if (swiper && !swiper.destroyed && swiper.autoplay && !swiper.autoplay.running) {
+                        swiper.autoplay.start();
+                    }
+                }, 3000);
+            };
+
+            // Fungsi untuk membuat atau membuat ulang slider
+            function initSwiper() {
+                // Jika sudah ada slider, hancurkan sepenuhnya sebelum membuat yang baru
+                if (swiper) {
+                    swiper.destroy(true, true);
+                }
+                // Buat instance Swiper yang baru dan bersih
+                swiper = new Swiper('#featured-portfolio .swiper-container', swiperConfig);
+                
+                // Pasang kembali event listener yang spesifik untuk instance Swiper
+                swiper.on('dragEnd', scheduleAutoplayRestart);
+            }
+
+            // Inisialisasi Swiper untuk pertama kali saat halaman dimuat
+            initSwiper();
+            
+            // Pasang event listener pada elemen statis (tombol, paginasi) HANYA SEKALI.
+            // Listener ini akan mengontrol instance 'swiper' global yang aktif.
+            portfolioSection.querySelector('.swiper-button-next').addEventListener('click', scheduleAutoplayRestart);
+            portfolioSection.querySelector('.swiper-button-prev').addEventListener('click', scheduleAutoplayRestart);
+            portfolioSection.querySelector('.swiper-pagination').addEventListener('click', scheduleAutoplayRestart);
             
             // --- Navbar Hide/Show on Scroll ---
             const navbar = document.getElementById('navbar');
@@ -340,13 +406,11 @@
             window.addEventListener('scroll', function() {
                 let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight) {
-                    // Scroll Down
                     navbar.classList.add('navbar-hidden');
                 } else {
-                    // Scroll Up
                     navbar.classList.remove('navbar-hidden');
                 }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Untuk Mobile atau scroll negatif
+                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
             }, false);
 
             // --- Fungsi Smooth Scroll ---
@@ -367,14 +431,11 @@
             const showDetailPage = (portfolioId) => {
                 const data = portfolioData[portfolioId];
                 if (!data) return;
-
                 lastScrollPosition = window.scrollY;
-                
                 detailCategory.textContent = data.category;
                 detailTitle.textContent = data.title;
                 detailDescription.textContent = data.description;
-                
-                detailGalleryGrid.innerHTML = ''; // Kosongkan galeri sebelumnya
+                detailGalleryGrid.innerHTML = '';
                 data.images.forEach((imgSrc, index) => {
                     const item = document.createElement('div');
                     item.className = 'gallery-item';
@@ -386,7 +447,6 @@
                     item.appendChild(img);
                     detailGalleryGrid.appendChild(item);
                 });
-
                 mainPage.classList.add('is-animating-out');
                 setTimeout(() => {
                     overlay.style.opacity = '1';
@@ -402,6 +462,9 @@
             };
 
             const hideDetailPage = () => {
+                // BUG FIX: Matikan interaksi mouse pada slider selama animasi transisi
+                portfolioSection.classList.add('slider-interactions-disabled');
+
                 overlay.style.opacity = '1';
                 portfolioDetailPage.classList.add('is-animating-out');
                 portfolioDetailPage.classList.remove('visible');
@@ -412,7 +475,17 @@
                     mainPage.classList.remove('hidden');
                     window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
                     overlay.style.opacity = '0';
-                    requestAnimationFrame(() => mainPage.classList.remove('is-animating-in'));
+                    requestAnimationFrame(() => {
+                        mainPage.classList.remove('is-animating-in');
+                        
+                        // BUG FIX: Hancurkan dan buat ulang Swiper untuk memastikan state yang bersih dan fungsional.
+                        // Ini adalah metode paling andal untuk mengatasi slider yang "macet".
+                        setTimeout(() => {
+                            initSwiper(); // Membuat slider baru yang berfungsi penuh
+                            scheduleAutoplayRestart(); // Memulai kembali logika autoplay
+                            portfolioSection.classList.remove('slider-interactions-disabled'); // Aktifkan kembali interaksi
+                        }, 100); // Beri jeda singkat agar container siap di-render.
+                    });
                 }, 1000);
             };
 
@@ -421,28 +494,19 @@
                 lightboxImage.src = src;
                 lightbox.classList.remove('opacity-0', 'pointer-events-none');
             };
-
-            const closeLightbox = () => {
-                lightbox.classList.add('opacity-0', 'pointer-events-none');
-            };
+            const closeLightbox = () => { lightbox.classList.add('opacity-0', 'pointer-events-none'); };
             
             // --- Event Listeners ---
             swiperWrapper.addEventListener('click', (e) => {
                 const clickedSlide = e.target.closest('.swiper-slide');
                 if (clickedSlide && clickedSlide.classList.contains('swiper-slide-active')) {
                     const clickedCard = clickedSlide.querySelector('.portfolio-card');
-                    if (clickedCard?.dataset.id) {
-                        showDetailPage(clickedCard.dataset.id);
-                    }
+                    if (clickedCard?.dataset.id) showDetailPage(clickedCard.dataset.id);
                 }
             });
-
             backFromDetailBtn.addEventListener('click', hideDetailPage);
             closeLightboxBtn.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) closeLightbox();
-            });
-
+            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
             scrollLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -456,211 +520,172 @@
                 });
             });
 
-            // --- SIMULASI BUBBLE MATTER.JS (VERSI PALING STABIL) ---
+            // --- Mobile Menu Logic ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOpenIcon = document.getElementById('menu-open-icon');
+            const menuCloseIcon = document.getElementById('menu-close-icon');
+            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+            const toggleMenu = () => {
+                mobileMenu.classList.toggle('hidden');
+                menuOpenIcon.classList.toggle('hidden');
+                menuCloseIcon.classList.toggle('hidden');
+            };
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        toggleMenu();
+                    }
+                    const targetId = link.getAttribute('href');
+                    setTimeout(() => {
+                         if (!mainPage.classList.contains('hidden')) {
+                            smoothScrollTo(targetId);
+                        } else {
+                            hideDetailPage();
+                            setTimeout(() => smoothScrollTo(targetId), 1100); 
+                        }
+                    }, 300);
+                });
+            });
+
+
+            // --- SIMULASI BUBBLE MATTER.JS ---
             const initBubbleSimulation = (container) => {
                 if (!container || container.dataset.initialized) return;
-
                 container.dataset.initialized = 'true';
-
                 const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Constraint } = Matter;
-
                 const words = ['Profesional', 'Kreatif', 'Cepat', 'Terpercaya', 'Memukau', 'Sinematik', 'Berpengalaman', 'Inovatif', 'Responsif', 'Bercerita'];
                 const engine = Engine.create();
                 const world = engine.world;
                 engine.world.gravity.y = 0.1;
-
                 const containerWidth = container.clientWidth;
                 const containerHeight = container.clientHeight;
-
-                const render = Render.create({
-                    element: container,
-                    engine: engine,
-                    options: {
-                        width: containerWidth,
-                        height: containerHeight,
-                        wireframes: false,
-                        background: 'transparent'
-                    }
-                });
-
+                const render = Render.create({ element: container, engine: engine, options: { width: containerWidth, height: containerHeight, wireframes: false, background: 'transparent' } });
                 Render.run(render);
                 const runner = Runner.create();
                 Runner.run(runner, engine);
-
                 const wallOptions = { isStatic: true, render: { visible: false } };
-                World.add(world, [
-                    Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions),
-                    Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions),
-                    Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions),
-                    Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions)
-                ]);
-
+                World.add(world, [ Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions), Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions) ]);
                 const allItemsToRender = [];
                 const titleBodies = [];
                 const titleProperties = [];
-
-                // 1. Buat Body Judul Terlebih Dahulu (Responsif Mobile & Desktop)
                 const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
                 titleParts.forEach((part, index) => {
                     const isMobile = containerWidth < 768;
                     const fontSize = isMobile ? `bold ${Math.min(containerWidth / 15, 36)}px Poppins` : `bold ${Math.min(containerWidth / 20, 48)}px Poppins`;
                     const titleWidth = part.length * (isMobile ? 15 : 20) + (isMobile ? 60 : 80);
                     const titleHeight = isMobile ? 60 : 80;
-
                     let xPos, yPos;
-                    if (isMobile) {
-                        xPos = containerWidth / 2;
-                        yPos = 80 + index * 90; // Susun ke bawah
-                    } else {
-                        xPos = (containerWidth / (titleParts.length + 1)) * (index + 1);
-                        yPos = 80;
-                        if (index === 1) { // Posisikan "Dalam" sedikit lebih rendah di desktop
-                            yPos = 150;
-                        }
-                    }
-
-                    const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, {
-                        chamfer: { radius: isMobile ? 15 : 20 },
-                        isStatic: false, density: 0.005,
-                        render: { fillStyle: 'transparent' },
-                        customText: part,
-                        customFontSize: fontSize,
-                        customFillStyle: '#e6f1ff'
-                    });
-                    
+                    if (isMobile) { xPos = containerWidth / 2; yPos = 80 + index * 90; } else { xPos = (containerWidth / (titleParts.length + 1)) * (index + 1); yPos = 80; if (index === 1) yPos = 150; }
+                    const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, { chamfer: { radius: isMobile ? 15 : 20 }, isStatic: false, density: 0.005, render: { fillStyle: 'transparent' }, customText: part, customFontSize: fontSize, customFillStyle: '#e6f1ff' });
                     titleBodies.push(titleBody);
                     titleProperties.push({width: titleWidth, height: titleHeight, x: xPos, y: yPos});
                     allItemsToRender.push(titleBody);
                 });
                 World.add(world, titleBodies);
-
-                // 2. Buat Constraint (Tali) - Responsif Mobile & Desktop
-                if (containerWidth < 768) { // Versi Mobile (Vertikal)
+                if (containerWidth < 768) {
                     const anchorTopX = containerWidth / 2;
                     const anchorTopY = 0;
-                    
-                    // "Kualitas Kami" menggantung ke kanvas atas
-                    const constraintTopA = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -titleProperties[0].width / 2 + 30, y: 0 }, pointB: { x: anchorTopX - 60, y: anchorTopY }, stiffness: 0.05, length: 100, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    const constraintTopB = Constraint.create({ bodyA: titleBodies[0], pointA: { x: titleProperties[0].width / 2 - 30, y: 0 }, pointB: { x: anchorTopX + 60, y: anchorTopY }, stiffness: 0.05, length: 100, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, [constraintTopA, constraintTopB]);
+                    // MODIFICATION: Adjust rope attachment points to be closer to the center and shorten them.
+                    const constraintTop = Constraint.create({
+                        bodyA: titleBodies[0],
+                        pointA: { x: 0, y: -titleProperties[0].height / 4 }, // Closer to center
+                        pointB: { x: anchorTopX, y: anchorTopY },
+                        stiffness: 0.1,
+                        length: 60, // Shortened from 80
+                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 }
+                    });
+                    World.add(world, [constraintTop]);
 
-                    // "Dalam" menggantung di "Kualitas Kami"
-                    const constraintMid = Constraint.create({ bodyA: titleBodies[1], pointA: { x: 0, y: -titleProperties[1].height / 2 }, bodyB: titleBodies[0], pointB: { x: 0, y: titleProperties[0].height / 2 }, stiffness: 0.1, length: 60, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraintMid = Constraint.create({ 
+                        bodyA: titleBodies[1], 
+                        pointA: { x: 0, y: -titleProperties[1].height / 4 }, // Closer to center
+                        bodyB: titleBodies[0], 
+                        pointB: { x: 0, y: titleProperties[0].height / 4 }, // Closer to center
+                        stiffness: 0.1, 
+                        length: 50, // Shortened from 60
+                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, constraintMid);
-
-                    // "Setiap Proyek" menggantung di "Dalam"
-                    const constraintBottom = Constraint.create({ bodyA: titleBodies[2], pointA: { x: 0, y: -titleProperties[2].height / 2 }, bodyB: titleBodies[1], pointB: { x: 0, y: titleProperties[1].height / 2 }, stiffness: 0.1, length: 60, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
+                    const constraintBottom = Constraint.create({ 
+                        bodyA: titleBodies[2], 
+                        pointA: { x: 0, y: -titleProperties[2].height / 4 }, // Closer to center
+                        bodyB: titleBodies[1], 
+                        pointB: { x: 0, y: titleProperties[1].height / 4 }, // Closer to center
+                        stiffness: 0.1, 
+                        length: 50, // Shortened from 60
+                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, constraintBottom);
-
-                } else { // Versi Desktop (Horizontal)
+                } else {
                     const halfWidth = containerWidth / 2;
                     const point1_x = halfWidth - Math.min(halfWidth * 0.7, 350);
                     const point2_x = halfWidth - Math.min(halfWidth * 0.2, 80);
                     const point3_x = halfWidth + Math.min(halfWidth * 0.7, 350);
-
                     const anchorOffset1 = titleProperties[0].width / 2 - 20;
                     const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: point1_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: point2_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, [constraint1A, constraint1B]);
-                    
                     const anchorOffset3 = titleProperties[2].width / 2 - 20;
                     const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: point3_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, [constraint3B]);
-
                     const constraint2A = Constraint.create({ bodyA: titleBodies[1], pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, bodyB: titleBodies[0], pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     const constraint2B = Constraint.create({ bodyA: titleBodies[1], pointA: { x: titleProperties[1].width / 2 - 20, y: 0 }, bodyB: titleBodies[2], pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
                     World.add(world, [constraint2A, constraint2B]);
                 }
-
-
-                // 3. Buat Gelembung
                 words.forEach((word) => {
                     const textWidth = word.length * 10 + 40;
                     const rectHeight = 50;
-                    const bubble = Bodies.rectangle(
-                        Math.random() * (containerWidth - textWidth) + textWidth / 2,
-                        Math.random() * (containerHeight - rectHeight - 250) + rectHeight / 2 + 200, // Spawn lebih bawah
-                        textWidth, rectHeight, {
-                            chamfer: { radius: 25 }, restitution: 0.5, friction: 0.3, density: 0.001,
-                            render: { fillStyle: '#facc15' },
-                            customText: word,
-                            customFontSize: 'bold 16px Poppins',
-                            customFillStyle: '#0a192f'
-                        }
-                    );
+                    const bubble = Bodies.rectangle( Math.random() * (containerWidth - textWidth) + textWidth / 2, Math.random() * (containerHeight - rectHeight - 250) + rectHeight / 2 + 200, textWidth, rectHeight, { chamfer: { radius: 25 }, restitution: 0.5, friction: 0.3, density: 0.001, render: { fillStyle: '#facc15' }, customText: word, customFontSize: 'bold 16px Poppins', customFillStyle: '#0a192f' } );
                     World.add(world, bubble);
                     allItemsToRender.push(bubble);
                 });
-
                 const mouse = Mouse.create(render.canvas);
-                const mouseConstraint = MouseConstraint.create(engine, {
-                    mouse: mouse,
-                    constraint: { stiffness: 0.005, render: { visible: false } } 
-                });
-                
+                const mouseConstraint = MouseConstraint.create(engine, { mouse: mouse, constraint: { stiffness: 0.005, render: { visible: false } } });
                 mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
                 mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
-
                 World.add(world, mouseConstraint);
                 render.mouse = mouse;
-
                 Events.on(render, 'afterRender', () => {
                     const context = render.context;
                     context.textAlign = 'center';
                     context.textBaseline = 'middle';
-                    allItemsToRender.forEach(item => {
-                        if (item && item.customText) {
-                            context.font = item.customFontSize;
-                            context.fillStyle = item.customFillStyle;
-                            context.save();
-                            context.translate(item.position.x, item.position.y);
-                            context.rotate(item.angle);
-                            context.fillText(item.customText, 0, 0);
-                            context.restore();
-                        }
-                    });
+                    allItemsToRender.forEach(item => { if (item && item.customText) { context.font = item.customFontSize; context.fillStyle = item.customFillStyle; context.save(); context.translate(item.position.x, item.position.y); context.rotate(item.angle); context.fillText(item.customText, 0, 0); context.restore(); } });
                 });
-                
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => {
-                        if(render.canvas) render.canvas.remove();
-                        Runner.stop(runner);
-                        Render.stop(render);
-                        World.clear(engine.world);
-                        Engine.clear(engine);
-                        container.innerHTML = '';
-                        container.removeAttribute('data-initialized');
-                        initBubbleSimulation(container);
-                    }, 250);
+                    resizeTimeout = setTimeout(() => { if(render.canvas) render.canvas.remove(); Runner.stop(runner); Render.stop(render); World.clear(engine.world); Engine.clear(engine); container.innerHTML = ''; container.removeAttribute('data-initialized'); initBubbleSimulation(container); }, 250);
                 });
             };
-
             const waitForElement = (selector) => {
                 return new Promise(resolve => {
                     const element = document.querySelector(selector);
-                    if (element && element.clientWidth > 0) {
-                        return resolve(element);
-                    }
-                    const observer = new ResizeObserver(entries => {
-                        if (entries[0].target.clientWidth > 0) {
-                            observer.disconnect();
-                            resolve(entries[0].target);
-                        }
-                    });
-                    if (element) {
-                       observer.observe(element);
-                    }
+                    if (element && element.clientWidth > 0) return resolve(element);
+                    const observer = new ResizeObserver(entries => { if (entries[0].target.clientWidth > 0) { observer.disconnect(); resolve(entries[0].target); } });
+                    if (element) observer.observe(element);
                 });
             };
-            
-            waitForElement('#bubble-canvas-container').then(container => {
-                initBubbleSimulation(container);
-            });
+            waitForElement('#bubble-canvas-container').then(container => { initBubbleSimulation(container); });
         });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
