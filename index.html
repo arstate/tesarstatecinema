@@ -208,17 +208,28 @@
             z-index: 9998; /* Di bawah kucing */
         }
         
-        /* Styling untuk Video Background */
+        /* Styling untuk Video Background Fullscreen */
         #hero-video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden; /* Sembunyikan bagian video yang meluber */
+        }
+
+        #hero-video-background iframe {
+            /* Trik untuk membuat video 16:9 menutupi semua area */
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100vw;
+            height: calc(100vw * 9 / 16);
+            min-height: 100vh;
+            min-width: calc(100vh * 16 / 9);
             transform: translate(-50%, -50%);
-            z-index: -1; /* Pastikan video di belakang konten lain */
-            pointer-events: none; /* Agar bisa klik elemen di atasnya */
         }
 
         /* Sembunyikan di perangkat mobile */
@@ -277,14 +288,11 @@
                         <!-- Video Background -->
                         <div id="hero-video-background">
                            <iframe
-                                width="100%"
-                                height="100%"
                                 src="https://www.youtube.com/embed/1CYQXV68xpI?autoplay=1&mute=1&loop=1&playlist=1CYQXV68xpI&controls=0&showinfo=0&rel=0"
                                 title="YouTube video player"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen
-                                style="width: 100%; height: 100%; object-fit: cover;">
+                                allowfullscreen>
                            </iframe>
                         </div>
                         <div class="absolute top-0 left-0 w-full h-full bg-[#0a192f] opacity-60"></div>
@@ -866,6 +874,7 @@
     </script>
 </body>
 </html>
+
 
 
 
