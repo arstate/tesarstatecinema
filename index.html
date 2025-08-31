@@ -348,7 +348,17 @@
 
                 <section id="contact" class="py-20 md:py-32 text-center">
                     <div class="container mx-auto px-6 animatable contact-anim">
-                        <div class="max-w-2xl mx-auto"><h2 class="text-3xl md:text-4xl font-bold text-gradient">Siap Mewujudkan Visi Anda?</h2><p class="text-slate-300 mt-6 text-lg">Jangan ragu untuk berdiskusi dengan kami. Mari kita rencanakan bagaimana cara terbaik untuk mengabadikan momen spesial Anda. Klik tombol di bawah untuk terhubung dengan kami melalui WhatsApp.</p><div class="mt-10"><a href="https://wa.me/6281234567890" target="_blank" class="btn-primary font-bold py-4 px-10 rounded-lg text-xl inline-flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>Hubungi Kami Sekarang</a></div></div>
+                        <div class="max-w-2xl mx-auto">
+                            <h2 class="text-3xl md:text-4xl font-bold text-gradient">Siap Mewujudkan Visi Anda?</h2>
+                            <p class="text-slate-300 mt-6 text-lg">Jangan ragu untuk berdiskusi dengan kami. Mari kita rencanakan bagaimana cara terbaik untuk mengabadikan momen spesial Anda.</p>
+                            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <a href="#about-us-page" id="show-about-us-btn" class="btn-secondary font-bold py-4 px-10 rounded-lg text-xl w-full sm:w-auto">Info Selengkapnya</a>
+                                <a href="https://wa.me/6281234567890" target="_blank" class="btn-primary font-bold py-4 px-10 rounded-lg text-xl inline-flex items-center justify-center w-full sm:w-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V4a2 2 0 012-2h8a2 2 0 012 2v4z" /></svg>
+                                    Hubungi Kami Sekarang
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -369,6 +379,106 @@
                 <!-- Galeri Grid -->
                 <div id="detail-gallery-grid" class="max-w-7xl mx-auto detail-anim detail-gallery-anim">
                     <!-- Gambar galeri akan di-generate oleh JS di sini -->
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN TENTANG KAMI (BARU) -->
+        <div id="about-us-page" class="page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Tombol Kembali Dihapus -->
+
+                    <!-- Konten Tentang Kami -->
+                    <div class="space-y-6 text-slate-300">
+                        <div class="text-center mb-12">
+                            <h2 class="text-4xl md:text-6xl font-bold text-white leading-tight">Tentang Kami</h2>
+                            <p class="mt-4 text-yellow-400 text-lg">ARSTATE CINEMA</p>
+                            <p class="mt-6 text-lg max-w-3xl mx-auto">adalah sebuah vendor foto dan video yang berdedikasi untuk mengabadikan momen-momen berharga dalam bentuk karya seni visual yang indah dan berkesan. Dengan tim profesional dan kreatif kami, kami menghadirkan layanan fotografi dan videografi yang berkualitas tinggi untuk berbagai acara dan kebutuhan.</p>
+                        </div>
+
+                        <!-- Bagian Visi (Collapsible) -->
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                            <button class="toggle-btn w-full flex justify-between items-center text-left">
+                                <h3 class="text-2xl font-bold text-gradient">Visi</h3>
+                                <div class="flex items-center text-yellow-400">
+                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
+                                    <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </button>
+                            <div class="collapsible-content max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out">
+                                <p class="text-lg pt-4 pb-2 border-t border-blue-800/50">Menjadi mitra terpercaya dalam mengabadikan momen berharga melalui karya foto dan video yang kreatif dan berkualitas tinggi, yang memberikan kebahagiaan dan kenangan abadi bagi klien kami.</p>
+                            </div>
+                        </div>
+
+                        <!-- Bagian Misi (Collapsible) -->
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                             <button class="toggle-btn w-full flex justify-between items-center text-left">
+                                <h3 class="text-2xl font-bold text-gradient">Misi</h3>
+                                <div class="flex items-center text-yellow-400">
+                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
+                                    <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </button>
+                            <div class="collapsible-content max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out">
+                                <ul class="space-y-4 text-lg pt-4 pb-2 border-t border-blue-800/50">
+                                    <li class="flex items-start"><span class="text-yellow-400 font-bold mr-3 mt-1">&#10140;</span> <div><strong>Kualitas Utama:</strong> Kami mengutamakan standar kualitas tak tertandingi dalam setiap foto dan video yang kami hasilkan.</div></li>
+                                    <li class="flex items-start"><span class="text-yellow-400 font-bold mr-3 mt-1">&#10140;</span> <div><strong>Kreativitas Tanpa Batas:</strong> Kami selalu mencari cara baru untuk melihat dan merekam momen.</div></li>
+                                    <li class="flex items-start"><span class="text-yellow-400 font-bold mr-3 mt-1">&#10140;</span> <div><strong>Kenangan Abadi:</strong> Karya kami tidak hanya sekadar gambar dan video, tetapi juga kenangan abadi yang akan diwariskan kepada generasi mendatang.</div></li>
+                                    <li class="flex items-start"><span class="text-yellow-400 font-bold mr-3 mt-1">&#10140;</span> <div><strong>Pelayanan Personal:</strong> Kami bekerja erat dengan setiap klien untuk memahami visi mereka dan mewujudkannya melalui karya kami.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Bagian Layanan (Collapsible) -->
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                            <button class="toggle-btn w-full flex justify-between items-center text-left">
+                                <h3 class="text-2xl font-bold text-gradient">Layanan yang Ditawarkan</h3>
+                                <div class="flex items-center text-yellow-400">
+                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
+                                    <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </button>
+                            <div class="collapsible-content max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out">
+                                 <ul class="space-y-3 text-lg pt-4 pb-2 border-t border-blue-800/50">
+                                    <li><strong>Dokumentasi Pernikahan:</strong> Mengabadikan momen paling bahagia dalam hidup Anda dengan sentuhan artistik dan romantisme yang mendalam.</li>
+                                    <li><strong>Dokumentasi Event:</strong> Dari acara resmi, korporat sampai pesta ulang tahun, kami menangkap esensi setiap acara dengan detail dan kecermatan.</li>
+                                    <li><strong>Iklan dan Komersial:</strong> Membantu merek dan bisnis untuk menyampaikan pesan mereka melalui gambar dan video yang kuat.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                            <h3 class="text-2xl font-bold text-gradient mb-4">Informasi Kontak</h3>
+                             <ul class="space-y-2 text-lg">
+                                <li><strong>WhatsApp:</strong> 0896-1732-3344</li>
+                                <li><strong>Email:</strong> arstateproduction@gmail.com</li>
+                                <li><strong>Situs web:</strong> www.arstatecinema.my.id</li>
+                                <li><strong>Instagram:</strong> @arstate.cinema</li>
+                                <li><strong>TikTok:</strong> @arstatecinema</li>
+                             </ul>
+                             <p class="mt-4">ARSTATE CINEMA kami melayani klien di seluruh wilayah Sidoarjo - Surabaya dan sekitarnya.</p>
+                        </div>
+
+                        <!-- Bagian Alamat Kantor (Collapsible) -->
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                             <button class="toggle-btn w-full flex justify-between items-center text-left">
+                                <h3 class="text-2xl font-bold text-gradient">Alamat Kantor</h3>
+                                <div class="flex items-center text-yellow-400">
+                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
+                                    <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </div>
+                            </button>
+                            <div class="collapsible-content max-h-0 opacity-0 overflow-hidden transition-all duration-700 ease-in-out">
+                                <div class="pt-4 pb-2 border-t border-blue-800/50">
+                                    <p class="text-lg mb-4">Temukan kami di lokasi yang strategis di Sidoarjo.</p>
+                                    <div class="rounded-lg overflow-hidden border-2 border-yellow-400/30 shadow-lg">
+                                        <div class="embed-map-responsive"><div class="embed-map-container"><iframe class="embed-map-frame" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=600&height=400&hl=en&q=arstate%20cinema&t=&z=14&ie=UTF8&iwloc=B&output=embed"></iframe><a href="https://sprunkiretake.net" style="font-size:2px!important;color:gray!important;position:absolute;bottom:0;left:0;z-index:1;max-height:1px;overflow:hidden">sprunki retake</a></div><style>.embed-map-responsive{position:relative;text-align:right;width:100%;height:0;padding-bottom:66.66666666666666%;}.embed-map-container{overflow:hidden;background:none!important;width:100%;height:100%;position:absolute;top:0;left:0;}.embed-map-frame{width:100%!important;height:100%!important;position:absolute;top:0;left:0;}</style></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -503,9 +613,12 @@
             let lastScrollPosition = 0;
             const mainPage = document.getElementById('main-page');
             const portfolioDetailPage = document.getElementById('portfolio-detail-page');
+            const aboutUsPage = document.getElementById('about-us-page'); // Halaman baru
             const overlay = document.getElementById('page-transition-overlay');
             const swiperWrapper = document.querySelector('#featured-portfolio .swiper-wrapper');
             const backFromDetailBtn = document.getElementById('back-from-detail');
+            const showAboutUsBtn = document.getElementById('show-about-us-btn'); // Tombol baru
+            const backFromAboutBtn = document.getElementById('back-from-about'); // Tombol kembali baru
             const scrollLinks = document.querySelectorAll('a[href^="#"]');
             const portfolioSection = document.getElementById('featured-portfolio');
             
@@ -666,6 +779,37 @@
                 }, 1000);
             };
 
+            // --- FUNGSI TRANSISI HALAMAN TENTANG KAMI (BARU) ---
+            const showAboutPage = () => {
+                lastScrollPosition = window.scrollY;
+                mainPage.classList.add('is-animating-out');
+                 setTimeout(() => {
+                    overlay.style.opacity = '1';
+                    setTimeout(() => {
+                        mainPage.classList.add('hidden');
+                        aboutUsPage.classList.remove('hidden');
+                        window.scrollTo(0, 0);
+                        overlay.style.opacity = '0';
+                        mainPage.classList.remove('is-animating-out');
+                    }, 500);
+                }, 1100);
+            };
+
+            const hideAboutPage = () => {
+                 overlay.style.opacity = '1';
+                 setTimeout(() => {
+                    aboutUsPage.classList.add('hidden');
+                    mainPage.classList.add('is-animating-in');
+                    mainPage.classList.remove('hidden');
+                    window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    overlay.style.opacity = '0';
+                     requestAnimationFrame(() => {
+                        mainPage.classList.remove('is-animating-in');
+                    });
+                }, 500);
+            };
+
+
             // --- Fungsi Lightbox ---
             const openLightbox = (src) => {
                 lightboxImage.src = src;
@@ -682,20 +826,55 @@
                 }
             });
             backFromDetailBtn.addEventListener('click', hideDetailPage);
+            showAboutUsBtn.addEventListener('click', (e) => { e.preventDefault(); showAboutPage(); }); // Listener baru
+            if (backFromAboutBtn) { // Cek jika tombol masih ada
+                backFromAboutBtn.addEventListener('click', hideAboutPage); // Listener baru
+            }
             closeLightboxBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
             scrollLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
-                    e.preventDefault();
                     const targetId = this.getAttribute('href');
-                    if (!mainPage.classList.contains('hidden')) {
-                        smoothScrollTo(targetId);
-                    } else {
-                        hideDetailPage();
-                        setTimeout(() => smoothScrollTo(targetId), 1100); 
+                    // Hanya jalankan smooth scroll jika linknya bukan untuk page-switching
+                    if (targetId.startsWith('#') && targetId.length > 1 && !document.querySelector(targetId).classList.contains('page')) {
+                        e.preventDefault();
+                        if (!mainPage.classList.contains('hidden')) {
+                            smoothScrollTo(targetId);
+                        } else {
+                             if (!portfolioDetailPage.classList.contains('hidden')) hideDetailPage();
+                             if (!aboutUsPage.classList.contains('hidden')) hideAboutPage();
+                             setTimeout(() => smoothScrollTo(targetId), 1100); 
+                        }
                     }
                 });
             });
+
+            // --- Logika Accordion di Halaman About Us ---
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('.toggle-icon');
+                    const buttonText = button.querySelector('.toggle-text');
+
+                    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        // Tutup
+                        content.style.maxHeight = '0px';
+                        content.classList.remove('opacity-100', 'pt-4', 'mt-4');
+                        content.classList.add('opacity-0');
+                        icon.classList.remove('rotate-180');
+                        buttonText.textContent = 'Lihat Selengkapnya';
+                    } else {
+                        // Buka (PERBAIKAN: Tambah buffer untuk mencegah teks terpotong)
+                        content.style.maxHeight = (content.scrollHeight + 10) + "px";
+                        content.classList.add('opacity-100', 'pt-4', 'mt-4');
+                        content.classList.remove('opacity-0');
+                        icon.classList.add('rotate-180');
+                        buttonText.textContent = 'Tutup';
+                    }
+                });
+            });
+
 
             // --- Mobile Menu Logic ---
             const mobileMenuButton = document.getElementById('mobile-menu-button');
@@ -723,7 +902,8 @@
                          if (!mainPage.classList.contains('hidden')) {
                             smoothScrollTo(targetId);
                         } else {
-                            hideDetailPage();
+                            if (!portfolioDetailPage.classList.contains('hidden')) hideDetailPage();
+                            if (!aboutUsPage.classList.contains('hidden')) hideAboutPage();
                             setTimeout(() => smoothScrollTo(targetId), 1100); 
                         }
                     }, 300);
