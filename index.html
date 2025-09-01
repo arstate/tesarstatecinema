@@ -106,6 +106,7 @@
         .slider-controls .swiper-pagination { position: static; width: auto; }
         .slider-controls .swiper-button-next::after, .slider-controls .swiper-button-prev::after { font-size: 20px; }
 
+
         /* Animasi Perpindahan Halaman */
         .animatable { transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 1s cubic-bezier(0.6, -0.28, 0.735, 0.045); }
         #main-page.is-animating-out .hero-anim, #main-page.is-animating-out .portfolio-title-anim { transform: translateY(-100px); opacity: 0; }
@@ -128,7 +129,7 @@
         #portfolio-detail-page.is-animating-out .detail-gallery-anim { transform: translateY(100%); opacity: 0 !important; }
 
         /* --- STYLING GALERI GRID DETAIL --- */
-        #detail-gallery-grid {
+        #detail-gallery-grid, #service-detail-gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             grid-auto-rows: 250px;
@@ -147,13 +148,69 @@
         
         /* Tata Letak Mosaik */
         @media (min-width: 768px) {
-            #detail-gallery-grid {
+            #detail-gallery-grid, #service-detail-gallery-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
             .gallery-item:nth-child(11n+1) { grid-column: span 2; grid-row: span 2; }
             .gallery-item:nth-child(11n+4) { grid-row: span 2; }
             .gallery-item:nth-child(11n+8) { grid-column: span 2; }
         }
+
+        /* --- STYLING SERVICE GALLERY PAGE (REVISED) --- */
+        .service-gallery-swiper .swiper-wrapper {
+            align-items: center; /* Vertically center the slides */
+        }
+        .service-gallery-swiper .swiper-slide {
+            aspect-ratio: 3 / 4.2;
+            width: 60% !important; /* Adjust width for portrait view */
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: scale(0.75);
+            opacity: 0.5;
+        }
+        @media (min-width: 768px) {
+            .service-gallery-swiper .swiper-slide {
+                width: 28% !important;
+            }
+        }
+        .service-gallery-swiper .swiper-slide-active {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .service-gallery-card {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7);
+            cursor: pointer; /* Menambahkan kursor pointer */
+        }
+        .service-gallery-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .service-gallery-card .overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.0));
+        }
+        .service-gallery-card .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+        }
+        .swiper-slide-active .service-gallery-card .card-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
 
         /* Styling untuk canvas bubble */
         #bubble-canvas-container canvas {
@@ -162,6 +219,46 @@
         }
          #bubble-canvas-container canvas:active {
             cursor: grabbing;
+        }
+
+        /* --- STYLING KLIEN SLIDER --- */
+        .client-swiper {
+            cursor: grab;
+        }
+        .client-swiper:active {
+            cursor: grabbing;
+        }
+        .client-swiper .swiper-slide {
+            width: auto;
+            flex-shrink: 0;
+        }
+        .client-logo {
+            height: 120px;
+            width: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-radius: 0.75rem;
+            color: var(--text-slate);
+            filter: grayscale(100%) brightness(0.8);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .client-swiper .swiper-slide:hover .client-logo {
+            filter: grayscale(0%) brightness(1);
+            opacity: 1;
+            transform: scale(1.05);
+            background-color: rgba(255, 255, 255, 0.08);
+            border-color: rgba(250, 204, 21, 0.3);
+        }
+        .client-swiper .swiper-wrapper {
+            transition-timing-function: linear !important;
+            align-items: center;
         }
 
         /* Styling Navbar Hide/Show on Scroll */
@@ -308,10 +405,64 @@
                     </div>
                 </section>
 
+                <!-- KLIEN KAMI SECTION -->
+                <section id="clients" class="py-16 md:py-20 bg-blue-900/10">
+                    <div class="container mx-auto px-6 animatable services-anim">
+                        <div class="text-center max-w-2xl mx-auto mb-16">
+                             <h2 class="text-3xl md:text-4xl font-bold">Telah Dipercaya Oleh</h2>
+                             <p class="text-slate-400 mt-4">Kami bangga telah menjadi bagian dari cerita sukses berbagai klien dan acara.</p>
+                        </div>
+                         <!-- Slider Klien -->
+                        <div class="swiper-container client-swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 1</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 2</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 3</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 4</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 5</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 6</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 7</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 8</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 9</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 10</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
                 <section id="services" class="py-20 md:py-32">
                     <div class="container mx-auto px-6 animatable services-anim">
                         <div class="text-center max-w-2xl mx-auto mb-16"><h2 class="text-3xl md:text-4xl font-bold">Layanan Profesional Kami</h2><p class="text-slate-400 mt-4">Dari pernikahan yang sakral hingga acara perusahaan yang meriah, kami siap menangkap esensi dari setiap momen Anda.</p></div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Wedding & Prewedding</h3><p class="text-slate-400">Paket lengkap untuk hari istimewa Anda, dari sesi pra-pernikahan yang romantis hingga liputan hari-H yang sinematik.</p></div><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 001.553.832l3-2a1 1 0 000-1.664l-3-2z" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Dokumentasi Event</h3><p class="text-slate-400">Liputan acara ulang tahun, seminar, gathering, atau konser dengan kualitas video dan foto yang profesional.</p></div><div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800"><div class="text-yellow-400 mb-4 inline-block"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v1a1 1 0 001 1h12a1 1 0 001-1v-1a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg></div><h3 class="text-xl font-bold text-white mb-2">Konten Komersial</h3><p class="text-slate-400">Produksi video profil perusahaan, iklan produk, atau konten media sosial untuk meningkatkan brand Anda.</p></div></div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 flex flex-col">
+                                <div class="text-yellow-400 mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" /></svg></div>
+                                <h3 class="text-xl font-bold text-white mb-2">Wedding & Prewedding</h3>
+                                <p class="text-slate-400 flex-grow">Paket lengkap untuk hari istimewa Anda, dari sesi pra-pernikahan yang romantis hingga liputan hari-H yang sinematik.</p>
+                                <div class="mt-6"><a href="#" class="btn-secondary text-sm py-2 px-4 rounded-md service-gallery-btn" data-target="wedding-prewedding-page">Lihat Galeri</a></div>
+                            </div>
+                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 flex flex-col">
+                                <div class="text-yellow-400 mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 001.553.832l3-2a1 1 0 000-1.664l-3-2z" /></svg></div>
+                                <h3 class="text-xl font-bold text-white mb-2">Dokumentasi Event</h3>
+                                <p class="text-slate-400 flex-grow">Liputan acara ulang tahun, seminar, gathering, atau konser dengan kualitas video dan foto yang profesional.</p>
+                                <div class="mt-6"><a href="#" class="btn-secondary text-sm py-2 px-4 rounded-md service-gallery-btn" data-target="event-page">Lihat Galeri</a></div>
+                            </div>
+                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 flex flex-col">
+                                <div class="text-yellow-400 mb-4 flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v1a1 1 0 001 1h12a1 1 0 001-1v-1a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg></div>
+                                <h3 class="text-xl font-bold text-white mb-2">Konten Komersial</h3>
+                                <p class="text-slate-400 flex-grow">Produksi video profil perusahaan, iklan produk, atau konten media sosial untuk meningkatkan brand Anda.</p>
+                                <div class="mt-6"><a href="#" class="btn-secondary text-sm py-2 px-4 rounded-md service-gallery-btn" data-target="commercial-page">Lihat Galeri</a></div>
+                            </div>
+                            <div class="bg-blue-900/30 p-8 rounded-lg text-center border border-blue-800 flex flex-col">
+                                <div class="text-yellow-400 mb-4 flex justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 011.056 0l4 2a1 1 0 001.056 0l4-2a1 1 0 011.056 0l2.646-1.323a1 1 0 000-1.84l-7-3zM3 9.36l5.214 2.607a1 1 0 001.056 0L17 9.36V13a1 1 0 11-2 0V9.81l-3.394 1.697a1 1 0 01-1.056 0L7 9.81v3.19a1 1 0 01-2 0V9.36z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-white mb-2">Wisuda & Yearbook</h3>
+                                <p class="text-slate-400 flex-grow">Kami mengabadikan momen spesial kelulusan Anda dengan fotografi dan videografi berkualitas tinggi.</p>
+                                <div class="mt-6"><a href="#" class="btn-secondary text-sm py-2 px-4 rounded-md service-gallery-btn" data-target="graduation-page">Lihat Galeri</a></div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -482,6 +633,128 @@
                 </div>
             </div>
         </div>
+    
+
+        <!-- HALAMAN LAYANAN: WEDDING & PREWEDDING -->
+        <div id="wedding-prewedding-page" class="page service-page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                <div class="max-w-4xl mx-auto text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight">Wedding & Prewedding</h2>
+                    <p class="text-slate-300 mt-6 text-lg max-w-3xl mx-auto">Jelajahi keindahan momen cinta yang kami abadikan dalam galeri Wedding dan Prewedding kami.</p>
+                </div>
+                <!-- Galeri Wedding -->
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Galeri Wedding</h3>
+                    <div class="swiper-container service-gallery-swiper" id="wedding-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <!-- Galeri Prewedding -->
+                <div class="mb-16">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Galeri Prewedding</h3>
+                    <div class="swiper-container service-gallery-swiper" id="prewedding-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN LAYANAN: DOKUMENTASI EVENT -->
+        <div id="event-page" class="page service-page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                <div class="max-w-4xl mx-auto text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight">Dokumentasi Event</h2>
+                    <p class="text-slate-300 mt-6 text-lg max-w-3xl mx-auto">Setiap event memiliki cerita. Lihat bagaimana kami menangkap energi dan kemeriahan berbagai acara.</p>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Ulang Tahun</h3>
+                    <div class="swiper-container service-gallery-swiper" id="birthday-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Gathering</h3>
+                    <div class="swiper-container service-gallery-swiper" id="gathering-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-16">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Konser</h3>
+                    <div class="swiper-container service-gallery-swiper" id="concert-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN LAYANAN: KONTEN KOMERSIAL -->
+        <div id="commercial-page" class="page service-page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                 <div class="max-w-4xl mx-auto text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight">Konten Komersial</h2>
+                    <p class="text-slate-300 mt-6 text-lg max-w-3xl mx-auto">Visual yang kuat untuk brand Anda. Lihat portofolio kami dalam pembuatan konten komersial yang menarik.</p>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Video Profil</h3>
+                    <div class="swiper-container service-gallery-swiper" id="profile-video-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Iklan Produk</h3>
+                    <div class="swiper-container service-gallery-swiper" id="product-ad-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-16">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Short Movie</h3>
+                    <div class="swiper-container service-gallery-swiper" id="short-movie-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN LAYANAN: WISUDA & YEARBOOK -->
+        <div id="graduation-page" class="page service-page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                 <div class="max-w-4xl mx-auto text-center mb-16">
+                    <h2 class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight">Wisuda & Yearbook</h2>
+                    <p class="text-slate-300 mt-6 text-lg max-w-3xl mx-auto">Abadikan momen kelulusan yang membanggakan dengan sentuhan profesional dari tim kami.</p>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Event Wisuda</h3>
+                    <div class="swiper-container service-gallery-swiper" id="grad-event-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Personal Wisuda</h3>
+                    <div class="swiper-container service-gallery-swiper" id="grad-personal-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-20">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Yearbook</h3>
+                    <div class="swiper-container service-gallery-swiper" id="yearbook-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+                <div class="mb-16">
+                    <h3 class="text-2xl md:text-3xl font-bold text-yellow-400 mb-8 text-center">Video Angkatan</h3>
+                    <div class="swiper-container service-gallery-swiper" id="class-video-slider"><div class="swiper-wrapper"></div></div>
+                    <div class="slider-controls"><div class="swiper-button-prev"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN DETAIL GALERI LAYANAN (BARU) -->
+        <div id="service-gallery-detail-page" class="page hidden min-h-screen">
+            <div class="container mx-auto px-6 py-28">
+                <!-- Header Deskripsi -->
+                <div class="max-w-4xl mx-auto text-center mb-16">
+                    <h2 id="service-detail-title" class="text-4xl md:text-6xl font-bold text-white mt-2 leading-tight"></h2>
+                    <button id="back-from-service-detail" class="btn-secondary font-semibold py-3 px-8 rounded-lg mt-10 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" /></svg>
+                        Kembali ke Galeri Layanan
+                    </button>
+                </div>
+                <!-- Galeri Grid -->
+                <div id="service-detail-gallery-grid" class="max-w-7xl mx-auto">
+                    <!-- Gambar galeri akan di-generate oleh JS di sini -->
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Lightbox Modal -->
@@ -609,16 +882,38 @@
                 'graduation-day': { category: 'Event', title: 'Graduation Gala 2025', description: "Mengabadikan momen kelulusan yang penuh kebanggaan dan harapan, dari prosesi hingga perayaan.", images: Array.from({length: 15}, (_, i) => `https://placehold.co/1200x800/1e1b4b/fde047?text=Gala+Foto+${i+1}`) }
             };
 
+            // --- DATABASE GALERI LAYANAN ---
+            const serviceGalleries = {
+                'wedding-slider': Array.from({length: 8}, (_, i) => ({ title: `Wedding Moment ${i+1}`, image: `https://placehold.co/600x800/1e3a8a/fde047?text=Wedding+${i+1}`})),
+                'prewedding-slider': Array.from({length: 8}, (_, i) => ({ title: `Romantic Prewedding ${i+1}`, image: `https://placehold.co/600x800/4a044e/fde047?text=Prewedding+${i+1}`})),
+                'birthday-slider': Array.from({length: 8}, (_, i) => ({ title: `Birthday Celebration ${i+1}`, image: `https://placehold.co/600x800/701a75/facc15?text=Birthday+${i+1}`})),
+                'gathering-slider': Array.from({length: 8}, (_, i) => ({ title: `Company Gathering ${i+1}`, image: `https://placehold.co/600x800/064e3b/fde047?text=Gathering+${i+1}`})),
+                'concert-slider': Array.from({length: 8}, (_, i) => ({ title: `Live Concert ${i+1}`, image: `https://placehold.co/600x800/7f1d1d/fde047?text=Concert+${i+1}`})),
+                'profile-video-slider': Array.from({length: 8}, (_, i) => ({ title: `Corporate Profile ${i+1}`, image: `https://placehold.co/600x800/0c4a6e/fde047?text=Video+Profil+${i+1}`})),
+                'product-ad-slider': Array.from({length: 8}, (_, i) => ({ title: `Product Ad ${i+1}`, image: `https://placehold.co/600x800/854d0e/facc15?text=Iklan+Produk+${i+1}`})),
+                'short-movie-slider': Array.from({length: 8}, (_, i) => ({ title: `Short Movie Scene ${i+1}`, image: `https://placehold.co/600x800/831843/fde047?text=Short+Movie+${i+1}`})),
+                'grad-event-slider': Array.from({length: 8}, (_, i) => ({ title: `Graduation Ceremony ${i+1}`, image: `https://placehold.co/600x800/1e1b4b/fde047?text=Event+Wisuda+${i+1}`})),
+                'grad-personal-slider': Array.from({length: 8}, (_, i) => ({ title: `Graduation Portrait ${i+1}`, image: `https://placehold.co/600x800/365314/facc15?text=Personal+Wisuda+${i+1}`})),
+                'yearbook-slider': Array.from({length: 8}, (_, i) => ({ title: `Yearbook Photo ${i+1}`, image: `https://placehold.co/600x800/4a044e/fde047?text=Yearbook+${i+1}`})),
+                'class-video-slider': Array.from({length: 8}, (_, i) => ({ title: `Class Video ${i+1}`, image: `https://placehold.co/600x800/1e3a8a/facc15?text=Video+Angkatan+${i+1}`})),
+            };
+
+            const subGalleryData = {}; // Database baru untuk detail galeri layanan
+
             // --- Variabel & Elemen Halaman ---
             let lastScrollPosition = 0;
+            let returnToServicePageId = ''; // Menyimpan ID halaman layanan asal
             const mainPage = document.getElementById('main-page');
             const portfolioDetailPage = document.getElementById('portfolio-detail-page');
-            const aboutUsPage = document.getElementById('about-us-page'); // Halaman baru
+            const aboutUsPage = document.getElementById('about-us-page');
+            const servicePages = document.querySelectorAll('.service-page');
+            const serviceGalleryDetailPage = document.getElementById('service-gallery-detail-page'); // Halaman baru
             const overlay = document.getElementById('page-transition-overlay');
             const swiperWrapper = document.querySelector('#featured-portfolio .swiper-wrapper');
             const backFromDetailBtn = document.getElementById('back-from-detail');
-            const showAboutUsBtn = document.getElementById('show-about-us-btn'); // Tombol baru
-            const backFromAboutBtn = document.getElementById('back-from-about'); // Tombol kembali baru
+            const backFromServiceDetailBtn = document.getElementById('back-from-service-detail'); // Tombol baru
+            const showAboutUsBtn = document.getElementById('show-about-us-btn');
+            const serviceGalleryBtns = document.querySelectorAll('.service-gallery-btn');
             const scrollLinks = document.querySelectorAll('a[href^="#"]');
             const portfolioSection = document.getElementById('featured-portfolio');
             
@@ -626,6 +921,9 @@
             const detailCategory = document.getElementById('detail-category');
             const detailTitle = document.getElementById('detail-title');
             const detailDescription = document.getElementById('detail-description');
+            
+            const serviceDetailGalleryGrid = document.getElementById('service-detail-gallery-grid'); // Grid baru
+            const serviceDetailTitle = document.getElementById('service-detail-title'); // Judul baru
 
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
@@ -633,6 +931,7 @@
 
             // --- LOGIKA RE-INISIALISASI SWIPER (PERBAIKAN BUG) ---
             let swiper; // Deklarasikan variabel swiper di scope yang lebih tinggi
+            let clientSwiper; // Deklarasikan variabel untuk slider klien
 
             // Simpan konfigurasi Swiper dalam sebuah objek agar bisa digunakan kembali
             const swiperConfig = { 
@@ -649,8 +948,8 @@
                     delay: 3000,
                     disableOnInteraction: true,
                 },
-                pagination: { el: '.swiper-pagination', clickable: true }, 
-                navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }, 
+                pagination: { el: '#featured-portfolio .swiper-pagination', clickable: true }, 
+                navigation: { nextEl: '#featured-portfolio .swiper-button-next', prevEl: '#featured-portfolio .swiper-button-prev' }, 
                 breakpoints: { 
                     768: { slidesPerView: 2.5, spaceBetween: 15 },
                     1024: { slidesPerView: 3.5, spaceBetween: 15 }
@@ -670,26 +969,76 @@
 
             // Fungsi untuk membuat atau membuat ulang slider
             function initSwiper() {
-                // Jika sudah ada slider, hancurkan sepenuhnya sebelum membuat yang baru
-                if (swiper) {
-                    swiper.destroy(true, true);
-                }
-                // Buat instance Swiper yang baru dan bersih
+                if (swiper) swiper.destroy(true, true);
                 swiper = new Swiper('#featured-portfolio .swiper-container', swiperConfig);
-                
-                // Pasang kembali event listener yang spesifik untuk instance Swiper
                 swiper.on('dragEnd', scheduleAutoplayRestart);
             }
 
-            // Inisialisasi Swiper untuk pertama kali saat halaman dimuat
             initSwiper();
-            
-            // Pasang event listener pada elemen statis (tombol, paginasi) HANYA SEKALI.
-            // Listener ini akan mengontrol instance 'swiper' global yang aktif.
             portfolioSection.querySelector('.swiper-button-next').addEventListener('click', scheduleAutoplayRestart);
             portfolioSection.querySelector('.swiper-button-prev').addEventListener('click', scheduleAutoplayRestart);
             portfolioSection.querySelector('.swiper-pagination').addEventListener('click', scheduleAutoplayRestart);
             
+            // --- Inisialisasi Slider Klien ---
+            clientSwiper = new Swiper('.client-swiper', {
+                loop: true,
+                slidesPerView: 'auto',
+                spaceBetween: 50,
+                speed: 8000, // Kecepatan transisi yang lebih lambat dan mulus
+                autoplay: {
+                    delay: 0, // Tanpa jeda untuk gerakan berkelanjutan
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                grabCursor: true,
+                loopedSlides: 10 // Pastikan duplikasi slide cukup untuk loop yang mulus
+            });
+
+            // --- Inisialisasi dan Populasi Galeri Layanan (DIREVISI) ---
+            const initServiceGalleries = () => {
+                document.querySelectorAll('.service-gallery-swiper').forEach(swiperContainer => {
+                    const sliderId = swiperContainer.id;
+                    const items = serviceGalleries[sliderId];
+                    const swiperWrapper = swiperContainer.querySelector('.swiper-wrapper');
+                    const parentPageId = swiperContainer.closest('.service-page').id;
+
+                    if (items && swiperWrapper) {
+                        swiperWrapper.innerHTML = items.map((item, index) => {
+                             // Membuat ID unik untuk setiap item galeri
+                            const subGalleryId = `${sliderId.replace('-slider', '')}-${index + 1}`;
+                            
+                            // Menambahkan data ke database sub-galeri
+                            subGalleryData[subGalleryId] = {
+                                title: item.title,
+                                returnPage: parentPageId,
+                                images: Array.from({length: 12}, (_, i) => `${item.image.split('?')[0]}?text=${encodeURIComponent(item.title)}+${i+1}`)
+                            };
+
+                            return `
+                            <div class="swiper-slide">
+                                <div class="service-gallery-card service-detail-btn" data-id="${subGalleryId}">
+                                    <img src="${item.image}" loading="lazy" alt="${item.title}">
+                                    <div class="overlay"></div>
+                                    <div class="card-content">
+                                        <h3 class="text-white text-xl font-bold">${item.title}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        `}).join('');
+                    }
+                    
+                    const galleryBlock = swiperContainer.parentElement;
+                    new Swiper(swiperContainer, {
+                        loop: true, spaceBetween: 15, slidesPerView: 'auto', centeredSlides: true,
+                        grabCursor: true, slideToClickedSlide: true, speed: 800, observer: true, observeParents: true,
+                        navigation: { nextEl: galleryBlock.querySelector('.swiper-button-next'), prevEl: galleryBlock.querySelector('.swiper-button-prev') },
+                        pagination: { el: galleryBlock.querySelector('.swiper-pagination'), clickable: true },
+                        on: { init: (swiper) => { swiper.slideToLoop(3, 0, false); } }
+                    });
+                });
+            };
+            initServiceGalleries();
+
             // --- Navbar Hide/Show on Scroll ---
             const navbar = document.getElementById('navbar');
             let lastScrollTop = 0;
@@ -751,10 +1100,8 @@
                 }, 1100);
             };
 
-            const hideDetailPage = () => {
-                // BUG FIX: Matikan interaksi mouse pada slider selama animasi transisi
+            const hideDetailPage = (restoreScroll = true) => {
                 portfolioSection.classList.add('slider-interactions-disabled');
-
                 overlay.style.opacity = '1';
                 portfolioDetailPage.classList.add('is-animating-out');
                 portfolioDetailPage.classList.remove('visible');
@@ -763,31 +1110,40 @@
                     portfolioDetailPage.classList.remove('is-animating-out');
                     mainPage.classList.add('is-animating-in');
                     mainPage.classList.remove('hidden');
-                    window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    if (restoreScroll) {
+                        window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                    }
                     overlay.style.opacity = '0';
                     requestAnimationFrame(() => {
                         mainPage.classList.remove('is-animating-in');
-                        
-                        // BUG FIX: Hancurkan dan buat ulang Swiper untuk memastikan state yang bersih dan fungsional.
-                        // Ini adalah metode paling andal untuk mengatasi slider yang "macet".
                         setTimeout(() => {
-                            initSwiper(); // Membuat slider baru yang berfungsi penuh
-                            scheduleAutoplayRestart(); // Memulai kembali logika autoplay
-                            portfolioSection.classList.remove('slider-interactions-disabled'); // Aktifkan kembali interaksi
-                        }, 100); // Beri jeda singkat agar container siap di-render.
+                            initSwiper();
+                            scheduleAutoplayRestart();
+                            if (clientSwiper) {
+                                clientSwiper.update(); // REFRESH SLIDER
+                                if (clientSwiper.autoplay) {
+                                    clientSwiper.autoplay.start();
+                                }
+                            }
+                            portfolioSection.classList.remove('slider-interactions-disabled');
+                        }, 100);
                     });
                 }, 1000);
             };
 
-            // --- FUNGSI TRANSISI HALAMAN TENTANG KAMI (BARU) ---
-            const showAboutPage = () => {
+            // --- FUNGSI TRANSISI HALAMAN LAYANAN ---
+            const showServicePage = (pageId) => {
+                const targetPage = document.getElementById(pageId);
+                if (!targetPage) return;
                 lastScrollPosition = window.scrollY;
                 mainPage.classList.add('is-animating-out');
-                 setTimeout(() => {
+                setTimeout(() => {
                     overlay.style.opacity = '1';
                     setTimeout(() => {
                         mainPage.classList.add('hidden');
-                        aboutUsPage.classList.remove('hidden');
+                        targetPage.classList.remove('hidden');
                         window.scrollTo(0, 0);
                         overlay.style.opacity = '0';
                         mainPage.classList.remove('is-animating-out');
@@ -795,26 +1151,84 @@
                 }, 1100);
             };
 
-            const hideAboutPage = () => {
+            const hideGenericPage = (pageElement, restoreScroll = true) => {
                  overlay.style.opacity = '1';
                  setTimeout(() => {
-                    aboutUsPage.classList.add('hidden');
+                    pageElement.classList.add('hidden');
                     mainPage.classList.add('is-animating-in');
                     mainPage.classList.remove('hidden');
-                    window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    if (restoreScroll) {
+                        window.scrollTo({ top: lastScrollPosition, behavior: 'instant' });
+                    } else {
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                    }
                     overlay.style.opacity = '0';
                      requestAnimationFrame(() => {
                         mainPage.classList.remove('is-animating-in');
+                        // FIX: Restart sliders after returning to the main page
+                        setTimeout(() => {
+                            initSwiper();
+                            scheduleAutoplayRestart();
+                            if (clientSwiper) {
+                                clientSwiper.update(); // REFRESH SLIDER
+                                if (clientSwiper.autoplay) {
+                                    clientSwiper.autoplay.start();
+                                }
+                            }
+                        }, 100);
                     });
+                }, 500);
+            };
+
+            // --- FUNGSI TRANSISI HALAMAN DETAIL GALERI LAYANAN (BARU) ---
+            const showServiceDetailPage = (subGalleryId) => {
+                const data = subGalleryData[subGalleryId];
+                if (!data) return;
+                
+                const currentServicePage = document.getElementById(data.returnPage);
+                if (!currentServicePage) return;
+
+                returnToServicePageId = data.returnPage; // Simpan halaman asal
+                serviceDetailTitle.textContent = data.title;
+                serviceDetailGalleryGrid.innerHTML = '';
+                data.images.forEach((imgSrc, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    const img = document.createElement('img');
+                    img.src = imgSrc;
+                    img.alt = `${data.title} - Gambar ${index + 1}`;
+                    img.loading = 'lazy';
+                    img.addEventListener('click', () => openLightbox(imgSrc));
+                    item.appendChild(img);
+                    serviceDetailGalleryGrid.appendChild(item);
+                });
+
+                overlay.style.opacity = '1';
+                setTimeout(() => {
+                    currentServicePage.classList.add('hidden');
+                    serviceGalleryDetailPage.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                    overlay.style.opacity = '0';
+                }, 500);
+            };
+
+            const hideServiceDetailPage = () => {
+                const returnPage = document.getElementById(returnToServicePageId);
+                if (!returnPage) return;
+
+                overlay.style.opacity = '1';
+                setTimeout(() => {
+                    serviceGalleryDetailPage.classList.add('hidden');
+                    returnPage.classList.remove('hidden');
+                    window.scrollTo(0, 0);
+                    overlay.style.opacity = '0';
+                    returnToServicePageId = ''; // Reset ID
                 }, 500);
             };
 
 
             // --- Fungsi Lightbox ---
-            const openLightbox = (src) => {
-                lightboxImage.src = src;
-                lightbox.classList.remove('opacity-0', 'pointer-events-none');
-            };
+            const openLightbox = (src) => { lightboxImage.src = src; lightbox.classList.remove('opacity-0', 'pointer-events-none'); };
             const closeLightbox = () => { lightbox.classList.add('opacity-0', 'pointer-events-none'); };
             
             // --- Event Listeners ---
@@ -825,91 +1239,89 @@
                     if (clickedCard?.dataset.id) showDetailPage(clickedCard.dataset.id);
                 }
             });
-            backFromDetailBtn.addEventListener('click', hideDetailPage);
-            showAboutUsBtn.addEventListener('click', (e) => { e.preventDefault(); showAboutPage(); }); // Listener baru
-            if (backFromAboutBtn) { // Cek jika tombol masih ada
-                backFromAboutBtn.addEventListener('click', hideAboutPage); // Listener baru
-            }
+            backFromDetailBtn.addEventListener('click', () => hideDetailPage(true));
+            showAboutUsBtn.addEventListener('click', (e) => { e.preventDefault(); showServicePage('about-us-page'); }); 
+            
+            serviceGalleryBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => { e.preventDefault(); showServicePage(btn.dataset.target); });
+            });
+
+            // Listener untuk klik kartu galeri layanan (DIREVISI)
+            document.body.addEventListener('click', function(e) {
+                const card = e.target.closest('.service-detail-btn');
+                if (card && card.dataset.id) {
+                    const slide = card.closest('.swiper-slide');
+                    // Hanya buka halaman detail jika kartu yang diklik adalah kartu yang aktif (di tengah).
+                    // Jika tidak, slider akan otomatis bergeser ke kartu yang diklik.
+                    if (slide && slide.classList.contains('swiper-slide-active')) {
+                        showServiceDetailPage(card.dataset.id);
+                    }
+                }
+            });
+
+            backFromServiceDetailBtn.addEventListener('click', hideServiceDetailPage);
+
             closeLightboxBtn.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
             scrollLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     const targetId = this.getAttribute('href');
-                    // Hanya jalankan smooth scroll jika linknya bukan untuk page-switching
-                    if (targetId.startsWith('#') && targetId.length > 1 && !document.querySelector(targetId).classList.contains('page')) {
-                        e.preventDefault();
-                        if (!mainPage.classList.contains('hidden')) {
+                    
+                    // Filter out buttons that open specific pages, as they have their own dedicated listeners.
+                    const isPageOpener = this.id === 'show-about-us-btn' || this.classList.contains('service-gallery-btn');
+                    if (isPageOpener) return;
+                    
+                    if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+                         e.preventDefault();
+                         const activePage = document.querySelector('.page:not(#main-page):not(.hidden)');
+                         
+                         if (activePage) {
+                             // User is on a sub-page and wants to go back to the main page to scroll to a section.
+                             let transitionTime = 600; // Default for hideGenericPage
+                             
+                             // Special case: if on the deepest level (service gallery detail),
+                             // we must hide it AND its parent service page before showing main.
+                             if (activePage.id === 'service-gallery-detail-page') {
+                                 const parentPage = document.getElementById(returnToServicePageId);
+                                 if (parentPage) parentPage.classList.add('hidden');
+                                 hideGenericPage(activePage, false); // Hide the detail page, don't restore scroll
+                             } else if (activePage.id === 'portfolio-detail-page') {
+                                 hideDetailPage(false); // Hide portfolio, don't restore scroll
+                                 transitionTime = 1100; // Use longer time for this animation
+                             } else {
+                                 // This covers service pages (e.g., wedding) and the about us page.
+                                 hideGenericPage(activePage, false); // Hide the page, don't restore scroll
+                             }
+                             
+                             setTimeout(() => {
+                                 smoothScrollTo(targetId);
+                             }, transitionTime);
+                         } else {
+                            // Already on the main page, just scroll.
                             smoothScrollTo(targetId);
-                        } else {
-                             if (!portfolioDetailPage.classList.contains('hidden')) hideDetailPage();
-                             if (!aboutUsPage.classList.contains('hidden')) hideAboutPage();
-                             setTimeout(() => smoothScrollTo(targetId), 1100); 
-                        }
+                         }
                     }
                 });
             });
 
             // --- Logika Accordion di Halaman About Us ---
-            const toggleButtons = document.querySelectorAll('.toggle-btn');
-            toggleButtons.forEach(button => {
+            document.querySelectorAll('.toggle-btn').forEach(button => {
                 button.addEventListener('click', () => {
-                    const content = button.nextElementSibling;
-                    const icon = button.querySelector('.toggle-icon');
-                    const buttonText = button.querySelector('.toggle-text');
-
+                    const content = button.nextElementSibling; const icon = button.querySelector('.toggle-icon'); const buttonText = button.querySelector('.toggle-text');
                     if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-                        // Tutup
-                        content.style.maxHeight = '0px';
-                        content.classList.remove('opacity-100', 'pt-4', 'mt-4');
-                        content.classList.add('opacity-0');
-                        icon.classList.remove('rotate-180');
-                        buttonText.textContent = 'Lihat Selengkapnya';
+                        content.style.maxHeight = '0px'; content.classList.remove('opacity-100'); content.classList.add('opacity-0'); icon.classList.remove('rotate-180'); buttonText.textContent = 'Lihat Selengkapnya';
                     } else {
-                        // Buka (PERBAIKAN: Tambah buffer untuk mencegah teks terpotong)
-                        content.style.maxHeight = (content.scrollHeight + 10) + "px";
-                        content.classList.add('opacity-100', 'pt-4', 'mt-4');
-                        content.classList.remove('opacity-0');
-                        icon.classList.add('rotate-180');
-                        buttonText.textContent = 'Tutup';
+                        content.style.maxHeight = (content.scrollHeight + 10) + "px"; content.classList.add('opacity-100'); content.classList.remove('opacity-0'); icon.classList.add('rotate-180'); buttonText.textContent = 'Tutup';
                     }
                 });
             });
-
 
             // --- Mobile Menu Logic ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuOpenIcon = document.getElementById('menu-open-icon');
-            const menuCloseIcon = document.getElementById('menu-close-icon');
-            const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
-
-            const toggleMenu = () => {
-                mobileMenu.classList.toggle('hidden');
-                menuOpenIcon.classList.toggle('hidden');
-                menuCloseIcon.classList.toggle('hidden');
-            };
-
+            const mobileMenuButton = document.getElementById('mobile-menu-button'); const mobileMenu = document.getElementById('mobile-menu'); const menuOpenIcon = document.getElementById('menu-open-icon'); const menuCloseIcon = document.getElementById('menu-close-icon'); const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+            const toggleMenu = () => { mobileMenu.classList.toggle('hidden'); menuOpenIcon.classList.toggle('hidden'); menuCloseIcon.classList.toggle('hidden'); };
             mobileMenuButton.addEventListener('click', toggleMenu);
-
-            mobileMenuLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        toggleMenu();
-                    }
-                    const targetId = link.getAttribute('href');
-                    setTimeout(() => {
-                         if (!mainPage.classList.contains('hidden')) {
-                            smoothScrollTo(targetId);
-                        } else {
-                            if (!portfolioDetailPage.classList.contains('hidden')) hideDetailPage();
-                            if (!aboutUsPage.classList.contains('hidden')) hideAboutPage();
-                            setTimeout(() => smoothScrollTo(targetId), 1100); 
-                        }
-                    }, 300);
-                });
-            });
-
+            mobileMenuLinks.forEach(link => { link.addEventListener('click', (e) => { e.preventDefault(); if (!mobileMenu.classList.contains('hidden')) toggleMenu(); const targetId = link.getAttribute('href'); setTimeout(() => { const activePage = document.querySelector('.page:not(#main-page):not(.hidden)'); if (activePage) { if(activePage.id === 'portfolio-detail-page') hideDetailPage(); else if(activePage.id === 'service-gallery-detail-page') hideServiceDetailPage(); else hideGenericPage(activePage); setTimeout(() => smoothScrollTo(targetId), 1100); } else { smoothScrollTo(targetId); } }, 300); }); });
 
             // --- SIMULASI BUBBLE MATTER.JS (REFACTORED FOR STABILITY) ---
             const { Engine, Render, Runner, World, Bodies, Mouse, MouseConstraint, Events, Constraint } = Matter;
@@ -920,138 +1332,55 @@
                 if (matterRender && matterRender.canvas) matterRender.canvas.remove();
                 if (matterRunner) Runner.stop(matterRunner);
                 if (matterRender) Render.stop(matterRender);
-                if (matterEngine) {
-                    World.clear(matterEngine.world);
-                    Engine.clear(matterEngine);
-                }
-                if (container) {
-                    container.innerHTML = '';
-                    container.removeAttribute('data-initialized');
-                }
+                if (matterEngine) { World.clear(matterEngine.world); Engine.clear(matterEngine); }
+                if (container) { container.innerHTML = ''; container.removeAttribute('data-initialized'); }
             };
 
             const initBubbleSimulation = (container) => {
                 if (!container || container.dataset.initialized) return;
                 container.dataset.initialized = 'true';
-                
                 const words = ['Profesional', 'Kreatif', 'Cepat', 'Terpercaya', 'Memukau', 'Sinematik', 'Berpengalaman', 'Inovatif', 'Responsif', 'Bercerita'];
-                
-                matterEngine = Engine.create();
-                const world = matterEngine.world;
-                matterEngine.world.gravity.y = 0.1;
-
-                const containerWidth = container.clientWidth;
-                const containerHeight = container.clientHeight;
-                lastCanvasWidth = containerWidth; // Store width for intelligent resize
-
-                matterRender = Render.create({ element: container, engine: matterEngine, options: { width: containerWidth, height: containerHeight, wireframes: false, background: 'transparent' } });
-                Render.run(matterRender);
-                
-                matterRunner = Runner.create();
-                Runner.run(matterRunner, matterEngine);
-
+                matterEngine = Engine.create(); const world = matterEngine.world; matterEngine.world.gravity.y = 0.1;
+                const containerWidth = container.clientWidth; const containerHeight = container.clientHeight; lastCanvasWidth = containerWidth;
+                matterRender = Render.create({ element: container, engine: matterEngine, options: { width: containerWidth, height: containerHeight, wireframes: false, background: 'transparent' } }); Render.run(matterRender);
+                matterRunner = Runner.create(); Runner.run(matterRunner, matterEngine);
                 const wallOptions = { isStatic: true, render: { visible: false } };
                 World.add(world, [ Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions), Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions) ]);
-                const allItemsToRender = [];
-                const titleBodies = [];
-                const titleProperties = [];
-                const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
+                const allItemsToRender = []; const titleBodies = []; const titleProperties = []; const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
                 titleParts.forEach((part, index) => {
                     const isMobile = containerWidth < 768;
                     const fontSize = isMobile ? `bold ${Math.min(containerWidth / 15, 36)}px Poppins` : `bold ${Math.min(containerWidth / 20, 48)}px Poppins`;
-                    const titleWidth = part.length * (isMobile ? 15 : 20) + (isMobile ? 60 : 80);
-                    const titleHeight = isMobile ? 60 : 80;
+                    const titleWidth = part.length * (isMobile ? 15 : 20) + (isMobile ? 60 : 80); const titleHeight = isMobile ? 60 : 80;
                     let xPos, yPos;
                     if (isMobile) { xPos = containerWidth / 2; yPos = 80 + index * 90; } else { xPos = (containerWidth / (titleParts.length + 1)) * (index + 1); yPos = 80; if (index === 1) yPos = 150; }
                     const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, { chamfer: { radius: isMobile ? 15 : 20 }, isStatic: false, density: 0.005, render: { fillStyle: 'transparent' }, customText: part, customFontSize: fontSize, customFillStyle: '#e6f1ff' });
-                    titleBodies.push(titleBody);
-                    titleProperties.push({width: titleWidth, height: titleHeight, x: xPos, y: yPos});
-                    allItemsToRender.push(titleBody);
+                    titleBodies.push(titleBody); titleProperties.push({width: titleWidth, height: titleHeight, x: xPos, y: yPos}); allItemsToRender.push(titleBody);
                 });
                 World.add(world, titleBodies);
                 if (containerWidth < 768) {
-                    const anchorTopX = containerWidth / 2;
-                    const anchorTopY = 0;
-                    const constraintTop = Constraint.create({
-                        bodyA: titleBodies[0],
-                        pointA: { x: 0, y: -titleProperties[0].height / 4 },
-                        pointB: { x: anchorTopX, y: anchorTopY },
-                        stiffness: 0.1,
-                        length: 60,
-                        render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 }
-                    });
-                    World.add(world, [constraintTop]);
-                    const constraintMid = Constraint.create({ bodyA: titleBodies[1], pointA: { x: 0, y: -titleProperties[1].height / 4 }, bodyB: titleBodies[0], pointB: { x: 0, y: titleProperties[0].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, constraintMid);
-                    const constraintBottom = Constraint.create({ bodyA: titleBodies[2], pointA: { x: 0, y: -titleProperties[2].height / 4 }, bodyB: titleBodies[1], pointB: { x: 0, y: titleProperties[1].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, constraintBottom);
+                    const anchorTopX = containerWidth / 2; const anchorTopY = 0;
+                    const constraintTop = Constraint.create({ bodyA: titleBodies[0], pointA: { x: 0, y: -titleProperties[0].height / 4 }, pointB: { x: anchorTopX, y: anchorTopY }, stiffness: 0.1, length: 60, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, [constraintTop]);
+                    const constraintMid = Constraint.create({ bodyA: titleBodies[1], pointA: { x: 0, y: -titleProperties[1].height / 4 }, bodyB: titleBodies[0], pointB: { x: 0, y: titleProperties[0].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, constraintMid);
+                    const constraintBottom = Constraint.create({ bodyA: titleBodies[2], pointA: { x: 0, y: -titleProperties[2].height / 4 }, bodyB: titleBodies[1], pointB: { x: 0, y: titleProperties[1].height / 4 }, stiffness: 0.1, length: 50, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, constraintBottom);
                 } else {
-                    const halfWidth = containerWidth / 2;
-                    const point1_x = halfWidth - Math.min(halfWidth * 0.7, 350);
-                    const point2_x = halfWidth - Math.min(halfWidth * 0.2, 80);
-                    const point3_x = halfWidth + Math.min(halfWidth * 0.7, 350);
-                    const anchorOffset1 = titleProperties[0].width / 2 - 20;
-                    const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: point1_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: point2_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, [constraint1A, constraint1B]);
-                    const anchorOffset3 = titleProperties[2].width / 2 - 20;
-                    const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: point3_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, [constraint3B]);
-                    const constraint2A = Constraint.create({ bodyA: titleBodies[1], pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, bodyB: titleBodies[0], pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    const constraint2B = Constraint.create({ bodyA: titleBodies[1], pointA: { x: titleProperties[1].width / 2 - 20, y: 0 }, bodyB: titleBodies[2], pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } });
-                    World.add(world, [constraint2A, constraint2B]);
+                    const halfWidth = containerWidth / 2; const point1_x = halfWidth - Math.min(halfWidth * 0.7, 350); const point2_x = halfWidth - Math.min(halfWidth * 0.2, 80); const point3_x = halfWidth + Math.min(halfWidth * 0.7, 350);
+                    const anchorOffset1 = titleProperties[0].width / 2 - 20; const constraint1A = Constraint.create({ bodyA: titleBodies[0], pointA: { x: -anchorOffset1, y: 0 }, pointB: { x: point1_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); const constraint1B = Constraint.create({ bodyA: titleBodies[0], pointA: { x: anchorOffset1, y: 0 }, pointB: { x: point2_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, [constraint1A, constraint1B]);
+                    const anchorOffset3 = titleProperties[2].width / 2 - 20; const constraint3B = Constraint.create({ bodyA: titleBodies[2], pointA: { x: anchorOffset3, y: 0 }, pointB: { x: point3_x, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, [constraint3B]);
+                    const constraint2A = Constraint.create({ bodyA: titleBodies[1], pointA: { x: -titleProperties[1].width / 2 + 20, y: 0 }, bodyB: titleBodies[0], pointB: { x: titleProperties[0].width / 2 - 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); const constraint2B = Constraint.create({ bodyA: titleBodies[1], pointA: { x: titleProperties[1].width / 2 - 20, y: 0 }, bodyB: titleBodies[2], pointB: { x: -titleProperties[2].width / 2 + 20, y: 0 }, stiffness: 0.02, length: 80, render: { strokeStyle: 'rgba(250, 204, 21, 0.5)', lineWidth: 2 } }); World.add(world, [constraint2A, constraint2B]);
                 }
-                words.forEach((word) => {
-                    const textWidth = word.length * 10 + 40;
-                    const rectHeight = 50;
-                    const bubble = Bodies.rectangle( Math.random() * (containerWidth - textWidth) + textWidth / 2, Math.random() * (containerHeight - rectHeight - 250) + rectHeight / 2 + 200, textWidth, rectHeight, { chamfer: { radius: 25 }, restitution: 0.5, friction: 0.3, density: 0.001, render: { fillStyle: '#facc15' }, customText: word, customFontSize: 'bold 16px Poppins', customFillStyle: '#0a192f' } );
-                    World.add(world, bubble);
-                    allItemsToRender.push(bubble);
-                });
-                const mouse = Mouse.create(matterRender.canvas);
-                const mouseConstraint = MouseConstraint.create(matterEngine, { mouse: mouse, constraint: { stiffness: 0.005, render: { visible: false } } });
-                mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
-                mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
-                World.add(world, mouseConstraint);
-                matterRender.mouse = mouse;
-                Events.on(matterRender, 'afterRender', () => {
-                    const context = matterRender.context;
-                    context.textAlign = 'center';
-                    context.textBaseline = 'middle';
-                    allItemsToRender.forEach(item => { if (item && item.customText) { context.font = item.customFontSize; context.fillStyle = item.customFillStyle; context.save(); context.translate(item.position.x, item.position.y); context.rotate(item.angle); context.fillText(item.customText, 0, 0); context.restore(); } });
-                });
+                words.forEach((word) => { const textWidth = word.length * 10 + 40; const rectHeight = 50; const bubble = Bodies.rectangle( Math.random() * (containerWidth - textWidth) + textWidth / 2, Math.random() * (containerHeight - rectHeight - 250) + rectHeight / 2 + 200, textWidth, rectHeight, { chamfer: { radius: 25 }, restitution: 0.5, friction: 0.3, density: 0.001, render: { fillStyle: '#facc15' }, customText: word, customFontSize: 'bold 16px Poppins', customFillStyle: '#0a192f' } ); World.add(world, bubble); allItemsToRender.push(bubble); });
+                const mouse = Mouse.create(matterRender.canvas); const mouseConstraint = MouseConstraint.create(matterEngine, { mouse: mouse, constraint: { stiffness: 0.005, render: { visible: false } } }); mouse.element.removeEventListener("mousewheel", mouse.mousewheel); mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel); World.add(world, mouseConstraint); matterRender.mouse = mouse;
+                Events.on(matterRender, 'afterRender', () => { const context = matterRender.context; context.textAlign = 'center'; context.textBaseline = 'middle'; allItemsToRender.forEach(item => { if (item && item.customText) { context.font = item.customFontSize; context.fillStyle = item.customFillStyle; context.save(); context.translate(item.position.x, item.position.y); context.rotate(item.angle); context.fillText(item.customText, 0, 0); context.restore(); } }); });
             };
 
-            // Global resize handler to prevent re-initialization on mobile scroll
             let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    const container = document.getElementById('bubble-canvas-container');
-                    if (!container) return;
-                    
-                    const newContainerWidth = container.clientWidth;
-                    if (lastCanvasWidth && Math.abs(newContainerWidth - lastCanvasWidth) > 10) {
-                        destroyBubbleSimulation();
-                        initBubbleSimulation(container);
-                    }
-                }, 250);
-            });
-
-            const waitForElement = (selector) => {
-                return new Promise(resolve => {
-                    const element = document.querySelector(selector);
-                    if (element && element.clientWidth > 0) return resolve(element);
-                    const observer = new ResizeObserver(entries => { if (entries[0].target.clientWidth > 0) { observer.disconnect(); resolve(entries[0].target); } });
-                    if (element) observer.observe(element);
-                });
-            };
-            
-            waitForElement('#bubble-canvas-container').then(container => {
-                initBubbleSimulation(container);
-            });
+            window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { const container = document.getElementById('bubble-canvas-container'); if (!container) return; const newContainerWidth = container.clientWidth; if (lastCanvasWidth && Math.abs(newContainerWidth - lastCanvasWidth) > 10) { destroyBubbleSimulation(); initBubbleSimulation(container); } }, 250); });
+            const waitForElement = (selector) => { return new Promise(resolve => { const element = document.querySelector(selector); if (element && element.clientWidth > 0) return resolve(element); const observer = new ResizeObserver(entries => { if (entries[0].target.clientWidth > 0) { observer.disconnect(); resolve(entries[0].target); } }); if (element) observer.observe(element); }); };
+            waitForElement('#bubble-canvas-container').then(container => { initBubbleSimulation(container); });
         });
     </script>
 </body>
 </html>
+
+
 
