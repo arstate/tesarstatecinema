@@ -80,6 +80,8 @@
         .page {
             transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
             position: relative; z-index: 1;
+            width: 100%; /* Memastikan lebar halaman tidak melebihi viewport */
+            overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
         }
         .page.hidden {
             opacity: 0; transform: translateY(80px);
@@ -127,6 +129,20 @@
         #portfolio-detail-page.is-animating-out .detail-anim { transition: transform 1s cubic-bezier(0.6, -0.28, 0.735, 0.045), opacity 0.8s ease-out; }
         #portfolio-detail-page.is-animating-out .detail-text-anim { transform: translateY(-100%); opacity: 0 !important; }
         #portfolio-detail-page.is-animating-out .detail-gallery-anim { transform: translateY(100%); opacity: 0 !important; }
+
+        /* BUG FIX: Mencegah "lompatan" layout saat transisi halaman (TARGETING <html>) */
+        html.is-transitioning {
+            overflow: hidden;
+            padding-right: var(--scrollbar-width, 0px); /* Fallback ke 0px */
+        }
+        html.is-transitioning #navbar {
+             padding-right: var(--scrollbar-width, 0px); /* Fallback ke 0px */
+        }
+
+        /* PERBAIKAN BUG: Mencegah "scrollbar hantu" di halaman utama saat transisi */
+        html.is-transitioning #main-page {
+            overflow: hidden !important;
+        }
 
         /* --- STYLING GALERI GRID DETAIL --- */
         #detail-gallery-grid, #service-detail-gallery-grid {
@@ -673,7 +689,16 @@
                                 <div class="pt-4 pb-2 border-t border-blue-800/50">
                                     <p class="text-base md:text-lg mb-4">Temukan kami di lokasi yang strategis di Sidoarjo.</p>
                                     <div class="rounded-lg overflow-hidden border-2 border-yellow-400/30 shadow-lg">
-                                        <div class="embed-map-responsive"><div class="embed-map-container"><iframe class="embed-map-frame" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=600&height=400&hl=en&q=arstate%20cinema&t=&z=14&ie=UTF8&iwloc=B&output=embed"></iframe><a href="https://sprunkiretake.net" style="font-size:2px!important;color:gray!important;position:absolute;bottom:0;left:0;z-index:1;max-height:1px;overflow:hidden">sprunki retake</a></div><style>.embed-map-responsive{position:relative;text-align:right;width:100%;height:0;padding-bottom:66.66666666666666%;}.embed-map-container{overflow:hidden;background:none!important;width:100%;height:100%;position:absolute;top:0;left:0;}.embed-map-frame{width:100%!important;height:100%!important;position:absolute;top:0;left:0;}</style></div>
+                                        <div class="embed-map-responsive">
+                                            <div class="embed-map-container">
+                                                <iframe class="embed-map-frame" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.google.com/maps/embed/v1/place?q=arstate%20cinema&key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8"></iframe>
+                                            </div>
+                                            <style>
+                                                .embed-map-responsive{position:relative;text-align:right;width:100%;height:0;padding-bottom:75%;}
+                                                .embed-map-container{overflow:hidden;background:none!important;width:100%;height:100%;position:absolute;top:0;left:0;}
+                                                .embed-map-frame{width:100%!important;height:100%!important;position:absolute;top:0;left:0;border:0;}
+                                            </style>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -978,6 +1003,28 @@
             const lightboxImage = document.getElementById('lightbox-image');
             const closeLightboxBtn = document.getElementById('close-lightbox');
 
+            // --- BUG FIX HELPERS: SCROLL LOCK UNTUK TRANSISI HALUS (METODE FINAL & LEBIH STABIL) ---
+            const htmlEl = document.documentElement; // Target <html>, bukan <body>
+            const getScrollbarWidth = () => window.innerWidth - document.documentElement.clientWidth;
+            
+            // Atur CSS variable untuk lebar scrollbar, dan update saat window di-resize
+            htmlEl.style.setProperty('--scrollbar-width', `${getScrollbarWidth()}px`);
+            window.addEventListener('resize', () => {
+                 htmlEl.style.setProperty('--scrollbar-width', `${getScrollbarWidth()}px`);
+            });
+
+            const lockScroll = () => {
+                // Hanya kunci jika ada scrollbar untuk menghindari penambahan padding yang tidak perlu
+                if (getScrollbarWidth() > 0) {
+                    htmlEl.classList.add('is-transitioning');
+                }
+            };
+            
+            const unlockScroll = () => {
+                htmlEl.classList.remove('is-transitioning');
+            };
+
+
             // --- LOGIKA RE-INISIALISASI SWIPER (PERBAIKAN BUG) ---
             let swiper; // Deklarasikan variabel swiper di scope yang lebih tinggi
 
@@ -1105,6 +1152,7 @@
             const showDetailPage = (portfolioId) => {
                 const data = portfolioData[portfolioId];
                 if (!data) return;
+                lockScroll(); // Kunci scrollbar di awal
                 lastScrollPosition = window.scrollY;
                 detailCategory.textContent = data.category;
                 detailTitle.textContent = data.title;
@@ -1131,11 +1179,13 @@
                         overlay.style.opacity = '0';
                         requestAnimationFrame(() => portfolioDetailPage.classList.add('visible'));
                         mainPage.classList.remove('is-animating-out');
+                        setTimeout(unlockScroll, 500); // Buka kunci setelah animasi selesai
                     }, 500);
                 }, 1100);
             };
 
             const hideDetailPage = (restoreScroll = true) => {
+                lockScroll(); // Kunci scrollbar di awal
                 portfolioSection.classList.add('slider-interactions-disabled');
                 overlay.style.opacity = '1';
                 portfolioDetailPage.classList.add('is-animating-out');
@@ -1158,7 +1208,8 @@
                             scheduleAutoplayRestart();
                             // Client swiper restart logic removed
                             portfolioSection.classList.remove('slider-interactions-disabled');
-                        }, 100);
+                            unlockScroll(); // Buka kunci di akhir
+                        }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
                     });
                 }, 1000);
             };
@@ -1167,6 +1218,7 @@
             const showServicePage = (pageId) => {
                 const targetPage = document.getElementById(pageId);
                 if (!targetPage) return;
+                lockScroll(); // Kunci scrollbar di awal
                 lastScrollPosition = window.scrollY;
                 mainPage.classList.add('is-animating-out');
                 setTimeout(() => {
@@ -1177,11 +1229,13 @@
                         window.scrollTo(0, 0);
                         overlay.style.opacity = '0';
                         mainPage.classList.remove('is-animating-out');
+                        setTimeout(unlockScroll, 500); // Buka kunci setelah animasi
                     }, 500);
                 }, 1100);
             };
 
             const hideGenericPage = (pageElement, restoreScroll = true) => {
+                 lockScroll(); // Kunci scrollbar di awal
                  overlay.style.opacity = '1';
                  setTimeout(() => {
                     pageElement.classList.add('hidden');
@@ -1200,7 +1254,8 @@
                             initSwiper();
                             scheduleAutoplayRestart();
                              // Client swiper restart logic removed
-                        }, 100);
+                            unlockScroll(); // Buka kunci di akhir
+                        }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
                     });
                 }, 500);
             };
@@ -1213,6 +1268,7 @@
                 const currentServicePage = document.getElementById(data.returnPage);
                 if (!currentServicePage) return;
 
+                lockScroll(); // Kunci scrollbar di awal
                 returnToServicePageId = data.returnPage; // Simpan halaman asal
                 serviceDetailTitle.textContent = data.title;
                 serviceDetailGalleryGrid.innerHTML = '';
@@ -1234,6 +1290,7 @@
                     serviceGalleryDetailPage.classList.remove('hidden');
                     window.scrollTo(0, 0);
                     overlay.style.opacity = '0';
+                    setTimeout(unlockScroll, 500); // Buka kunci setelah animasi
                 }, 500);
             };
 
@@ -1241,6 +1298,7 @@
                 const returnPage = document.getElementById(returnToServicePageId);
                 if (!returnPage) return;
 
+                lockScroll(); // Kunci scrollbar di awal
                 overlay.style.opacity = '1';
                 setTimeout(() => {
                     serviceGalleryDetailPage.classList.add('hidden');
@@ -1248,6 +1306,7 @@
                     window.scrollTo(0, 0);
                     overlay.style.opacity = '0';
                     returnToServicePageId = ''; // Reset ID
+                    setTimeout(unlockScroll, 500); // Buka kunci setelah animasi
                 }, 500);
             };
 
@@ -1406,6 +1465,13 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
