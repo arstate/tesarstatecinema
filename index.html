@@ -1035,7 +1035,7 @@
                 slidesPerView: 1.5, 
                 centeredSlides: true, 
                 grabCursor: true, 
-                slideToClickedSlide: true, 
+                slideToClickedSlide: false, // DIREVISI: dinonaktifkan untuk kontrol manual
                 speed: 800,
                 observer: true,
                 observeParents: true,
@@ -1121,7 +1121,8 @@
             };
             initServiceGalleries();
 
-            // --- Navbar Hide/Show on Scroll ---
+            // --- Navbar Hide/Show on Scroll (DIHAPUS) ---
+            /*
             const navbar = document.getElementById('navbar');
             let lastScrollTop = 0;
             window.addEventListener('scroll', function() {
@@ -1133,6 +1134,7 @@
                 }
                 lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
             }, false);
+            */
 
             // --- Fungsi Smooth Scroll ---
             const smoothScrollTo = (targetSelector, duration = 1300) => {
@@ -1341,9 +1343,20 @@
             // --- Event Listeners ---
             swiperWrapper.addEventListener('click', (e) => {
                 const clickedSlide = e.target.closest('.swiper-slide');
-                if (clickedSlide && clickedSlide.classList.contains('swiper-slide-active')) {
+                if (!clickedSlide) return;
+
+                if (clickedSlide.classList.contains('swiper-slide-active')) {
+                    // Jika kartu yang aktif (di tengah) diklik, buka halaman detail
                     const clickedCard = clickedSlide.querySelector('.portfolio-card');
-                    if (clickedCard?.dataset.id) showDetailPage(clickedCard.dataset.id);
+                    if (clickedCard?.dataset.id) {
+                        showDetailPage(clickedCard.dataset.id);
+                    }
+                } else {
+                    // Jika kartu di samping yang diklik, geser slider ke kartu tersebut
+                    const slideIndex = parseInt(clickedSlide.dataset.swiperSlideIndex, 10);
+                    if (swiper && typeof swiper.slideToLoop === 'function' && !isNaN(slideIndex)) {
+                        swiper.slideToLoop(slideIndex);
+                    }
                 }
             });
             backFromDetailBtn.addEventListener('click', () => hideDetailPage(true));
@@ -1488,5 +1501,8 @@
     </script>
 </body>
 </html>
+"
 
+I have selected the whole document.
+buat navbar jika di scroll ke atas tetap ada jangan hilang
 
