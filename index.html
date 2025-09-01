@@ -363,6 +363,15 @@
             min-width: calc(100vh * 16 / 9);
             transform: translate(-50%, -50%);
         }
+        
+        /* Efek Hover untuk Frame di Halaman Tentang Kami */
+        .interactive-frame {
+            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+        .interactive-frame:hover {
+            border-color: rgba(250, 204, 21, 0.4);
+            box-shadow: 0 0 25px rgba(250, 204, 21, 0.15);
+        }
 
         /* Sembunyikan di perangkat mobile */
         @media (pointer: coarse) {
@@ -617,11 +626,10 @@
                         </div>
 
                         <!-- Bagian Visi (Collapsible) -->
-                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800 interactive-frame">
                             <button class="toggle-btn w-full flex justify-between items-center text-left">
                                 <h3 class="text-xl md:text-2xl font-bold text-gradient">Visi</h3>
                                 <div class="flex items-center text-yellow-400">
-                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                                 </div>
                             </button>
@@ -631,11 +639,10 @@
                         </div>
 
                         <!-- Bagian Misi (Collapsible) -->
-                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800 interactive-frame">
                              <button class="toggle-btn w-full flex justify-between items-center text-left">
                                 <h3 class="text-xl md:text-2xl font-bold text-gradient">Misi</h3>
                                 <div class="flex items-center text-yellow-400">
-                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                                 </div>
                             </button>
@@ -650,11 +657,10 @@
                         </div>
                         
                         <!-- Bagian Layanan (Collapsible) -->
-                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800 interactive-frame">
                             <button class="toggle-btn w-full flex justify-between items-center text-left">
                                 <h3 class="text-xl md:text-2xl font-bold text-gradient">Layanan yang Ditawarkan</h3>
                                 <div class="flex items-center text-yellow-400">
-                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                                 </div>
                             </button>
@@ -667,7 +673,7 @@
                             </div>
                         </div>
                         
-                        <div class="bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                        <div class="bg-blue-900/20 p-4 rounded-2xl border border-blue-800 interactive-frame">
                             <h3 class="text-xl md:text-2xl font-bold text-gradient mb-4">Informasi Kontak</h3>
                              <ul class="space-y-2 text-base md:text-lg">
                                 <li><strong>WhatsApp:</strong> 0896-1732-3344</li>
@@ -676,15 +682,13 @@
                                 <li><strong>Instagram:</strong> @arstate.cinema</li>
                                 <li><strong>TikTok:</strong> @arstatecinema</li>
                              </ul>
-                             <p class="mt-4 text-base md:text-lg">ARSTATE CINEMA kami melayani klien di seluruh wilayah Sidoarjo - Surabaya dan sekitarnya.</p>
                         </div>
 
                         <!-- Bagian Alamat Kantor (Collapsible) -->
-                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800">
+                        <div class="collapsible-section bg-blue-900/20 p-4 rounded-2xl border border-blue-800 interactive-frame">
                              <button class="toggle-btn w-full flex justify-between items-center text-left">
                                 <h3 class="text-xl md:text-2xl font-bold text-gradient">Alamat Kantor</h3>
                                 <div class="flex items-center text-yellow-400">
-                                    <span class="toggle-text mr-2 text-sm font-semibold">Lihat Selengkapnya</span>
                                     <svg class="toggle-icon w-5 h-5 transition-transform duration-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
                                 </div>
                             </button>
@@ -1218,7 +1222,8 @@
                             // PERBAIKAN: Refresh video background
                             const videoIframe = document.getElementById('hero-video-iframe');
                             if (videoIframe) {
-                                videoIframe.src = videoIframe.src;
+                                const videoSrc = videoIframe.src;
+                                videoIframe.src = videoSrc; // Ini akan memuat ulang iframe
                             }
 
                             unlockScroll(); // Buka kunci di akhir
@@ -1275,8 +1280,9 @@
 
                             // PERBAIKAN: Refresh video background
                             const videoIframe = document.getElementById('hero-video-iframe');
-                            if (videoIframe) {
-                                videoIframe.src = videoIframe.src;
+                             if (videoIframe) {
+                                const videoSrc = videoIframe.src;
+                                videoIframe.src = videoSrc; // Ini akan memuat ulang iframe
                             }
 
                             unlockScroll(); // Buka kunci di akhir
@@ -1428,11 +1434,18 @@
             // --- Logika Accordion di Halaman About Us ---
             document.querySelectorAll('.toggle-btn').forEach(button => {
                 button.addEventListener('click', () => {
-                    const content = button.nextElementSibling; const icon = button.querySelector('.toggle-icon'); const buttonText = button.querySelector('.toggle-text');
+                    const content = button.nextElementSibling; 
+                    const icon = button.querySelector('.toggle-icon');
                     if (content.style.maxHeight && content.style.maxHeight !== '0px') {
-                        content.style.maxHeight = '0px'; content.classList.remove('opacity-100'); content.classList.add('opacity-0'); icon.classList.remove('rotate-180'); buttonText.textContent = 'Lihat Selengkapnya';
+                        content.style.maxHeight = '0px'; 
+                        content.classList.remove('opacity-100'); 
+                        content.classList.add('opacity-0'); 
+                        icon.classList.remove('rotate-180');
                     } else {
-                        content.style.maxHeight = (content.scrollHeight + 10) + "px"; content.classList.add('opacity-100'); content.classList.remove('opacity-0'); icon.classList.add('rotate-180'); buttonText.textContent = 'Tutup';
+                        content.style.maxHeight = (content.scrollHeight + 10) + "px"; 
+                        content.classList.add('opacity-100'); 
+                        content.classList.remove('opacity-0'); 
+                        icon.classList.add('rotate-180');
                     }
                 });
             });
