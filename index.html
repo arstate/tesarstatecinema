@@ -17,10 +17,11 @@
             background-color: #0a192f; /* Biru Navy Gelap */
             color: #e6f1ff; /* Teks Putih Kebiruan */
             overflow-x: hidden; /* Mencegah scroll horizontal selama animasi */
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out; /* Transisi Tema */
         }
 
         /* Scrollbar Halaman dibuat transparan */
-        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
             background-color: var(--accent-yellow);
@@ -40,6 +41,7 @@
             background: linear-gradient(90deg, var(--accent-yellow), #f59e0b);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text; text-fill-color: transparent;
+            transition: background 0.5s ease-in-out; /* Transisi Tema */
         }
 
         /* Styling Tombol */
@@ -64,6 +66,7 @@
         .portfolio-card .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to top, rgba(10, 25, 47, 0.95), rgba(10, 25, 47, 0.1));
+            transition: background 0.5s ease-in-out; /* Transisi Tema */
         }
         .portfolio-card .card-content {
             position: absolute; bottom: 0; left: 0; width: 100%; padding: 1.5rem;
@@ -77,7 +80,7 @@
         
         /* Transisi Halaman */
         .page {
-            transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.5s ease-in-out; /* Transisi Tema */
             position: relative; z-index: 1;
             width: 100%; /* Memastikan lebar halaman tidak melebihi viewport */
             overflow-x: hidden; /* Mencegah scroll horizontal yang tidak diinginkan */
@@ -209,6 +212,7 @@
         .service-gallery-card .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to top, rgba(10, 25, 47, 0.8), rgba(10, 25, 47, 0.0));
+            transition: background 0.5s ease-in-out; /* Transisi Tema */
         }
         .service-gallery-card .card-content {
             position: absolute;
@@ -365,7 +369,7 @@
         
         /* Efek Hover untuk Frame di Halaman Tentang Kami */
         .interactive-frame {
-            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.5s ease-in-out; /* Transisi Tema */
         }
         .interactive-frame:hover {
             border-color: rgba(250, 204, 21, 0.4);
@@ -378,14 +382,39 @@
                 display: none;
             }
         }
+        
+        /* Transisi Tema Global (BARU) */
+        #clients, #featured-portfolio, footer, #services .grid > div, .collapsible-section, #mobile-menu {
+            transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+        }
+        h2, h3, p, li, span, .mobile-menu-link {
+            transition: color 0.5s ease-in-out;
+        }
+        /* Transisi default untuk elemen navbar (digunakan untuk hover, dll.) */
+        #brand-logo, #brand-logo span, #navbar a, #mobile-menu-button svg, #theme-toggle, #navbar .btn-secondary {
+             transition: color 0.2s ease-out, border-color 0.2s ease-out, background-color 0.2s ease-out;
+        }
+        /* Override transisi elemen navbar HANYA saat tema berganti, dengan jeda */
+        body.theme-is-changing #navbar a,
+        body.theme-is-changing #brand-logo,
+        body.theme-is-changing #brand-logo span,
+        body.theme-is-changing #mobile-menu-button svg,
+        body.theme-is-changing #theme-toggle,
+        body.theme-is-changing #navbar .btn-secondary {
+            transition: color 0.4s ease-in-out 0.25s, border-color 0.4s ease-in-out 0.25s;
+        }
+        #navbar a:hover {
+             color: var(--accent-yellow); /* Jaga warna hover tetap instan saat tidak berganti tema */
+        }
+        body.light-mode #navbar a:hover {
+            color: #1e3a8a; /* Jaga warna hover tetap instan saat tidak berganti tema */
+        }
+
 
         /* --- Gaya Mode Terang --- */
         body.light-mode {
             background-color: #f8fafc; /* Abu-abu Sangat Terang */
             color: var(--navy-blue); /* Biru Navy */
-        }
-        body.light-mode #navbar {
-            background-color: rgba(250, 204, 21, 0.9); /* Kuning Transparan */
         }
         body.light-mode #navbar a, 
         body.light-mode #brand-logo,
@@ -395,9 +424,6 @@
         }
         body.light-mode #brand-logo span {
             color: var(--navy-blue);
-        }
-        body.light-mode #navbar a:hover {
-            color: #1e3a8a; /* Biru Lebih Gelap saat hover */
         }
         body.light-mode #mobile-menu {
             background-color: rgba(250, 204, 21, 0.9);
@@ -472,9 +498,79 @@
             box-shadow: 0 0 25px rgba(10, 25, 47, 0.15);
         }
         body.light-mode .collapsible-content { border-top-color: rgba(10, 25, 47, 0.2); }
+
+        /* --- Animasi Transisi Tema --- */
+        /* Sembunyikan SVG filter */
+        .hidden-svg-filter {
+            position: absolute;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+        /* Wrapper untuk efek liquid */
+        #navbar {
+            /* Membuat stacking context baru agar z-index anak berfungsi relatif terhadap navbar */
+            isolation: isolate;
+        }
+        #navbar > .container {
+            /* Pastikan konten navbar (logo, link) selalu di atas animasi */
+            position: relative;
+            z-index: 2;
+        }
+        #theme-transition-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            /* z-index -1 menempatkan wrapper di belakang konten navbar di dalam stacking context yang sama */
+            z-index: -1;
+        }
+        #theme-transition-circle {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+        }
+        
+        /* --- Animasi Ikon Tema (BARU) --- */
+        #theme-toggle {
+            position: relative;
+            /* Dimensi tombol untuk menampung ikon absolut */
+            width: 2.5rem; /* w-6 (1.5rem) + p-2 (0.5rem * 2) */
+            height: 2.5rem;
+        }
+        #theme-toggle svg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.4s ease-in-out; /* Transisi default tanpa jeda */
+        }
+        
+        /* State Awal (Dark Mode) - Sun icon tidak terlihat */
+        #theme-toggle-sun-icon { opacity: 0; pointer-events: none; }
+        #theme-toggle-moon-icon { opacity: 1; }
+
+        /* State Akhir (Light Mode) - Moon icon tidak terlihat */
+        body.light-mode #theme-toggle-sun-icon { opacity: 1; pointer-events: auto; }
+        body.light-mode #theme-toggle-moon-icon { opacity: 0; pointer-events: none; }
+
     </style>
 </head>
 <body class="antialiased">
+
+    <!-- Filter SVG untuk efek liquid (gooey) -->
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="hidden-svg-filter">
+      <defs>
+        <filter id="gooey">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+          <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+          <feBlend in="SourceGraphic" in2="goo" />
+        </filter>
+      </defs>
+    </svg>
 
     <!-- Efek Kucing Pengikut Kursor -->
     <canvas id="rope-canvas"></canvas>
@@ -485,20 +581,20 @@
     <!-- Container Utama -->
     <div id="app-container">
         
-        <div id="page-transition-overlay" class="fixed top-0 left-0 w-full h-full bg-[#0a192f] opacity-0 pointer-events-none z-40" style="transition: opacity 0.5s ease-in-out;"></div>
+        <div id="page-transition-overlay" class="fixed top-0 left-0 w-full h-full bg-[#0a192f] opacity-0 pointer-events-none z-40" style="transition: opacity 0.5s ease-in-out, background-color 0.5s ease-in-out;"></div>
         
         <header class="fixed top-0 left-0 right-0 z-50 bg-[#0a192f]/90 backdrop-blur-sm" id="navbar">
             <div class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <a href="#hero" id="brand-logo" class="text-2xl font-bold text-white">Arstate <span class="text-yellow-400">Cinema</span></a>
                 <div class="flex items-center">
                     <nav class="hidden md:flex items-center space-x-8">
-                        <a href="#hero" class="text-slate-300 hover:text-yellow-400 transition">Beranda</a>
-                        <a href="#services" class="text-slate-300 hover:text-yellow-400 transition">Layanan</a>
-                        <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition">Portofolio</a>
+                        <a href="#hero" class="text-slate-300 hover:text-yellow-400">Beranda</a>
+                        <a href="#services" class="text-slate-300 hover:text-yellow-400">Layanan</a>
+                        <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400">Portofolio</a>
                         <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg">Hubungi Kami</a>
                     </nav>
                     <button id="theme-toggle" class="ml-4 p-2 rounded-full text-yellow-400 hover:bg-yellow-400/10 transition-colors">
-                        <svg id="theme-toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <svg id="theme-toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" />
                         </svg>
                         <svg id="theme-toggle-moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -516,9 +612,9 @@
         <!-- Mobile Menu (Dropdown) -->
         <div id="mobile-menu" class="md:hidden fixed top-16 left-0 right-0 bg-[#0a192f]/90 backdrop-blur-sm z-40 hidden">
             <div class="container mx-auto px-6 py-4 flex flex-col space-y-4">
-                <a href="#hero" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Beranda</a>
-                <a href="#services" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Layanan</a>
-                <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition mobile-menu-link text-lg text-center py-2">Portofolio</a>
+                <a href="#hero" class="text-slate-300 hover:text-yellow-400 mobile-menu-link text-lg text-center py-2">Beranda</a>
+                <a href="#services" class="text-slate-300 hover:text-yellow-400 mobile-menu-link text-lg text-center py-2">Layanan</a>
+                <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 mobile-menu-link text-lg text-center py-2">Portofolio</a>
                 <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg mobile-menu-link text-center">Hubungi Kami</a>
             </div>
         </div>
@@ -1451,20 +1547,84 @@
             
             // --- Event Listeners ---
 
-            // --- Theme Toggler Logic ---
+            // --- Theme Toggler Logic (REVISED FOR INSTANT ANIMATION) ---
             const themeToggleButton = document.getElementById('theme-toggle');
-            const sunIcon = document.getElementById('theme-toggle-sun-icon');
-            const moonIcon = document.getElementById('theme-toggle-moon-icon');
+            const navbar = document.getElementById('navbar');
+            const transitionWrapper = document.createElement('div');
+            const transitionCircle = document.createElement('div');
+            
+            transitionWrapper.id = 'theme-transition-wrapper';
+            transitionCircle.id = 'theme-transition-circle';
+            transitionWrapper.appendChild(transitionCircle);
+            navbar.insertBefore(transitionWrapper, navbar.firstChild);
+
+            let isThemeAnimating = false;
 
             themeToggleButton.addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                sunIcon.classList.toggle('hidden');
-                moonIcon.classList.toggle('hidden');
+                if (isThemeAnimating) return;
+                isThemeAnimating = true;
 
-                // Re-initialize bubble simulation with new colors
-                const bubbleContainer = document.getElementById('bubble-canvas-container');
-                destroyBubbleSimulation();
-                initBubbleSimulation(bubbleContainer);
+                // 1. Tambahkan class sementara untuk mengaktifkan transisi warna dengan jeda pada navbar
+                document.body.classList.add('theme-is-changing');
+
+                // 2. Tentukan mode target SEBELUM mengubah class utama
+                const isChangingToLight = !document.body.classList.contains('light-mode');
+                
+                // 3. Hitung parameter animasi liquid
+                const btnRect = themeToggleButton.getBoundingClientRect();
+                const navbarRect = navbar.getBoundingClientRect();
+                const x = btnRect.left + btnRect.width / 2 - navbarRect.left;
+                const y = btnRect.top + btnRect.height / 2 - navbarRect.top;
+
+                const corners = [
+                    {x: 0, y: 0},
+                    {x: navbarRect.width, y: 0},
+                    {x: 0, y: navbarRect.height},
+                    {x: navbarRect.width, y: navbarRect.height}
+                ];
+                const maxDist = Math.max(...corners.map(corner => Math.hypot(corner.x - x, corner.y - y)));
+                const finalSize = maxDist * 2;
+                
+                // 4. Mulai animasi liquid background, yang akan menjadi transisi background navbar
+                transitionWrapper.style.filter = "url('#gooey')";
+                transitionCircle.style.backgroundColor = isChangingToLight ? 'rgba(250, 204, 21, 0.9)' : 'rgba(10, 25, 47, 0.9)';
+                transitionCircle.style.width = `${finalSize}px`;
+                transitionCircle.style.height = `${finalSize}px`;
+                transitionCircle.style.top = `${y - maxDist}px`;
+                transitionCircle.style.left = `${x - maxDist}px`;
+                transitionCircle.style.transform = 'scale(0)';
+                transitionCircle.style.transition = 'transform 0.8s cubic-bezier(0.65, 0, 0.35, 1)';
+
+                requestAnimationFrame(() => {
+                    transitionCircle.style.transform = 'scale(1)';
+                });
+                
+                // 5. Ubah class pada body. Ini akan memulai transisi fade pada konten halaman secara paralel.
+                document.body.classList.toggle('light-mode');
+
+                // 6. Setelah animasi liquid selesai, atur state akhir dan bersihkan.
+                transitionCircle.addEventListener('transitionend', () => {
+                    // Atur background permanen pada navbar
+                    if (isChangingToLight) {
+                        navbar.style.backgroundColor = 'rgba(250, 204, 21, 0.9)';
+                    } else {
+                        navbar.style.backgroundColor = ''; // Hapus style inline agar kembali ke default CSS
+                    }
+
+                    // Inisialisasi ulang simulasi bubble dengan warna baru
+                    const bubbleContainer = document.getElementById('bubble-canvas-container');
+                    destroyBubbleSimulation();
+                    initBubbleSimulation(bubbleContainer);
+                    
+                    // Reset lingkaran animasi untuk klik berikutnya
+                    transitionCircle.style.transition = 'none';
+                    transitionCircle.style.transform = 'scale(0)';
+                    transitionWrapper.style.filter = 'none';
+
+                    // Hapus class sementara setelah semua selesai
+                    document.body.classList.remove('theme-is-changing');
+                    isThemeAnimating = false;
+                }, { once: true });
             });
 
 
@@ -1636,4 +1796,7 @@
     </script>
 </body>
 </html>
+
+
+
 
