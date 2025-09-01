@@ -121,7 +121,7 @@
         #main-page.is-animating-in .hero-anim, #main-page.is-animating-in .portfolio-title-anim { transform: translateY(-100px); }
         #main-page.is-animating-in .services-anim, #main-page.is-animating-in .contact-anim, #main-page.is-animating-in .portfolio-controls-anim { transform: translateY(100px); }
         #main-page.is-animating-in .footer-anim { transform: translateY(100%); }
-        #main-page.is-animating-in .portfolio-card { transform: translateY(150%); }
+        /* PERUBAHAN: Animasi kartu portofolio saat kembali dihapus, akan dikontrol oleh JS */
         #portfolio-detail-page .detail-anim { opacity: 0; transform: translateY(50px); transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1), transform 1s cubic-bezier(0.23, 1, 0.32, 1); }
         #portfolio-detail-page.visible .detail-anim { opacity: 1; transform: translateY(0); }
         #portfolio-detail-page.visible .detail-text-anim { transition-delay: 0.6s; }
@@ -1186,6 +1186,8 @@
 
             const hideDetailPage = (restoreScroll = true) => {
                 lockScroll(); // Kunci scrollbar di awal
+                // HIDE SLIDER IMMEDIATELY to prevent flash of old state
+                portfolioSection.style.opacity = 0;
                 portfolioSection.classList.add('slider-interactions-disabled');
                 overlay.style.opacity = '1';
                 portfolioDetailPage.classList.add('is-animating-out');
@@ -1206,8 +1208,23 @@
                         setTimeout(() => {
                             initSwiper();
                             scheduleAutoplayRestart();
-                            // Client swiper restart logic removed
+                            
                             portfolioSection.classList.remove('slider-interactions-disabled');
+
+                            // Fade the newly reset slider back in for a smooth dissolve effect
+                            portfolioSection.style.transition = 'opacity 0.6s ease';
+                            portfolioSection.style.opacity = 1;
+                            
+                            // Clean up the inline style after the transition ends to avoid conflicts
+                            setTimeout(() => {
+                                portfolioSection.style.transition = '';
+                            }, 600);
+                            
+                            // PERBAIKAN: Inisialisasi ulang kanvas gelembung
+                            const bubbleContainer = document.getElementById('bubble-canvas-container');
+                            destroyBubbleSimulation();
+                            initBubbleSimulation(bubbleContainer);
+
                             unlockScroll(); // Buka kunci di akhir
                         }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
                     });
@@ -1254,6 +1271,12 @@
                             initSwiper();
                             scheduleAutoplayRestart();
                              // Client swiper restart logic removed
+
+                            // PERBAIKAN: Inisialisasi ulang kanvas gelembung
+                            const bubbleContainer = document.getElementById('bubble-canvas-container');
+                            destroyBubbleSimulation();
+                            initBubbleSimulation(bubbleContainer);
+
                             unlockScroll(); // Buka kunci di akhir
                         }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
                     });
