@@ -221,16 +221,32 @@
             cursor: grabbing;
         }
 
-        /* --- STYLING KLIEN SLIDER --- */
+        /* --- STYLING KLIEN SLIDER (REVISED FOR PURE CSS MARQUEE) --- */
         .client-swiper {
-            cursor: grab;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            position: relative;
+            padding-top: 10px; /* Menambah ruang vertikal untuk efek hover */
+            padding-bottom: 10px; /* Menambah ruang vertikal untuk efek hover */
         }
-        .client-swiper:active {
-            cursor: grabbing;
+        .client-swiper .swiper-wrapper {
+            display: flex;
+            flex-wrap: nowrap;
+            animation: marquee 15s linear infinite;
+            align-items: center;
+        }
+        .client-swiper:hover .swiper-wrapper {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
         }
         .client-swiper .swiper-slide {
             width: auto;
             flex-shrink: 0;
+            padding: 0 25px; /* Menggantikan spaceBetween */
         }
         .client-logo {
             height: 120px;
@@ -255,10 +271,6 @@
             transform: scale(1.05);
             background-color: rgba(255, 255, 255, 0.08);
             border-color: rgba(250, 204, 21, 0.3);
-        }
-        .client-swiper .swiper-wrapper {
-            transition-timing-function: linear !important;
-            align-items: center;
         }
 
         /* Styling Navbar Hide/Show on Scroll */
@@ -415,6 +427,7 @@
                          <!-- Slider Klien -->
                         <div class="swiper-container client-swiper">
                             <div class="swiper-wrapper">
+                                <!-- Set 1 -->
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 1</div></div>
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 2</div></div>
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 3</div></div>
@@ -425,6 +438,37 @@
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 8</div></div>
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 9</div></div>
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 10</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 11</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 12</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 13</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 14</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 15</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 16</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 17</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 18</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 19</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 20</div></div>
+                                <!-- Set 2 (Duplikat untuk loop mulus) -->
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 1</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 2</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 3</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 4</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 5</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 6</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 7</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 8</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 9</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 10</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 11</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 12</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 13</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 14</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 15</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 16</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 17</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 18</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 19</div></div>
+                                <div class="swiper-slide"><div class="client-logo">Logo Klien 20</div></div>
                             </div>
                         </div>
                     </div>
@@ -931,7 +975,6 @@
 
             // --- LOGIKA RE-INISIALISASI SWIPER (PERBAIKAN BUG) ---
             let swiper; // Deklarasikan variabel swiper di scope yang lebih tinggi
-            let clientSwiper; // Deklarasikan variabel untuk slider klien
 
             // Simpan konfigurasi Swiper dalam sebuah objek agar bisa digunakan kembali
             const swiperConfig = { 
@@ -979,20 +1022,7 @@
             portfolioSection.querySelector('.swiper-button-prev').addEventListener('click', scheduleAutoplayRestart);
             portfolioSection.querySelector('.swiper-pagination').addEventListener('click', scheduleAutoplayRestart);
             
-            // --- Inisialisasi Slider Klien ---
-            clientSwiper = new Swiper('.client-swiper', {
-                loop: true,
-                slidesPerView: 'auto',
-                spaceBetween: 50,
-                speed: 8000, // Kecepatan transisi yang lebih lambat dan mulus
-                autoplay: {
-                    delay: 0, // Tanpa jeda untuk gerakan berkelanjutan
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                },
-                grabCursor: true,
-                loopedSlides: 10 // Pastikan duplikasi slide cukup untuk loop yang mulus
-            });
+            // --- Inisialisasi Slider Klien dihapus dari JS, sekarang dikontrol oleh CSS ---
 
             // --- Inisialisasi dan Populasi Galeri Layanan (DIREVISI) ---
             const initServiceGalleries = () => {
@@ -1121,12 +1151,7 @@
                         setTimeout(() => {
                             initSwiper();
                             scheduleAutoplayRestart();
-                            if (clientSwiper) {
-                                clientSwiper.update(); // REFRESH SLIDER
-                                if (clientSwiper.autoplay) {
-                                    clientSwiper.autoplay.start();
-                                }
-                            }
+                            // Client swiper restart logic removed
                             portfolioSection.classList.remove('slider-interactions-disabled');
                         }, 100);
                     });
@@ -1169,12 +1194,7 @@
                         setTimeout(() => {
                             initSwiper();
                             scheduleAutoplayRestart();
-                            if (clientSwiper) {
-                                clientSwiper.update(); // REFRESH SLIDER
-                                if (clientSwiper.autoplay) {
-                                    clientSwiper.autoplay.start();
-                                }
-                            }
+                             // Client swiper restart logic removed
                         }, 100);
                     });
                 }, 500);
@@ -1381,6 +1401,4 @@
     </script>
 </body>
 </html>
-
-
 
