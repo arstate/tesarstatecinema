@@ -233,15 +233,20 @@
         .client-swiper .swiper-wrapper {
             display: flex;
             flex-wrap: nowrap;
-            animation: marquee 15s linear infinite;
+            /* Durasi disesuaikan untuk 20 logo */
+            animation: marquee 60s linear infinite;
             align-items: center;
+            /* Menambahkan optimisasi untuk browser */
+            will-change: transform;
         }
         .client-swiper:hover .swiper-wrapper {
             animation-play-state: paused;
         }
         @keyframes marquee {
             from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+            /* Menggunakan kalkulasi piksel yang pasti untuk menghindari lompatan */
+            /* 20 logo * (120px lebar + 50px padding) = 3400px */
+            to { transform: translateX(-3400px); }
         }
         .client-swiper .swiper-slide {
             width: auto;
@@ -449,26 +454,26 @@
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 19</div></div>
                                 <div class="swiper-slide"><div class="client-logo">Logo Klien 20</div></div>
                                 <!-- Set 2 (Duplikat untuk loop mulus) -->
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 1</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 2</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 3</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 4</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 5</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 6</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 7</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 8</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 9</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 10</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 11</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 12</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 13</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 14</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 15</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 16</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 17</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 18</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 19</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 20</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 1</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 2</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 3</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 4</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 5</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 6</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 7</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 8</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 9</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 10</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 11</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 12</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 13</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 14</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 15</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 16</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 17</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 18</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 19</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 20</div></div>
                             </div>
                         </div>
                     </div>
@@ -1401,4 +1406,7 @@
     </script>
 </body>
 </html>
+
+
+
 
