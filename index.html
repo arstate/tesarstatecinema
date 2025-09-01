@@ -294,13 +294,15 @@
             border-color: rgba(250, 204, 21, 0.3);
         }
 
-        /* Styling Navbar Hide/Show on Scroll */
+        /* Styling Navbar Hide/Show on Scroll (DIHAPUS) */
         #navbar {
             transition: transform 0.4s ease-in-out;
         }
+        /*
         #navbar.navbar-hidden {
             transform: translateY(-100%);
         }
+        */
 
         /* BUG FIX: Class untuk mematikan interaksi mouse sementara */
         .slider-interactions-disabled {
@@ -418,6 +420,7 @@
                         <!-- Video Background -->
                         <div id="hero-video-background">
                            <iframe
+                                id="hero-video-iframe"
                                 src="https://www.youtube.com/embed/1CYQXV68xpI?autoplay=1&mute=1&loop=1&playlist=1CYQXV68xpI&controls=0&showinfo=0&rel=0&playsinline=1"
                                 title="YouTube video player"
                                 frameborder="0"
@@ -1121,21 +1124,6 @@
             };
             initServiceGalleries();
 
-            // --- Navbar Hide/Show on Scroll (DIHAPUS) ---
-            /*
-            const navbar = document.getElementById('navbar');
-            let lastScrollTop = 0;
-            window.addEventListener('scroll', function() {
-                let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                if (scrollTop > lastScrollTop && scrollTop > navbar.offsetHeight) {
-                    navbar.classList.add('navbar-hidden');
-                } else {
-                    navbar.classList.remove('navbar-hidden');
-                }
-                lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-            }, false);
-            */
-
             // --- Fungsi Smooth Scroll ---
             const smoothScrollTo = (targetSelector, duration = 1300) => {
                 const targetElement = document.querySelector(targetSelector);
@@ -1226,6 +1214,12 @@
                             const bubbleContainer = document.getElementById('bubble-canvas-container');
                             destroyBubbleSimulation();
                             initBubbleSimulation(bubbleContainer);
+                            
+                            // PERBAIKAN: Refresh video background
+                            const videoIframe = document.getElementById('hero-video-iframe');
+                            if (videoIframe) {
+                                videoIframe.src = videoIframe.src;
+                            }
 
                             unlockScroll(); // Buka kunci di akhir
                         }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
@@ -1278,6 +1272,12 @@
                             const bubbleContainer = document.getElementById('bubble-canvas-container');
                             destroyBubbleSimulation();
                             initBubbleSimulation(bubbleContainer);
+
+                            // PERBAIKAN: Refresh video background
+                            const videoIframe = document.getElementById('hero-video-iframe');
+                            if (videoIframe) {
+                                videoIframe.src = videoIframe.src;
+                            }
 
                             unlockScroll(); // Buka kunci di akhir
                         }, 1100); // DELAY DITINGKATKAN untuk memastikan browser selesai render
@@ -1501,3 +1501,5 @@
     </script>
 </body>
 </html>
+
+
