@@ -379,6 +379,100 @@
                 display: none;
             }
         }
+
+        /* --- Gaya Mode Terang --- */
+        body.light-mode {
+            background-color: #f8fafc; /* Abu-abu Sangat Terang */
+            color: var(--navy-blue); /* Biru Navy */
+        }
+        body.light-mode #navbar {
+            background-color: rgba(250, 204, 21, 0.9); /* Kuning Transparan */
+        }
+        body.light-mode #navbar a, 
+        body.light-mode #brand-logo,
+        body.light-mode #mobile-menu-button svg,
+        body.light-mode #theme-toggle {
+            color: var(--navy-blue);
+        }
+        body.light-mode #brand-logo span {
+            color: var(--navy-blue);
+        }
+        body.light-mode #navbar a:hover {
+            color: #1e3a8a; /* Biru Lebih Gelap saat hover */
+        }
+        body.light-mode #mobile-menu {
+            background-color: rgba(250, 204, 21, 0.9);
+        }
+        body.light-mode .mobile-menu-link {
+            color: var(--navy-blue);
+        }
+        body.light-mode .mobile-menu-link:hover {
+            color: #1e3a8a;
+        }
+        body.light-mode .btn-primary {
+            color: var(--navy-blue);
+        }
+        body.light-mode .btn-secondary {
+            border-color: var(--navy-blue);
+            color: var(--navy-blue);
+        }
+        body.light-mode .btn-secondary:hover {
+            background-color: rgba(10, 25, 47, 0.1);
+        }
+        /* Jaga agar teks di atas video hero tetap putih */
+        #hero .text-white { color: #e6f1ff !important; }
+        #hero .text-slate-300 { color: #cbd5e1 !important; }
+        /* Ubah warna teks lainnya */
+        body.light-mode .text-white { color: var(--navy-blue); }
+        body.light-mode .text-slate-300, 
+        body.light-mode .text-slate-400 { color: #334155; } /* Abu-abu Kebiruan */
+        body.light-mode .bg-blue-900\/10 { background-color: #f1f5f9; }
+        body.light-mode .bg-blue-900\/20 { background-color: #e2e8f0; }
+        body.light-mode .bg-blue-900\/30 { background-color: #f8fafc; border-color: #e2e8f0; }
+        body.light-mode .border-blue-800 { border-color: #e2e8f0; }
+        body.light-mode .client-logo {
+            background-color: rgba(10, 25, 47, 0.03);
+            color: #475569;
+            filter: grayscale(50%) brightness(1);
+            opacity: 0.8;
+            border-color: rgba(10, 25, 47, 0.05);
+        }
+        body.light-mode .client-swiper .swiper-slide:hover .client-logo {
+            filter: grayscale(0%) brightness(1);
+            background-color: rgba(10, 25, 47, 0.08);
+            border-color: rgba(10, 25, 47, 0.3);
+        }
+        body.light-mode .portfolio-card .overlay {
+            background: linear-gradient(to top, rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.1));
+        }
+        body.light-mode .portfolio-card .card-content .text-white {
+            color: var(--navy-blue) !important;
+        }
+        body.light-mode .slider-controls .swiper-button-next, 
+        body.light-mode .slider-controls .swiper-button-prev {
+            color: var(--navy-blue);
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        body.light-mode .slider-controls .swiper-button-next:hover, 
+        body.light-mode .slider-controls .swiper-button-prev:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        body.light-mode .swiper-pagination-bullet { background-color: #94a3b8; }
+        body.light-mode .swiper-pagination-bullet-active { background-color: var(--navy-blue); }
+        body.light-mode .text-gradient {
+            background: linear-gradient(90deg, #1e3a8a, #0c4a6e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+        }
+        body.light-mode footer, body.light-mode footer p { color: #475569; }
+        body.light-mode #page-transition-overlay { background-color: #f8fafc; }
+        body.light-mode #about-us-page, body.light-mode .service-page, body.light-mode #portfolio-detail-page { background-color: #f8fafc; }
+        body.light-mode .interactive-frame { background-color: #f1f5f9; border-color: #e2e8f0; }
+        body.light-mode .interactive-frame:hover {
+            border-color: rgba(10, 25, 47, 0.4);
+            box-shadow: 0 0 25px rgba(10, 25, 47, 0.15);
+        }
+        body.light-mode .collapsible-content { border-top-color: rgba(10, 25, 47, 0.2); }
     </style>
 </head>
 <body class="antialiased">
@@ -402,6 +496,14 @@
                     <a href="#services" class="text-slate-300 hover:text-yellow-400 transition">Layanan</a>
                     <a href="#featured-portfolio" class="text-slate-300 hover:text-yellow-400 transition">Portofolio</a>
                     <a href="#contact" class="btn-secondary font-semibold py-2 px-4 rounded-lg">Hubungi Kami</a>
+                    <button id="theme-toggle" class="ml-2 p-2 rounded-full text-yellow-400 hover:bg-yellow-400/10 transition-colors">
+                        <svg id="theme-toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 100-10 5 5 0 000 10z" />
+                        </svg>
+                        <svg id="theme-toggle-moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
                 </nav>
                  <button id="mobile-menu-button" class="md:hidden text-white z-50">
                     <svg id="menu-open-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
@@ -1347,6 +1449,24 @@
             const closeLightbox = () => { lightbox.classList.add('opacity-0', 'pointer-events-none'); };
             
             // --- Event Listeners ---
+
+            // --- Theme Toggler Logic ---
+            const themeToggleButton = document.getElementById('theme-toggle');
+            const sunIcon = document.getElementById('theme-toggle-sun-icon');
+            const moonIcon = document.getElementById('theme-toggle-moon-icon');
+
+            themeToggleButton.addEventListener('click', () => {
+                document.body.classList.toggle('light-mode');
+                sunIcon.classList.toggle('hidden');
+                moonIcon.classList.toggle('hidden');
+
+                // Re-initialize bubble simulation with new colors
+                const bubbleContainer = document.getElementById('bubble-canvas-container');
+                destroyBubbleSimulation();
+                initBubbleSimulation(bubbleContainer);
+            });
+
+
             swiperWrapper.addEventListener('click', (e) => {
                 const clickedSlide = e.target.closest('.swiper-slide');
                 if (!clickedSlide) return;
@@ -1480,13 +1600,14 @@
                 const wallOptions = { isStatic: true, render: { visible: false } };
                 World.add(world, [ Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, wallOptions), Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, wallOptions), Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, wallOptions) ]);
                 const allItemsToRender = []; const titleBodies = []; const titleProperties = []; const titleParts = ["Kualitas Kami", "Dalam", "Setiap Proyek"];
+                const isLightMode = document.body.classList.contains('light-mode');
                 titleParts.forEach((part, index) => {
                     const isMobile = containerWidth < 768;
                     const fontSize = isMobile ? `bold ${Math.min(containerWidth / 15, 36)}px Poppins` : `bold ${Math.min(containerWidth / 20, 48)}px Poppins`;
                     const titleWidth = part.length * (isMobile ? 15 : 20) + (isMobile ? 60 : 80); const titleHeight = isMobile ? 60 : 80;
                     let xPos, yPos;
                     if (isMobile) { xPos = containerWidth / 2; yPos = 80 + index * 90; } else { xPos = (containerWidth / (titleParts.length + 1)) * (index + 1); yPos = 80; if (index === 1) yPos = 150; }
-                    const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, { chamfer: { radius: isMobile ? 15 : 20 }, isStatic: false, density: 0.005, render: { fillStyle: 'transparent' }, customText: part, customFontSize: fontSize, customFillStyle: '#e6f1ff' });
+                    const titleBody = Bodies.rectangle(xPos, yPos, titleWidth, titleHeight, { chamfer: { radius: isMobile ? 15 : 20 }, isStatic: false, density: 0.005, render: { fillStyle: 'transparent' }, customText: part, customFontSize: fontSize, customFillStyle: isLightMode ? '#0a192f' : '#e6f1ff' });
                     titleBodies.push(titleBody); titleProperties.push({width: titleWidth, height: titleHeight, x: xPos, y: yPos}); allItemsToRender.push(titleBody);
                 });
                 World.add(world, titleBodies);
@@ -1514,4 +1635,6 @@
     </script>
 </body>
 </html>
+
+
 
