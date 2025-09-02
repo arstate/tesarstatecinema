@@ -243,29 +243,17 @@
         /* --- STYLING KLIEN SLIDER (REVISED FOR PURE CSS MARQUEE) --- */
         .client-swiper {
             overflow: hidden;
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             position: relative;
-            padding-top: 10px; /* Menambah ruang vertikal untuk efek hover */
-            padding-bottom: 10px; /* Menambah ruang vertikal untuk efek hover */
+            /* Menambah padding vertikal agar bayangan tidak terpotong saat hover */
+            padding-top: 20px;
+            padding-bottom: 30px;
         }
         .client-swiper .swiper-wrapper {
             display: flex;
             flex-wrap: nowrap;
-            /* Durasi disesuaikan untuk 20 logo */
-            animation: marquee 60s linear infinite;
             align-items: center;
             /* Menambahkan optimisasi untuk browser */
             will-change: transform;
-        }
-        .client-swiper:hover .swiper-wrapper {
-            animation-play-state: paused;
-        }
-        @keyframes marquee {
-            from { transform: translateX(0); }
-            /* Menggunakan kalkulasi piksel yang pasti untuk menghindari lompatan */
-            /* 20 logo * (120px lebar + 50px padding) = 3400px */
-            to { transform: translateX(-3400px); }
         }
         .client-swiper .swiper-slide {
             width: auto;
@@ -278,23 +266,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: rgba(255, 255, 255, 0.03);
-            border-radius: 0.75rem;
-            color: var(--text-slate);
-            filter: grayscale(100%) brightness(0.8);
-            opacity: 0.6;
-            transition: all 0.4s ease;
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 0.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            /* DARK MODE: Off-white background with brighter, thicker blue stroke */
+            background-color: #F1F5F9; /* Dibuat lebih pudar */
+            border: 3px solid #60a5fa; /* Stroke biru lebih terang & lebih tebal */
+            border-radius: 1.5rem; /* Lebih bulat */
+            transition: all 0.4s ease, filter 0.1s linear, opacity 0.1s linear;
+            padding: 1rem; /* Jarak untuk gambar di dalam */
+            box-shadow: 0 0 0 rgba(250, 204, 21, 0); /* Bayangan awal untuk transisi */
+        }
+        .client-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
         .client-swiper .swiper-slide:hover .client-logo {
-            filter: grayscale(0%) brightness(1);
-            opacity: 1;
-            transform: scale(1.05);
-            background-color: rgba(255, 255, 255, 0.08);
-            border-color: rgba(250, 204, 21, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            /* DARK MODE HOVER: Yellow stroke & shadow */
+            background-color: #F1F5F9; /* Disesuaikan agar tetap lebih pudar */
+            border-color: #facc15; /* Stroke berubah menjadi kuning saat hover */
+            box-shadow: 0 7px 20px rgba(250, 204, 21, 0.4); /* Bayangan kuning saat hover */
         }
 
         /* Styling Navbar Hide/Show on Scroll (DIHAPUS) */
@@ -456,16 +446,19 @@
         body.light-mode .bg-blue-900\/30 { background-color: #f8fafc; border-color: #e2e8f0; }
         body.light-mode .border-blue-800 { border-color: #e2e8f0; }
         body.light-mode .client-logo {
-            background-color: rgba(10, 25, 47, 0.03);
-            color: #475569;
-            filter: grayscale(50%) brightness(1);
-            opacity: 0.8;
-            border-color: rgba(10, 25, 47, 0.05);
+            /* LIGHT MODE: Off-white glass effect with thicker yellow stroke */
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 3px solid #cbd5e1; /* Stroke Abu-abu agar kontras */
+            box-shadow: 0 0 0 rgba(10, 25, 47, 0); /* Bayangan awal untuk transisi */
         }
         body.light-mode .client-swiper .swiper-slide:hover .client-logo {
-            filter: grayscale(0%) brightness(1);
-            background-color: rgba(10, 25, 47, 0.08);
-            border-color: rgba(10, 25, 47, 0.3);
+            transform: translateY(-5px) scale(1.05);
+            /* LIGHT MODE HOVER: Brighter glass with dark shadow */
+            background-color: rgba(255, 255, 255, 0.8);
+            border-color: #facc15; /* Stroke berubah menjadi kuning */
+            box-shadow: 0 7px 20px rgba(250, 204, 21, 0.4); /* Bayangan kuning untuk mode terang */
         }
         body.light-mode .portfolio-card .overlay {
             background: linear-gradient(to top, rgba(248, 250, 252, 0.95), rgba(248, 250, 252, 0.1));
@@ -650,57 +643,59 @@
                 </section>
 
                 <!-- KLIEN KAMI SECTION -->
-                <section id="clients" class="py-16 md:py-20 bg-blue-900/10">
+                <section id="clients" class="py-16 md:py-20 bg-blue-900/10 overflow-hidden">
                     <div class="container mx-auto px-6 animatable services-anim">
                         <div class="text-center max-w-2xl mx-auto mb-16">
                              <h2 class="text-3xl md:text-4xl font-bold">Telah Dipercaya Oleh</h2>
                              <p class="text-slate-400 mt-4">Kami bangga telah menjadi bagian dari cerita sukses berbagai klien dan acara.</p>
                         </div>
+                    </div>
+                    <div class="animatable services-anim">
                          <!-- Slider Klien -->
                         <div class="swiper-container client-swiper">
                             <div class="swiper-wrapper">
                                 <!-- Set 1 -->
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 1</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 2</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 3</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 4</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 5</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 6</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 7</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 8</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 9</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 10</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 11</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 12</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 13</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 14</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 15</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 16</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 17</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 18</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 19</div></div>
-                                <div class="swiper-slide"><div class="client-logo">Logo Klien 20</div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczNIE4fXybTRL8Ht3XzVCIGgDFRXVO39S8UcstyXDMbXQVotU9g6kNNoc9JpNAH5eI5FeQH68t5V2u--gaRr56llCkY_88kIkOLfNvDqBWpkXoSVg-Y=w2400" alt="Logo Klien 1"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMRznDyiPFpfypkwHUW6olk8GDD0KeFj7yIpI2U4JMOGc4kfsem_EhGjRI0vwK2hZDg_5sStnKlwi33wUgLoHcrNK_xSXiOVpHFR1H7dTVWv-jL4s8=w2400" alt="Logo Klien 2"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMGif1CXOtxsHvgjNxsDUUa-AJfIPH5gKoL2U001gqBx9w7xhKuBMyKqtGsAxgRnt95chEcyZyPpMDzP2TGv8MO2C98EDfVQIlYl1HY1-HLuNo13Oo=w2400" alt="Logo Klien 3"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMm4LGcfHZGMxcdTKvdraOGzWCKMjSwXfADN33pbHwkyBNWi82bkGpwkhqVdvNgkgyUZJXfm1VzYBB2e1i-SDVv0NCoFdENmpevZ7uu3SpamRBJvzk=w2400" alt="Logo Klien 4"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO5QerGFj-bmyXScJIy7C-IrFECHRLa6l77MEZWq23xpPTSaHrVGuqer1kEbGpQiiOeq_O0M8tJPZdNfHkvznIgf_MNBfixEIyPnQ40Gy-tAxTcDIM=w2400" alt="Logo Klien 5"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOM3nxIWoLu3gydPH3lnh1BsSQvwusIPuVYXELvG5NUYxSCcVO773QDAfHbk84DSbROyIcfwtaBra2rMjvRTSu9Ry_OMI-nZWOqZ-QxKlLnyVACcbE=w2400" alt="Logo Klien 6"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMSkltm1HXa8GARgUYGpwGakoiK4fK3_dvTGWqoAp1fbpzPE_cky1qB7Uct-ElZ8tOTR-IH0-NhUcQmg4sV9UZbxFQsvny76EoFmevXCJFH-h9QB0g=w2400" alt="Logo Klien 7"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOkSwHjXanhEfMs-BEI0bn3pnXIUNtEb98aKJ1VIiFtgudZyf4kESUKxwuRWAwtowuUc-OlXDRKt_zm8RyUXVVNJ6CncfhH-TeJGEUebFIDGKda9WQ=w2400" alt="Logo Klien 8"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO2Amunj41IK1c-GnDamPj-tuLn_J6XwXAroiaPNXB84GKNVekMgLjCoQ8O1GBaeiQnFmCCOqKIUIDsj4JDj1o_ybBtsCAq5Ilv5pAKYOoqJVez9Bo=w2400" alt="Logo Klien 9"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczP7ZIyPYFccTxULt4paPhZbryATprbHZ2aXhzMuUfbiRgaq2T59TEherJvPMx9TWBw8AHLCW0MjiwDDGQDChg_Epyyv_sIrJJFwMiDh-5IKdWaGfp0=w2400" alt="Logo Klien 10"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczONriU-ifYMhajwYIXncWoXbFh7m3KeLOZr6qmLeNKFrCFKkI0Z13TZZHFxD15JFDa7EpPzZG27vHOXqczbTiviLgM9aIA6KBFw9f4JdvIV4gqRY3E=w2400" alt="Logo Klien 11"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczPCpg5anuEcF3P0035hnOY7EolR97hE5nUa_oCQZSeoaZVzGoPhQMmVfK6vhDvWDZdr4knMp3xoToL1yvqi9pAiGf2aWvf0vA8eehvHu8foyDl96lA=w2400" alt="Logo Klien 12"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMIxkp8zaPabVmx3OOA2t2CTtQjzq3QZT1x_FioLRFTFoMgR7YOyGjAR2EBzJsqZdkXgtHZdrDzgtVVslIfVbThjLiAt8ObUjZFhqbxdhmCGWdYzfc=w2400" alt="Logo Klien 13"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczPIfDC0zKA9wFb3ofnhgM5r-gMxMe86hwz76JWh7qwRUw9TjeF4wg0vhVnCTeFQUPArp6YTobffOZTH4Ia4yRUbeMPIWf46Slcqkci7lkiT4mN_DOc=w2400" alt="Logo Klien 14"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOx5ePZV5RrRsEiPDywJ_yxUUqHTi1X1YeVCYaRT1BATD2ETIHW9_LYBz87GF5TFW5EJ1TS_HZ7Fz5LlYvXubY0W8vwlO65nfxYOB6NzDw0kHUmVJg=w2400" alt="Logo Klien 15"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO3d-W44OPyeWC35-odmY7y7qoKyyPbR05hsc-n0acUfRbbd3gJVfN13BEWxPP9nLA8KBXqt7mu2cfofilTieqdgJm1C2DbgdWXsEp4E6a4MeSchbE=w2400" alt="Logo Klien 16"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOMV2T0ZJ5-3o7mm385iHzAZ6gsgFORYVYY62BZFKUmsyBm0qGBa4yO2fEmjn-Mm7AeIXR-lR62c44Kw3zPlworxERKeW1IS86BlFqBH0z5jrahvBc=w2400" alt="Logo Klien 17"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczNJMRLLwoCQxjE4pgbImVCXx03dHVU7fgEZtMUFY2HStFB3i_9nw6THh0htXS6iTe3NPTCncPEu35EJpq9Svms4UfRUzL9u2hNpKeuG4PdynO6AkF8=w2400" alt="Logo Klien 18"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMa9-86t8DwW17oMmZEuGvbCiqtzOV6ea66hchdojcuBGwSWB5RngLmcnGGEUJ8vqYwDukAA4O6AWaPIUJHiZKD4-fajGkQmPwFq3YPVCTLPuX8SNo=w2400" alt="Logo Klien 19"></div></div>
+                                <div class="swiper-slide"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO-DXv5MG48rouLLiWH7YjOxnjWATITzuPm_KmrFReEkbCDTqDxgPOAgVFhGmELMgYYxztuW-famwHWTD-8a06ybgw3raJnobQ8XeHj91FOi_1BDUA=w2400" alt="Logo Klien 20"></div></div>
                                 <!-- Set 2 (Duplikat untuk loop mulus) -->
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 1</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 2</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 3</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 4</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 5</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 6</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 7</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 8</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 9</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 10</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 11</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 12</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 13</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 14</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 15</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 16</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 17</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 18</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 19</div></div>
-                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo">Logo Klien 20</div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczNIE4fXybTRL8Ht3XzVCIGgDFRXVO39S8UcstyXDMbXQVotU9g6kNNoc9JpNAH5eI5FeQH68t5V2u--gaRr56llCkY_88kIkOLfNvDqBWpkXoSVg-Y=w2400" alt="Logo Klien 1"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMRznDyiPFpfypkwHUW6olk8GDD0KeFj7yIpI2U4JMOGc4kfsem_EhGjRI0vwK2hZDg_5sStnKlwi33wUgLoHcrNK_xSXiOVpHFR1H7dTVWv-jL4s8=w2400" alt="Logo Klien 2"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMGif1CXOtxsHvgjNxsDUUa-AJfIPH5gKoL2U001gqBx9w7xhKuBMyKqtGsAxgRnt95chEcyZyPpMDzP2TGv8MO2C98EDfVQIlYl1HY1-HLuNo13Oo=w2400" alt="Logo Klien 3"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMm4LGcfHZGMxcdTKvdraOGzWCKMjSwXfADN33pbHwkyBNWi82bkGpwkhqVdvNgkgyUZJXfm1VzYBB2e1i-SDVv0NCoFdENmpevZ7uu3SpamRBJvzk=w2400" alt="Logo Klien 4"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO5QerGFj-bmyXScJIy7C-IrFECHRLa6l77MEZWq23xpPTSaHrVGuqer1kEbGpQiiOeq_O0M8tJPZdNfHkvznIgf_MNBfixEIyPnQ40Gy-tAxTcDIM=w2400" alt="Logo Klien 5"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOM3nxIWoLu3gydPH3lnh1BsSQvwusIPuVYXELvG5NUYxSCcVO773QDAfHbk84DSbROyIcfwtaBra2rMjvRTSu9Ry_OMI-nZWOqZ-QxKlLnyVACcbE=w2400" alt="Logo Klien 6"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMSkltm1HXa8GARgUYGpwGakoiK4fK3_dvTGWqoAp1fbpzPE_cky1qB7Uct-ElZ8tOTR-IH0-NhUcQmg4sV9UZbxFQsvny76EoFmevXCJFH-h9QB0g=w2400" alt="Logo Klien 7"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOkSwHjXanhEfMs-BEI0bn3pnXIUNtEb98aKJ1VIiFtgudZyf4kESUKxwuRWAwtowuUc-OlXDRKt_zm8RyUXVVNJ6CncfhH-TeJGEUebFIDGKda9WQ=w2400" alt="Logo Klien 8"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO2Amunj41IK1c-GnDamPj-tuLn_J6XwXAroiaPNXB84GKNVekMgLjCoQ8O1GBaeiQnFmCCOqKIUIDsj4JDj1o_ybBtsCAq5Ilv5pAKYOoqJVez9Bo=w2400" alt="Logo Klien 9"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczP7ZIyPYFccTxULt4paPhZbryATprbHZ2aXhzMuUfbiRgaq2T59TEherJvPMx9TWBw8AHLCW0MjiwDDGQDChg_Epyyv_sIrJJFwMiDh-5IKdWaGfp0=w2400" alt="Logo Klien 10"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczONriU-ifYMhajwYIXncWoXbFh7m3KeLOZr6qmLeNKFrCFKkI0Z13TZZHFxD15JFDa7EpPzZG27vHOXqczbTiviLgM9aIA6KBFw9f4JdvIV4gqRY3E=w2400" alt="Logo Klien 11"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczPCpg5anuEcF3P0035hnOY7EolR97hE5nUa_oCQZSeoaZVzGoPhQMmVfK6vhDvWDZdr4knMp3xoToL1yvqi9pAiGf2aWvf0vA8eehvHu8foyDl96lA=w2400" alt="Logo Klien 12"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMIxkp8zaPabVmx3OOA2t2CTtQjzq3QZT1x_FioLRFTFoMgR7YOyGjAR2EBzJsqZdkXgtHZdrDzgtVVslIfVbThjLiAt8ObUjZFhqbxdhmCGWdYzfc=w2400" alt="Logo Klien 13"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczPIfDC0zKA9wFb3ofnhgM5r-gMxMe86hwz76JWh7qwRUw9TjeF4wg0vhVnCTeFQUPArp6YTobffOZTH4Ia4yRUbeMPIWf46Slcqkci7lkiT4mN_DOc=w2400" alt="Logo Klien 14"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOx5ePZV5RrRsEiPDywJ_yxUUqHTi1X1YeVCYaRT1BATD2ETIHW9_LYBz87GF5TFW5EJ1TS_HZ7Fz5LlYvXubY0W8vwlO65nfxYOB6NzDw0kHUmVJg=w2400" alt="Logo Klien 15"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO3d-W44OPyeWC35-odmY7y7qoKyyPbR05hsc-n0acUfRbbd3gJVfN13BEWxPP9nLA8KBXqt7mu2cfofilTieqdgJm1C2DbgdWXsEp4E6a4MeSchbE=w2400" alt="Logo Klien 16"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczOMV2T0ZJ5-3o7mm385iHzAZ6gsgFORYVYY62BZFKUmsyBm0qGBa4yO2fEmjn-Mm7AeIXR-lR62c44Kw3zPlworxERKeW1IS86BlFqBH0z5jrahvBc=w2400" alt="Logo Klien 17"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczNJMRLLwoCQxjE4pgbImVCXx03dHVU7fgEZtMUFY2HStFB3i_9nw6THh0htXS6iTe3NPTCncPEu35EJpq9Svms4UfRUzL9u2hNpKeuG4PdynO6AkF8=w2400" alt="Logo Klien 18"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczMa9-86t8DwW17oMmZEuGvbCiqtzOV6ea66hchdojcuBGwSWB5RngLmcnGGEUJ8vqYwDukAA4O6AWaPIUJHiZKD4-fajGkQmPwFq3YPVCTLPuX8SNo=w2400" alt="Logo Klien 19"></div></div>
+                                <div class="swiper-slide" aria-hidden="true"><div class="client-logo"><img src="https://lh3.googleusercontent.com/pw/AP1GczO-DXv5MG48rouLLiWH7YjOxnjWATITzuPm_KmrFReEkbCDTqDxgPOAgVFhGmELMgYYxztuW-famwHWTD-8a06ybgw3raJnobQ8XeHj91FOi_1BDUA=w2400" alt="Logo Klien 20"></div></div>
                             </div>
                         </div>
                     </div>
@@ -1792,11 +1787,92 @@
             window.addEventListener('resize', () => { clearTimeout(resizeTimeout); resizeTimeout = setTimeout(() => { const container = document.getElementById('bubble-canvas-container'); if (!container) return; const newContainerWidth = container.clientWidth; if (lastCanvasWidth && Math.abs(newContainerWidth - lastCanvasWidth) > 10) { destroyBubbleSimulation(); initBubbleSimulation(container); } }, 250); });
             const waitForElement = (selector) => { return new Promise(resolve => { const element = document.querySelector(selector); if (element && element.clientWidth > 0) return resolve(element); const observer = new ResizeObserver(entries => { if (entries[0].target.clientWidth > 0) { observer.disconnect(); resolve(entries[0].target); } }); if (element) observer.observe(element); }); };
             waitForElement('#bubble-canvas-container').then(container => { initBubbleSimulation(container); });
+
+            // --- ANIMASI SLIDER KLIEN DENGAN EFEK BLUR (JS DRIVEN) ---
+            const initClientLogoAnimator = () => {
+                const container = document.querySelector('.client-swiper');
+                const wrapper = document.querySelector('.client-swiper .swiper-wrapper');
+                if (!container || !wrapper) return;
+
+                const slides = Array.from(wrapper.children);
+                if (slides.length === 0) return;
+
+                const logos = slides.map(slide => slide.querySelector('.client-logo'));
+                
+                const originalLogoCount = slides.length / 2;
+                const loopWidth = slides[0].offsetWidth * originalLogoCount;
+
+                let position = 0;
+                const speed = 35; // pixels per second
+                let lastTime = null;
+                let isPaused = false;
+                let animationFrameId;
+
+                const animate = (currentTime) => {
+                    if (lastTime === null) {
+                        lastTime = currentTime;
+                    }
+                    const deltaTime = (currentTime - lastTime) / 1000;
+                    lastTime = currentTime;
+
+                    if (!isPaused) {
+                        position -= speed * deltaTime;
+                        if (position <= -loopWidth) {
+                            position += loopWidth;
+                        }
+                        wrapper.style.transform = `translateX(${position}px)`;
+                    }
+
+                    const containerRect = container.getBoundingClientRect();
+                    const blurZoneWidth = containerRect.width * 0.20;
+                    const maxBlur = 4;
+
+                    logos.forEach(logo => {
+                        const logoRect = logo.getBoundingClientRect();
+                        const logoCenter = logoRect.left + logoRect.width / 2;
+                        
+                        const distFromLeft = logoCenter - containerRect.left;
+                        const distFromRight = containerRect.right - logoCenter;
+
+                        let progress = 1;
+
+                        if (distFromLeft < blurZoneWidth) {
+                            progress = distFromLeft / blurZoneWidth;
+                        } else if (distFromRight < blurZoneWidth) {
+                            progress = distFromRight / blurZoneWidth;
+                        }
+
+                        progress = Math.max(0, Math.min(1, progress));
+
+                        const blurValue = maxBlur * (1 - progress);
+                        const opacityValue = 0.3 + 0.7 * progress;
+
+                        logo.style.filter = `blur(${blurValue}px)`;
+                        logo.style.opacity = opacityValue;
+                    });
+
+                    animationFrameId = requestAnimationFrame(animate);
+                };
+
+                container.addEventListener('mouseenter', () => isPaused = true);
+                container.addEventListener('mouseleave', () => isPaused = false);
+                
+                document.addEventListener("visibilitychange", () => {
+                    if (document.hidden) {
+                        isPaused = true;
+                    } else {
+                        isPaused = false;
+                        lastTime = null;
+                    }
+                });
+                
+                animationFrameId = requestAnimationFrame(animate);
+            };
+
+            initClientLogoAnimator();
         });
     </script>
 </body>
 </html>
-
-
 
 
